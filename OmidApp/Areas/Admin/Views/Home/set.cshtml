@@ -1,0 +1,108 @@
+    <style>
+        th, td, tr {
+            padding: 5px;
+            text-align: center !important;
+        }
+
+    
+    </style>
+        <div class="page-body">
+
+            <!-- Container-fluid starts-->
+            <div class="container-fluid">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="page-header-left">
+                                <h3>داشبورد
+                                    <small>پنل مدیریت </small>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ol class="breadcrumb pull-right">
+                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                                <li class="breadcrumb-item active">داشبورد</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+             @if (TempData["msg"] != null)
+             {
+                <p class="alert alert-danger p-3 form-control">@TempData["msg"]</p>
+             }
+
+
+                    <div class="col-xl-12">
+                        
+                        <div class="card">
+                            <div class="card-header">
+                        @{
+                            int a=@ViewBag.User.free;
+                            if (a==0)
+                            {
+                                a=5;
+                            }
+                           
+                        }
+                           
+
+                              <form action="/admin/home/setnew" method="post">
+                                   <div class="row justify-content-center  p-3" >
+
+                                                <input name="id" id="id" class="form-control " type="text" style="display:none" value="@ViewBag.User.Id" >
+
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                               
+                                                 <p class="alert alert-success text-center">   @ViewBag.User.FirstAndLastName </p>
+
+                                            </div>
+
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <p class="alert alert-success text-center">   @ViewBag.User.Url </p>
+
+                                            </div>
+                                               <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <p class="alert alert-success text-center">   @ViewBag.User.Phone </p>
+
+                                                </div>
+
+                                                 <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12 mtt-1">
+                                                      <input name="free" id="free"  class="form-control " type="number" placeholder="شاخص  سرویس رایگان" value="@a" >
+
+
+                                                </div>
+
+                                    </div>
+
+                                    <div class="row justify-content-center  p-3" >
+                                        <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                            <button type="submit" class="btn btn-primary form-control">ثبت</button>
+                                        </div>
+                               </form>
+
+
+
+                                <h5>  
+                                </h5>
+
+                            
+                            </div>
+                            <div class="card-body">
+                                <div class="user-status table-responsive latest-order-table">
+                                      <table class="table table-bordernone">
+                      
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Container-fluid Ends-->
+
+        </div>
+
+  

@@ -1,0 +1,100 @@
+@model RequestDetailViewModel
+
+<div class="page-content-wrapper">
+    <div class="page-content mt-3" style="margin-top: 7px !important;">
+        <div class="container mt-4 card p-3">
+
+
+           
+
+
+
+            <h2 class="text-center mb-4">پیش فاکتور</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>اطلاعات مشتری</h4>
+                    <p><strong>نام و نام خانوادگی:</strong> @Model.User.FirstAndLastName</p>
+                    <p><strong>نام تعمیرگاه:</strong> @Model.User.Url</p>
+                    <p><strong>شماره تلفن:</strong> @Model.User.Phone</p>
+                    <p><strong>آدرس:</strong> @Model.User.Adress</p>
+                </div>
+                <div class="col-md-6">
+                    <h4>اطلاعات درخواست</h4>
+                    <p><strong>تاریخ درخواست:</strong> @Model.Request.CreateDate.ToPersianDateString()</p>
+                    <p><strong>نام ماشین:</strong> @Model.Request.CarName</p>
+                    <p><strong>سرویس اصلی:</strong> @Model.Request.ParentServiceName</p>
+                </div>
+            </div>
+
+            <h4 class="mt-4">سرویس‌های درخواستی</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ردیف</th>
+                            <th>نام سرویس</th>
+                            <th>قیمت (ریال)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var (order, index) in Model.Orders.Select((o, i) => (o, i + 1)))
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@order.ChildServiceName</td>
+                                <td>@order.Price.ToString("N0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-right"><strong>مجموع کل:</strong></td>
+                            <td><strong>@Model.TotalPrice.ToString("N0")</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="form-group mt-4">
+                <label for="additionalDescription">توضیحات اضافی:</label>
+                <textarea id="additionalDescription" class="form-control" rows="3">@Model.Request.Description</textarea>
+            </div>
+
+            @if(Model.Request.Status == "پیش فاکتور")
+            {
+                          <button type="button" class="btn btn-primary" onclick="saveAdditionalDescription(@Model.Request.Id)">ارسال درخواست </button>
+                          }
+                          else{
+                            <button type="button" class="btn btn-warning" disabled> @Model.Request.Status  </button>
+                          }
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function saveAdditionalDescription(requestId) {
+        var description = document.getElementById('additionalDescription').value;
+        $.ajax({
+            url: '/Home/SaveAdditionalDescription',
+            type: 'POST',
+            data: {
+                requestId: requestId,
+                description: description
+            },
+            success: function (response) {
+                if (response.success) {
+                 
+                    window.location.href = '/home/request';
+
+                } else {
+                    alert('خطا در ذخیره توضیحات.');
+                }
+            },
+            error: function () {
+                alert('خطا در برقراری ارتباط با سرور.');
+            }
+        });
+    }
+</script>

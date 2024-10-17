@@ -1,0 +1,152 @@
+@model HomeController.RequestDetailViewModel
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<div class="page-content-wrapper">
+    <div class="page-content mt-3" style="margin-top: 7px !important;">
+        <div class="container mt-4 card p-3">
+            <h2 class="text-center mb-4">پیش فاکتور</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>اطلاعات مشتری</h4>
+                    <p><strong>نام و نام خانوادگی:</strong> @Model.User.FirstAndLastName</p>
+                    <p><strong>نام تعمیرگاه:</strong> @Model.User.Url</p>
+                    <p><strong>شماره تلفن:</strong> @Model.User.Phone</p>
+                    <p><strong>آدرس:</strong> @Model.User.Adress</p>
+                </div>
+                <div class="col-md-6">
+                    <h4>اطلاعات درخواست</h4>
+                    <p><strong>تاریخ درخواست:</strong> @Model.Request.CreateDate.ToPersianDateString()</p>
+                    <p><strong>نام ماشین:</strong> @Model.Request.CarName</p>
+                    <p><strong>سرویس اصلی:</strong> @Model.Request.ParentServiceName</p>
+                </div>
+            </div>
+
+            <h4 class="mt-4">سرویس‌های درخواستی</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ردیف</th>
+                            <th>نام سرویس</th>
+                            <th>قیمت (ریال)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var (order, index) in Model.Orders.Select((o, i) => (o, i + 1)))
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@order.ChildServiceName</td>
+                                <td>@order.Price.ToString("N0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-right"><strong>مجموع کل:</strong></td>
+                            <td><strong>@Model.TotalPrice.ToString("N0")</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="form-group mt-4">
+                <label for="additionalDescription">توضیحات اضافی:</label>
+                <p id="additionalDescription" class="form-control" rows="3">@Model.Request.Description</p>
+            </div>
+
+            <div id="map" style="height: 300px; margin-bottom: 20px;"></div>
+
+              <div class="form-group text-start mb-4">
+                <input type="hidden" id="Latitude">
+                <input type="hidden" id="Longitude">
+              </div>
+
+
+           
+             @if(Model.Request.Status == "در انتظار تایید")
+            {
+                 <a type="button" class="btn btn-success" href="/admin/home/AcceptRequest?id=@Model.Request.Id" >تایید</a>
+                <br>
+                <a type="button" class="btn btn-danger" href="/admin/home/RejectRequest?id=@Model.Request.Id" >رد</a>
+            }
+             else if(Model.Request.Status == "تایید شده")
+            {
+                 <a type="button" class="btn btn-success" href="/admin/home/AcceptRequest2?id=@Model.Request.Id" > اتمام و ارسال </a>
+                <br>
+                <a type="button" class="btn btn-danger" href="/admin/home/RejectRequest?id=@Model.Request.Id" >رد</a>
+            }
+             else if(Model.Request.Status == "اتمام و ارسال شده ")
+            {
+                 <a type="button" class="btn btn-Secondary"  > اتمام و ارسال شده</a>
+                
+            }
+
+
+
+           
+            
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+  var map, marker;
+
+  function initMap() {
+  
+   // map = L.map('map').setView([35.6892, 51.3890], 13); // Default view on Tehran
+    //map get from user location  ViewBag.Latitude = user.Latitude ; ViewBag.Longitude = user.Longitude; seriliye json add
+    var latitude = @(ViewBag.Latitude != null ? ViewBag.Latitude.ToString() : "null") || 35.6892;
+    var longitude = @(ViewBag.Longitude != null ? ViewBag.Longitude.ToString() : "null") || 51.3890;
+    map = L.map('map').setView([latitude, longitude], 13);
+    //console.log(@ViewBag.Latitude);
+    //console.log(@ViewBag.Longitude);
+
+       
+    
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    marker = L.marker([latitude,longitude], {draggable: true}).addTo(map);
+
+    marker.on('dragend', function(event) {
+      var position = marker.getLatLng();
+      updateLocationInputs(position.lat, position.lng);
+    });
+
+    map.on('click', function(e) {
+      marker.setLatLng(e.latlng);
+      updateLocationInputs(e.latlng.lat, e.latlng.lng);
+    });
+
+    // Try to get user's current location
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.Latitude;
+        var lng = position.coords.Longitude;
+        map.setView([lat, lng], 15);
+        marker.setLatLng([lat, lng]);
+        updateLocationInputs(lat, lng);
+      });
+    }
+  }
+
+  function updateLocationInputs(lat, lng) {
+    document.getElementById('Latitude').value = lat;
+    document.getElementById('Longitude').value = lng;
+    // You can also update the address input using reverse geocoding here if needed
+  }
+
+  // Initialize map when the page loads
+  window.onload = initMap;
+
+  // Add event listener to the address input for geocoding
+  
+</script>
+

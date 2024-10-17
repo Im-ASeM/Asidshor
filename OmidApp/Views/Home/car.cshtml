@@ -1,0 +1,56 @@
+<style>
+  #searchInput {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+    display: block;
+  }
+</style>
+
+<div class="page-content-wrapper">
+  <div class="page-content mt-3" style="margin-top: 7px !important;">
+    <br>
+    <!-- Add this input field for search -->
+    
+    <!-- Wrap the categories in a container -->
+    <div id="categoriesContainer">
+        <input type="text" id="searchInput" class="form-control mb-3" placeholder="جستجوی خودرو..." autocomplete="off">
+
+      @foreach (var item in ViewBag.ListCategory)
+      {
+        <div class="row m-3 category-item">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title text-center">@item.CatName</h5>
+                <p class="card-text"></p>
+                <a href="/home/mainservice/@item.Id" class="form-control btn btn-success">مشاهده سرویس ها</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const categoriesContainer = document.getElementById('categoriesContainer');
+    const categoryItems = categoriesContainer.getElementsByClassName('category-item');
+
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+
+        Array.from(categoryItems).forEach(function(item) {
+            const title = item.querySelector('.card-title').textContent.toLowerCase();
+            if (title.includes(searchTerm)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+</script>

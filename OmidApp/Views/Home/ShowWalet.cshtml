@@ -1,0 +1,68 @@
+<div class="page-content-wrapper">
+
+<div class="page-content mt-3" style="margin-top: 7px !important;">
+  
+       
+    @if (ViewBag.ListWalet != null)
+    {
+           <br/>
+                    
+                 <p class="alert alert-warning  p-3 m-3 text-center ">   موجودی فعلی: @User.FindFirst("walet").Value تومان       </p>
+                 <div class="row m-3">
+                                     <a href="/home/walet" class="btn btn-primary form-control text-center p-3   ml-3" >درخواست شارژ حساب</a>
+
+
+                 </div>
+                @foreach (var item in ViewBag.ListWalet)
+                {
+
+                <div class="row m-3">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                            <p class="card-title" dir="rtl">   شماره کارت: @item.CardNumber </p>
+                            <p class="card-text" >   نام صاحب کارت: @item.OwnerName </p>
+<button class="btn btn-secondary" onclick="copyCardNumber('@item.CardNumber')">کپی شماره کارت</button>
+
+<script>
+function copyCardNumber(cardNumber) {
+    navigator.clipboard.writeText(cardNumber).then(function() {
+        alert('شماره کارت کپی شد');
+    }, function(err) {
+        console.error('خطا در کپی کردن: ', err);
+    });
+}
+</script>
+                           
+                                
+
+                              
+                                 
+                             
+                                 
+                                         </div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                }
+    }
+    else{
+        <br/>
+       
+
+
+         <p class="alert alert-danger p-3 m-3 text-center mt-7">  کارتی ثبت نشده است  </p>
+                
+               
+                    
+               
+
+    }
+
+
+
+
+</div>
+
+</div>

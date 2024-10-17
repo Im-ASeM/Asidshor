@@ -1,0 +1,32 @@
+<div class="page-content-wrapper">
+
+<div class="page-content mt-3" style="margin-top: 7px !important;">
+   <br>
+  
+
+
+     @foreach (var item in  ViewBag.Services)
+                {
+
+                <div class="row m-3">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title text-center"> @item.Srvicename </h5>
+                            <p class="card-text">   </p>
+                            
+                               <a href="/home/price?serviceparentid=@item.Id" class="form-control btn btn-success"> مشاهده جزییات    </a>
+                                
+                                         </div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                }
+
+
+
+
+</div>
+
+</div>

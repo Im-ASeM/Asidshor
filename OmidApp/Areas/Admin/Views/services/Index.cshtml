@@ -1,0 +1,62 @@
+<style>
+    th, td, tr {
+        padding: 5px;
+        text-align: center !important;
+    }
+</style>
+        <div class="page-body " >
+
+           
+
+ <div class="container-fluid">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="page-header-left">
+                                <h3>داشبورد
+                                    
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ol class="breadcrumb pull-right">
+                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                                <li class="breadcrumb-item active">داشبورد</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+                 
+                    <div class="col-xl-12 xl-100 mt-7">
+                        
+                        <div class="card">
+                            <div class="card-header">
+                          <h5 class="text-center">دسته بندی ها</h5>
+                           <div class="text-center mt-7 row   ">
+                            @foreach(var item in ViewBag.Services)
+                            {
+                                    //div center text
+
+                                     <div class="text-center xpl-xl-4 col-lg-4 col-md-4 col-lg-4 col-12  mt-7  " style="margin-top:15px">
+                                      
+                                        <a href="/admin/services/service?id=@item.Id " class="btn btn-primary m-1 form-control ">@item.Srvicename</a>      
+
+                                        </div>  
+
+                                   
+
+                            }
+
+                     </div>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+  

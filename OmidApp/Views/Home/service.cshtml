@@ -1,0 +1,42 @@
+<div class="page-content-wrapper">
+
+<div class="page-content mt-3" style="margin-top: 7px !important;">
+   <br>
+  
+ <h5 class="text-center">سرویس های خودرو @ViewBag.carname بخش @ViewBag.Srvicename</h5>
+
+     @foreach (var item in  ViewBag.Services)
+                {
+
+                //show Servicename and price and checkbox for select service no جزییات
+                <div class="row m-3">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                           @* show Service name and Price and Checkbox *@
+                            <h5 class="card-title text-center"> @item.Srvicename </h5>
+                            <p class="card-text">   </p>
+                             <input type="hidden" name="ServiceIds" value="@item.Id" />
+                            <input type="text" class="form-control" name="Prices" value="@item.Price" />
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    
+
+                
+
+               
+
+
+
+                    
+                }
+
+
+
+
+</div>
+
+</div>

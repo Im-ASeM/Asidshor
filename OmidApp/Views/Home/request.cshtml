@@ -1,0 +1,107 @@
+<style>
+    th, td, tr {
+        padding: 5px;
+        text-align: center !important;
+      
+        white-space: nowrap;
+    }
+</style>
+
+ <div class="page-content-wrapper py-3 p-3">
+        <div class="page-body">
+
+            <!-- Container-fluid starts-->
+           
+
+
+             @if (TempData["msg"] != null)
+             {
+                <p class="alert alert-danger p-3 form-control">@TempData["msg"]</p>
+             }
+
+
+
+
+
+                 
+                    <div class="col-xl-12 xl-100">
+                        
+                        <div class="card">
+                            <div class="card-header">
+
+                              <form action="/admin/home/index" method="post">
+                                   <div class="row justify-content-center  p-3" >
+
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <input name="txt" class="form-control" type="text" placeholder="جستجوی شماره تلفن یا نام">
+                                            
+
+                                            </div>
+
+                                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                                                <button type="submit" class="btn btn-primary form-control">جستجو</button>
+
+                                            </div>
+
+                                    </div>
+                               </form>
+
+
+                        
+                        @* show all request  *@
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ردیف</th>
+                                        <th>نام خودرو</th>
+                                        <th>نام سرویس</th>
+                                        <th>تاریخ</th>
+                                        <th>وضعیت</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        int i = 1;
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@item.CarName</td>
+                                                <td>@item.ParentServiceName</td>
+                                                <td>@item.Date</td>
+                                                <td>@item.Status</td>
+                                                <td>
+                                                
+                                                    <a href="/home/RequestDetail?id=@item.Id" class="btn btn-primary">مشاهده</a>
+                                                    @* <a href="/home/" class="btn btn-danger">حذف</a> *@
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                            
+
+
+                                
+
+                             
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- Container-fluid Ends-->
+
+        </div>
+
+        </div>
+
+  

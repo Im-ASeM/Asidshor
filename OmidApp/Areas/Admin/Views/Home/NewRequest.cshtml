@@ -1,0 +1,179 @@
+@{
+    Layout = null;
+}
+@using OmidApp
+@using OmidApp.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پیش فاکتور خدمات تعمیرگاه</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        body {
+            font-family: 'Vazir', Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total-row {
+            font-weight: bold;
+        }
+        #map {
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            color: white;
+        }
+        .btn-primary {
+            background-color: #007bff;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-group {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>پیش فاکتور خدمات تعمیرگاه</h1>
+        
+        <div class="info-section">
+            <h2>اطلاعات مشتری</h2>
+            <p><strong>نام و نام خانوادگی:</strong> @Model.User.FirstAndLastName</p>
+            <p><strong>نام تعمیرگاه:</strong> @Model.User.Url</p>
+            <p><strong>شماره تلفن:</strong> @Model.User.Phone</p>
+            <p><strong>آدرس:</strong> @Model.User.Adress</p>
+        </div>
+
+        <div class="info-section">
+            <h2>اطلاعات درخواست</h2>
+            <p><strong>تاریخ درخواست:</strong> @Model.Request.CreateDate</p>
+            <p><strong>نام ماشین:</strong> @Model.Request.CarName</p>
+            <p><strong>سرویس اصلی:</strong> @Model.Request.ParentServiceName</p>
+        </div>
+
+        <h2>سرویس‌های درخواستی</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ردیف</th>
+                    <th>نام سرویس</th>
+                    <th>قیمت (ریال)</th>
+                </tr>
+            </thead>
+            <tbody>
+             @for (int i = 0; i < Model.Orders.Count; i++)
+              {
+                  var order = Model.Orders[i];
+                  <tr>
+                      <td>@(i + 1)</td>
+                      <td>@order.ChildServiceName</td>
+                      <td>@order.Price.ToString("N0")</td>
+                  </tr>
+              }
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="2">مجموع کل:</td>
+                    <td>@Model.TotalPrice.ToString("N0")</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="info-section">
+            <h3>توضیحات اضافی:</h3>
+            <p>@Model.Request.Description</p>
+        </div>
+
+        <div id="map"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="shareLocation()">اشتراک‌گذاری موقعیت</button>
+            <a href="tel:@Model.User.Phone" class="btn btn-success">تماس با تعمیرگاه</a>
+        </div>
+    </div>
+
+   <script>
+    var map, marker;
+    var latitude = @(ViewBag.Latitude != null ? ViewBag.Latitude.ToString() : "null") || 35.6892;
+    var longitude = @(ViewBag.Longitude != null ? ViewBag.Longitude.ToString() : "null") || 51.3890;
+
+    function initMap() {
+        map = L.map('map').setView([latitude, longitude], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        marker = L.marker([latitude, longitude]).addTo(map);
+    }
+
+    function shareLocation() {
+        var shareLink = createShareLink(latitude, longitude);
+        
+        // Create a temporary input element to copy the link
+        var tempInput = document.createElement("input");
+        tempInput.value = shareLink;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+
+        //open in new tab
+        window.open(shareLink, "_blank");
+        
+
+       
+    }
+
+    function createShareLink(lat, lng) {
+        return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+    }
+
+    window.onload = initMap;
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<div class="page-content-wrapper">
+
+<div class="page-content mt-3" style="margin-top: 7px !important;">
+   <br>
+  
+
+
+<div class="container mt-4 card p-3">
+    <form id="serviceForm" action="/home/ProcessSelectedServices" method="post">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>انتخاب</th>
+                        <th>نام سرویس</th>
+                        <th>قیمت (ریال)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Services)
+                    {
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="SelectedServices" value="@item.Id" id="service-@item.Id">
+                                </div>
+                            </td>
+                            <td>
+                                <label class="form-check-label" for="service-@item.Id">
+                                    @item.Srvicename
+                                </label>
+                            </td>
+                            <td>@item.Price.ToString("N0")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary"> ثبت درخواست</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('serviceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var selectedServices = Array.from(document.querySelectorAll('input[name="SelectedServices"]:checked'))
+                                .map(cb => cb.value);
+    
+    if (selectedServices.length === 0) {
+        alert('لطفا حداقل یک سرویس را انتخاب کنید.');
+        return;
+    }
+
+    // You can either submit the form normally or use AJAX to send the data
+    // For AJAX:
+    fetch(this.action, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ selectedServices: selectedServices })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        window.location.href = `/home/RequestDetail/${data.requestId}`;
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        // Handle error (e.g., show an error message)
+    });
+});
+</script>
+
+</div>
+
+</div>

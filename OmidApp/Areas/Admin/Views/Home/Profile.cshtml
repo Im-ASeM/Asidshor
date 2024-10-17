@@ -1,0 +1,103 @@
+    <style>
+        th, td, tr {
+            padding: 5px;
+            text-align: center !important;
+        }
+
+    
+    </style>
+        <div class="page-body">
+
+            <!-- Container-fluid starts-->
+            <div class="container-fluid">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="page-header-left">
+                                <h3>داشبورد
+                                    <small>پنل مدیریت </small>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ol class="breadcrumb pull-right">
+                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                                <li class="breadcrumb-item active">داشبورد</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+             @if (TempData["msg"] != null)
+             {
+                <p class="alert alert-danger p-3 form-control">@TempData["msg"]</p>
+             }
+
+
+                    <div class="col-xl-12">
+                        
+                        <div class="card">
+
+                        @* button add user *@
+
+                        
+                           
+
+                              <form action="/admin/home/setpassword" method="post">
+                                   <div class="row justify-content-center  p-3" >
+
+                                                <input name="id" id="id" class="form-control " type="text" style="display:none" value="@ViewBag.User.Id" >
+
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                               
+                                                 <p class="alert alert-success text-center">    نام و نام خانوادگی :@ViewBag.User.NameFamily </p>
+
+                                            </div>
+
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <p class="alert alert-success text-center">     نام کاربری:@ViewBag.User.UserName</p>
+
+                                            </div>
+                                               <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <p class="alert alert-success text-center">   شماره تلفن : @ViewBag.User.PhoneNumber </p>
+
+                                                </div>
+
+                                                 <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12 mtt-1">
+                                                      <input name="password" id="password"  class="form-control " type="text" placeholder="رمز عبور جدید خود را وادر کنید"  >
+
+
+                                                </div>
+
+                                    </div>
+
+                                    <div class="row justify-content-center  p-3" >
+                                        <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                            <button type="submit" class="btn btn-primary form-control">ذخیره تغییرات</button>
+                                        </div>
+                               </form>
+
+
+
+                                <h5>  
+                                </h5>
+
+                            
+                            </div>
+                            <div class="card-body">
+                                <div class="user-status table-responsive latest-order-table">
+                                      <table class="table table-bordernone">
+                      
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Container-fluid Ends-->
+
+        </div>
+
+  

@@ -1,0 +1,32 @@
+<div class="page-content-wrapper">
+
+<div class="page-content mt-3" style="margin-top: 7px !important;">
+   <br>
+  
+
+
+     @foreach (var item in ViewBag.ListCategory)
+                {
+
+                <div class="row m-3">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                            <h5 class="card-title text-center">   @item.CatName </h5>
+                            <p class="card-text">   </p>
+                            
+                               <a href="/home/car?ParentId=@item.Id" class="form-control btn btn-success"> مشاهده خودرو ها  </a>
+                                
+                                         </div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                }
+
+
+
+
+</div>
+
+</div>

@@ -1,0 +1,141 @@
+@model List<HomeController.RequestModel>
+
+<style>
+    th, td, tr {
+        padding: 5px;
+        text-align: center !important;
+    }
+</style>
+        <div class="page-body">
+
+            <!-- Container-fluid starts-->
+            <div class="container-fluid">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="page-header-left">
+                                <h3>داشبورد
+                                    <small>پنل مدیریت چندکاره</small>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ol class="breadcrumb pull-right">
+                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                                <li class="breadcrumb-item active">داشبورد</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+             @if (TempData["msg"] != null)
+             {
+                <p class="alert alert-danger p-3 form-control">@TempData["msg"]</p>
+             }
+
+
+
+
+
+                 
+                    <div class="col-xl-12 xl-100">
+                        
+                        <div class="card">
+                            <div class="card-header">
+
+                              <form action="/admin/home/index" method="post">
+                                   <div class="row justify-content-center  p-3" >
+
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <input name="txt" class="form-control" type="text" placeholder="جستجوی شماره تلفن یا نام">
+                                            
+
+                                            </div>
+
+                                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                                                <button type="submit" class="btn btn-primary form-control">جستجو</button>
+
+                                            </div>
+
+                                    </div>
+                               </form>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>نام</th>
+                <th>نام تعمیرگاه</th>
+                <th>آدرس</th>
+                <th>شماره تلفن</th>
+                <th>تاریخ ثبت</th>
+                <th>وضعیت</th>
+                <th>نوع پرداختی</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 1 + ((int)ViewData["CurrentPage"] - 1) * 10;}
+            
+            @foreach (var item in Model)
+            {
+                
+                <tr>
+                    <td>@index</td>
+                    <td>@item.UserName</td>
+                    <td>@item.tamirgah</td>
+                    <td>@item.Adress</td>
+                    <td>@item.UserPhone</td>
+                    <td>@item.Date</td>
+                    <td>@item.Status</td>
+                    <td>
+                    @if(item.Status == "پیش فاکتور")
+                    {
+                        <a class="btn btn-warning">نامشخص  </a>
+                        }else if(item.Mony == false)
+                        {
+                           <a class="btn btn-primary">غیر رایگان</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-success">رایگان</a>
+                        }
+                    
+                    </td>
+                    <td>
+                        <a href="/admin/home/RequestDetails?id=@item.Id" class="btn btn-primary">مشاهده</a>
+                        <a href="/admin/home/DeleteRequest?id=@item.Id" class="btn btn-danger" onclick="return confirm('ایا از حذف مطمئن هستید')">حذف</a>
+                    </td>
+                </tr>
+
+                index++;
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+        {
+            <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
+                <a class="page-link" href="/admin/home/Request?page=@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- Container-fluid Ends-->
+
+        </div>
+

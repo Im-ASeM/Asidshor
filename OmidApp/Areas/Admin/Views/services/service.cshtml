@@ -1,0 +1,113 @@
+<style>
+    th, td, tr {
+        padding: 5px;
+        text-align: center !important;
+    }
+</style>
+        <div class="page-body " >
+
+           
+
+ <div class="container-fluid">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="page-header-left">
+                                <h3>داشبورد
+                                    
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ol class="breadcrumb pull-right">
+                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                                <li class="breadcrumb-item active">داشبورد</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+                 
+                    <div class="col-xl-12 xl-100 mt-7">
+                        
+                        <div class="card">
+                            <div class="card-header">
+                          <h5 class="text-center">  دسته  @ViewBag.catname  </h5>
+                           <div class="text-center mt-7 row   ">
+
+
+                           @* add car to categoris *@
+
+                            <form action="/admin/services/addserviceme" method="post" class="col-12">
+                                   <div class="row justify-content-center  p-3" >
+
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <input name="Servicename" class="form-control" type="text" placeholder=" نام سرویس  رو وارد کنید  "  required>
+                                            
+
+                                            </div>
+
+                                      <input name="id" class="form-control " style="display:none" type="text" value="@ViewBag.id">
+
+
+
+                                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                                                <button type="submit" class="btn btn-primary form-control"> اضافه کردن </button>
+
+                                            </div>
+
+                                    </div>
+                               </form>
+                                      
+
+                       @* create table show list car row  car name  and edit and delete *@
+
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ردیف</th>
+                                            <th>نام سرویس</th>
+                                          
+                                        
+                                            <th>حذف</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    @{
+                                        int i=1;
+                                        @foreach (var item in ViewBag.listservice)
+                                        {   
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@item.Srvicename</td>
+                                               
+                                                <td><a href="/admin/services/servicedelete?id=@item.Id" class="btn btn-danger" onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف</a></td>
+                                            </tr>
+                                            i++;
+                                        }
+                                        }
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+
+                           
+                           
+
+                     </div>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+  
