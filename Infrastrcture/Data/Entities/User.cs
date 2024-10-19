@@ -14,6 +14,7 @@ public class User
     public string Latitude { get; set; }
     public string Longitude { get; set; }
     public int free { get; set; }
+    public string? description { get; set; }
     public int use { get; set; }
 
 }

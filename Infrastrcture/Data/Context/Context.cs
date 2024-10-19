@@ -20,7 +20,7 @@ public class Context:DbContext
 
     // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     // {
-    //     optionsBuilder.UseSqlServer("server=.\\SQL2019;database=OcelotSchool;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
+    //     optionsBuilder.UseSqlServer("server=.\\SQL2019;database=OmidApp;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
     // }
 
     //  protected override void OnConfiguring(DbContextOptionsBuilder db)

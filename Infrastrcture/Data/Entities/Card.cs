@@ -6,7 +6,5 @@ public class Card
     public int Id { get; set; }
     public string CardNumber { get; set; }
     public string OwnerName { get; set; }
-
-    
-   
+    public string BankName { get; set; }
 }

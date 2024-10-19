@@ -62,7 +62,9 @@ public class SUser : IUser
           Latitude=q.Latitude,
           Longitude=q.Longitude,
             free=q.free,
-            use=q.use
+            use=q.use,
+            description = q.description
+
          
       };
       

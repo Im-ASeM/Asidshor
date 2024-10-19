@@ -15,5 +15,6 @@ public class VmUser
     public string Longitude { get; set; }
     public int free { get; set; }
     public int use { get; set; }
+    public string description { get; set; }
 
 }
