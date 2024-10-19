@@ -17,11 +17,16 @@ public class Context:DbContext
     public DbSet<Card> Cards { get; set; }
    public DbSet<City> Cities { get; set; }
        
-        
-        //  protected override void OnConfiguring(DbContextOptionsBuilder db)
-        //  {
-        //      db.UseSqlServer("Data Source=.;initial Catalog=cardb;integrated Security=SSPI;MultipleActiveResultSets=true");
-        //  }
+
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    // {
+    //     optionsBuilder.UseSqlServer("server=.\\SQL2019;database=OcelotSchool;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
+    // }
+
+    //  protected override void OnConfiguring(DbContextOptionsBuilder db)
+    //  {
+    //      db.UseSqlServer("Data Source=.;initial Catalog=cardb;integrated Security=SSPI;MultipleActiveResultSets=true");
+    //  }
 
     // mhddotnet ef database update
 

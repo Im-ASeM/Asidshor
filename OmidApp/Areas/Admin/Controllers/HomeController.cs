@@ -78,8 +78,11 @@ public class HomeController : Controller
         return RedirectToAction("index");
          
     }
-     public IActionResult login()
+     public IActionResult login(bool faild = false)
     {
+        if (faild == true){
+            ViewBag.Error = "کلمه عبور یا نام کاربری اشتباه است";
+        }
         return View();
     }
      public async Task<IActionResult> logAsync(string Password, string email)
@@ -117,8 +120,8 @@ public class HomeController : Controller
         else
         {
             
-             TempData["error"] = "Error";
-             return RedirectToAction("login");
+            TempData["error"] = "Error";
+            return RedirectToAction("login" , new{faild = true});
         }
     }
     public async Task<IActionResult> ParticipantsscoreAsync(string txt)
