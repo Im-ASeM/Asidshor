@@ -1,6 +1,5 @@
 @{
   Layout = null;
-
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -14,18 +13,12 @@
   <meta name="theme-color" content="#100DD1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <!-- The above tags *must* come first in the head, any other head content must come *after* these tags -->
-  <!-- Title -->
   <title> اپ اسید شویی</title>
-
-  <!-- Favicon -->
   <link rel="icon" href="img/icons/icon-72x72.png">
-  <!-- Apple Touch Icon -->
   <link rel="apple-touch-icon" href="img/icons/icon-96x96.png">
   <link rel="apple-touch-icon" sizes="152x152" href="/img/icons/icon-152x152.png">
   <link rel="apple-touch-icon" sizes="167x167" href="/img/icons/icon-167x167.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/img/icons/icon-180x180.png">
-  <!-- CSS Libraries -->
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/animate.css">
   <link rel="stylesheet" href="/css/all.min.css">
@@ -34,193 +27,137 @@
   <link rel="stylesheet" href="/css/owl.carousel.min.css">
   <link rel="stylesheet" href="/css/magnific-popup.css">
   <link rel="stylesheet" href="/css/nice-select.css">
-
-
-  <!-- Stylesheet -->
   <link rel="stylesheet" href="/style.css">
-  <!-- Web App Manifest -->
-  @* <link rel="manifest" href="/manifest.json"> *@
-
-   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 
 <body>
-  <!-- Preloader-->
-
-  <!-- Login Wrapper Area-->
   <div class="login-wrapper d-flex align-items-center justify-content-center text-center p-3" style="border:none">
-    <!-- Background Shape-->
-    
     <div class="background-shape">
-    <div class="container ">
-      <div class="row justify-content-center border">
-        <div class="col-10 col-lg-8"><img class="big-logo" src="img/core-img/logo-white.png" alt="">
-             <h6 style="margin:20px"> اولین اپلکیشن اسید شویی ایران </h6></div>
-
-        @if (TempData["error"] != null)
-        {
-          <div class="alert alert-danger text-dark" role="alert">
-            @TempData["error"]
+      <div class="container ">
+        <div class="row justify-content-center border">
+          <div class="col-10 col-lg-8"><img class="big-logo" src="img/core-img/logo-white.png" alt="">
+            <h6 style="margin:20px"> اولین اپلکیشن اسید شویی ایران </h6>
           </div>
-        }
 
-        @if (TempData["success"] != null)
-        {
-          <div class="alert alert-success" role="alert">
-            @TempData["success"]
-          </div>
-        }
+          @if (TempData["error"] != null)
+          {
+            <div class="alert alert-danger text-dark" role="alert">
+              @TempData["error"]
+            </div>
+          }
 
-        
-        
+          @if (TempData["success"] != null)
+          {
+            <div class="alert alert-success" role="alert">
+              @TempData["success"]
+            </div>
+          }
 
-      
-
-     
           <div class="mt-1" id="menu">
-
-             <button onclick="login()" class="btn btn-warning form-control m-1 text-white">ورود به حساب کاربری</button>
-
-
+            <button onclick="login()" class="btn btn-warning form-control m-1 text-white">ورود به حساب کاربری</button>
             <button onclick="register()" class="btn btn-warning form-control m-1 text-white">ثبت نام</button>
-
           </div>
 
-
-          <!-- Register Form-->
-          <div class=" mt-1"  id="register" style="display: none;">
-            <form action="/phone/check" method="post" id="Myform" >
-            <p id="msg" class="alert alert-danger d-none"> لطفا شماره تلفن و تیک قوانین را بزنید</p>
-
-             <div class="form-group text-start mb-4">
-
-                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
-                  type="text" style="" placeholder="نام و نام خانوادگی خود را وارد کنید"  name="name">
-              </div>
-
+          <div class=" mt-1" id="register" style="display: none;">
+            <form action="/phone/check" method="post" id="Myform">
+              <p id="msg" class="alert alert-danger d-none"> لطفا شماره تلفن و تیک قوانین را بزنید</p>
 
               <div class="form-group text-start mb-4">
-
-                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
-                  type="number" style="" placeholder="شماره موبایل خود را وارد کنید"  name="phone">
-              </div>
-
-               <div class="form-group text-start mb-4">
-
-                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
-                  type="text" style="" placeholder="نام تعمیرگاه خود را وارد کنید"  name="Url">
-              </div>
-
-              
-               <div class="form-group text-start mb-4">
-
-                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
-                  type="password" style="" placeholder="رمز عبور خود را وارد کنید"  name="password">
-
-                    <input type="text" id="dev" name="dev" style="display: none;">
-
-
+                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black" type="text"
+                  placeholder="نام و نام خانوادگی خود را وارد کنید" name="name">
               </div>
 
               <div class="form-group text-start mb-4">
-                <input required style="margin-top:20px;" autocomplete="off" class="form-control text-black"
-                  type="text" id="locationInput" placeholder="آدرس تعمیرگاه خود را وارد کنید" name="Adress">
+                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
+                  type="number" placeholder="شماره موبایل خود را وارد کنید" name="phone">
+              </div>
+
+              <div class="form-group text-start mb-4">
+                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black" type="text"
+                  placeholder="نام تعمیرگاه خود را وارد کنید" name="Url">
+              </div>
+
+              <div class="form-group text-start mb-4">
+                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
+                  type="password" placeholder="رمز عبور خود را وارد کنید" name="password">
+                <input type="text" id="dev" name="dev" style="display: none;">
+              </div>
+
+              <div class="form-group text-start mb-4">
+                <input required style="margin-top:20px;" autocomplete="off" class="form-control text-black" type="text"
+                  id="locationInput" placeholder="آدرس تعمیرگاه خود را وارد کنید" name="Adress">
               </div>
 
               <div id="map" style="height: 300px; margin-bottom: 20px;"></div>
+              <button type="button" id="showLocation" class="btn btn-sm btn-warning btn-lg">نمایش موقعیت فعلی</button>
+
 
               <div class="form-group text-start mb-4">
                 <input type="hidden" id="latitude" name="latitude">
                 <input type="hidden" id="longitude" name="longitude">
               </div>
 
-              <div class="form-check m-3 " style="margin-right:0px ;">
-                <input required style="width:20px ; height: 20px;"  class="form-check-input" type="checkbox"  id="rule">
+              <div class="form-check m-3" style="margin-right:0px ;">
+                <input required style="width:20px ; height: 20px;" class="form-check-input" type="checkbox" id="rule">
                 <label class="form-check-label" for="flexCheckDefault">
-                  <a href="/phone/rule">قوانین و مقررات</a> را خوانده و قبول دارم.
+                  <a href="/phone/rule" target="_blank">قوانین و مقررات</a> را خوانده و قبول دارم.
                 </label>
               </div>
-              <button type="submit" class="btn btn-warning btn-lg w-100">ثبت نام </button>
-                            <a onclick="back()" class="btn btn-link btn-lg w-100"> بازگشت </a>
 
+              <button type="submit" class="btn btn-warning btn-lg w-100">ثبت نام </button>
+              <a onclick="back()" class="btn btn-link btn-lg w-100"> بازگشت </a>
             </form>
           </div>
 
-          @* login *@
-          <div class="mt-1"  id="login" style="display:none;">
-            <form action="/phone/loginme" method="post" id="Myform" >
+          <div class="mt-1" id="login" style="display:none;">
+            <form action="/phone/loginme" method="post" id="Myform">
+              <div class="form-group text-start mb-4">
+                <input required style="margin-top:20px ;" class="form-control text-black" type="number"
+                  placeholder="شماره موبایل خود را وارد کنید" name="phone">
+              </div>
 
               <div class="form-group text-start mb-4">
-
-                <input required style="margin-top:20px ;"  class="form-control text-black"
-                  type="number" style="" placeholder="شماره موبایل خود را وارد کنید"  name="phone">
+                <input required style="margin-top:20px ;" class="form-control text-black" type="password"
+                  placeholder="رمز عبور خود را وارد کنید" name="password">
+                <input type="text" id="dev2" name="dev2" style="display: none;">
               </div>
 
-               <div class="form-group text-start mb-4">
-
-                <input required style="margin-top:20px ;"  class="form-control text-black"
-                  type="password" style="" placeholder="رمز عبور خود را وارد کنید"  name="password">
-                  <input type="text" id="dev2" name="dev2" style="display: none;">
-              </div>
-
-
-
-         
-              <button type="submit" class="btn btn-warning btn-lg w-100">ورود   </button>
-               <a onclick="back()" class="btn btn-link btn-lg w-100 "> بازگشت </a>
-
+              <button type="submit" class="btn btn-warning btn-lg w-100">ورود </button>
+              <a onclick="back()" class="btn btn-link btn-lg w-100 "> بازگشت </a>
             </form>
           </div>
 
+          <h6 style="margin:20px"> با ما یک قدم همیشه جلو باشید </h6>
+        </div>
 
-
-
-             <h6 style="margin:20px"> با ما یک قدم همیشه جلو باشید </h6></div>
-
-
-
-          <div class="text-center" id="load" style="display: none;">
-
-            <img src="/img/core-img/loading.gif" alt="">
-            <b class="text-center mt-3">درحال بارگذاری...</b>
-
-          </div>
-
-
+        <div class="text-center" id="load" style="display: none;">
+          <img src="/img/core-img/loading.gif" alt="">
+          <b class="text-center mt-3">درحال بارگذاری...</b>
         </div>
 
       </div>
     </div>
-
   </div>
-
 
   <script src="/js/jquery.min.js"></script>
   <script>
     function show() {
-      debugger
       var phone = document.getElementById("phone").value;
-      //rule is checked and phone is not empty
       if (document.getElementById("rule").checked && phone != "") {
         document.getElementById("m").style.display = "none";
         document.getElementById("load").style.display = "block";
         document.getElementById("Myform").submit();
-      }
-      else {
+      } else {
         document.getElementById("msg").classList.remove("d-none");
       }
-
-     
     }
-
 
     function register() {
       document.getElementById("menu").style.display = "none";
       document.getElementById("register").style.display = "block";
-       document.getElementById("login").style.display = "none";
-
+      document.getElementById("login").style.display = "none";
     }
 
     function login() {
@@ -235,70 +172,60 @@
       document.getElementById("register").style.display = "none";
     }
 
-
-  var userAgent = navigator.userAgent;
-  document.getElementById("dev").value=userAgent;
-   document.getElementById("dev2").value=userAgent;
-
-
-
+    var userAgent = navigator.userAgent;
+    document.getElementById("dev").value = userAgent;
+    document.getElementById("dev2").value = userAgent;
   </script>
-<script>
-  var map, marker;
 
-  function initMap() {
-    map = L.map('map').setView([30.2839, 57.0834], 13); // Default view on Tehran
+  <script>
+    var map, marker;
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    function initMap() {
+      map = L.map('map').setView([30.2839, 57.0834], 13); // نمای پیش‌فرض بر روی تهران
 
-    marker = L.marker([35.6892, 51.3890], {draggable: true}).addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
 
-    marker.on('dragend', function(event) {
-      var position = marker.getLatLng();
-      updateLocationInputs(position.lat, position.lng);
-    });
+      marker = L.marker([35.6892, 51.3890], { draggable: true }).addTo(map);
 
-    map.on('click', function(e) {
-      marker.setLatLng(e.latlng);
-      updateLocationInputs(e.latlng.lat, e.latlng.lng);
-    });
+      marker.on('dragend', function (event) {
+        var position = marker.getLatLng();
+        updateLocationInputs(position.lat, position.lng);
+      });
 
-    // Try to get user's current location
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        map.setView([lat, lng], 15);
-        marker.setLatLng([lat, lng]);
-        updateLocationInputs(lat, lng);
+      map.on('click', function (e) {
+        marker.setLatLng(e.latlng);
+        updateLocationInputs(e.latlng.lat, e.latlng.lng);
       });
     }
-  }
 
-  function updateLocationInputs(lat, lng) {
-    document.getElementById('latitude').value = lat;
-    document.getElementById('longitude').value = lng;
-    // You can also update the address input using reverse geocoding here if needed
-  }
+    function updateLocationInputs(lat, lng) {
+      document.getElementById('latitude').value = lat;
+      document.getElementById('longitude').value = lng;
+    }
 
-  // Initialize map when the page loads
-  window.onload = initMap;
+    function showCurrentLocation() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          var lat = position.coords.latitude;
+          var lng = position.coords.longitude;
+          map.setView([lat, lng], 15);
+          marker.setLatLng([lat, lng]);
+          updateLocationInputs(lat, lng);
+        }, function (error) {
+          alert("خطا در دریافت موقعیت: " + error.message);
+        });
+      } else {
+        alert("Geolocation در مرورگر شما پشتیبانی نمی‌شود.");
+      }
+    }
 
-  // Add event listener to the address input for geocoding
-  document.getElementById('locationInput').addEventListener('change', function() {
-    var address = this.value;
-    // Use a geocoding service to convert address to coordinates
-    // For simplicity, we're not implementing this here, but you would typically
-    // make an API call to a geocoding service and then update the map and marker
-  });
 
+    document.getElementById('showLocation').addEventListener('click', showCurrentLocation);
 
-</script>
-
-
-
+    window.onload = initMap;
+  </script>
 </body>
 
 </html>
