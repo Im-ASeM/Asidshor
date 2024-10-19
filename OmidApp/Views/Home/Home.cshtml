@@ -2,164 +2,189 @@
   img {
     border: 5px;
   }
-  
-  
+
+
   .cta-text:hover {
-   
+
     transform: scale(1.1);
     transition: 0.5s;
-    
-   
+
+
 
 
   }
-
- 
 </style>
 
 
 
- <div class="page-content-wrapper py-3 p-3">
-    
-
-       <div class="container mt-3 " >
-          <div class="cta-text p-2 p-lg-4">
-              <div class="row p-lg-2">
-              <div class="col-12">
-              @if(@ViewBag.Mondeh == 0)
-              {
-                <h6 class="text-white m-3  text-center " style="line-height: 30px;" >تبریک می گوییم شما هم اکنون میتوانید از یک سرویس رایگان استفاده کنید</h6>
-              }else
-              {
-                                  <h6 class="text-white m-3  text-center"> تعداد مانده تا اسید شویی رایگان : @ViewBag.Mondeh  </h6>
-
-              }
-                </div>
-                 
-            </div>
-               </div>
-          </div>
-        <div>
-
-        <div class="container mt-3 " OnClick="redirecttolist()" >
-          <div class="cta-text p-2 p-lg-4">
-              <div class="row p-lg-2">
-              <div class="col-12">
-                  <h6 class="text-white m-3  text-center"> لیست خدمات  </h6></div>
-                 
-            </div>
-               </div>
-          </div>
-        <div>
-
-      <div>
-        <div class="container mt-3 " >
-          <div class="cta-text p-2 p-lg-4">
-              <div class="row p-lg-2">
-              <div class="col-12">
-                  <h6 class="text-white m-3  text-center"> سود شما تاکنون  : @ViewBag.Sum تومان  </h6></div>
-                 
-            </div>
-                 </div>
-          </div>
-        <div>
-      <div>
-
-        
-
-        
+<div class="page-content-wrapper py-3 p-3">
 
 
-<!-- Dark Mode -->
-<div class="container">
-  <div class="dark-mode-wrapper mt-3 bg-img p-4 p-lg-5">
-    <div class="form-check form-switch mb-0">
-      <label class="form-check-label text-white h6 mb-0" for="darkSwitch">به حالت تاریک بروید</label>
-      <input class="form-check-input" id="darkSwitch" type="checkbox" role="switch">
-    </div>
-  </div>
+  <div class="container mt-3 ">
+    <div class="cta-text p-2 p-lg-4">
+      <div class="row p-lg-2">
+        <div class="col-12">
+          @if (@ViewBag.Mondeh == 0)
+          {
+            <h6 class="text-white m-3  text-center " style="line-height: 30px;">تبریک می گوییم شما هم اکنون میتوانید از یک
+              سرویس رایگان استفاده کنید</h6>
+          }
+          else
+          {
+            
+            <h6 class="text-white m-3  text-center">  تعداد مانده تا اسید شویی رایگان @{
+                if(ViewBag.description != null){
+                  <span>و پاداش شما</span>
+                }
+              } : @ViewBag.Mondeh </h6>
 
+          }
+        </div>
 
-<div class=" row">
-
-        <div class="container mt-3 "   OnClick="redirect()" > 
-          <div class="cta-text p-2 p-lg-4" style="background: linear-gradient(to left, #00b894, #198754) !important;">
-              <div class="row p-lg-2">
-              <div class="col-12">
-                  <h6 class="text-white m-3  text-center"> درخواست  شستشوی فوری </h6></div>
-                 
-            </div>
-               </div>
-          </div>
-       
- 
-        <div class="container mt-3 " onclick="call()" > 
-          <div class="cta-text p-2 p-lg-4" style="background: linear-gradient(to left, #00b894, #198754) !important;">
-              <div class="row p-lg-2">
-              <div class="col-12">
-                  <h6 class="text-white m-3  text-center" > تماس فوری با ما  </h6></div>
-                 
-            </div>
-               </div>
-          </div>
-        <div>
-
-
-
-
-</div>
-
-<div class="container mt-3" onclick="redirectToShowWalet()">
-  <div class="cta-text p-2 p-lg-4" style="background: linear-gradient(to left, #00b894, #198754) !important;">
-    <div class="row p-lg-2">
-      <div class="col-12">
-        <h6 class="text-white m-3 text-center">مشاهده شماره کارت ها</h6>
       </div>
     </div>
   </div>
-</div>
+  @if (ViewBag.description != null)
+  {
+    <div class="container mt-3 ">
+      <div class="cta-text p-2 p-lg-4">
+        <div class="row p-lg-2">
+          <div class="col-12">
+            <h6 class="text-white m-3  text-center"> پاداش و جایزه اختصاصی شما : @ViewBag.description </h6>
+          </div>
 
-<script>
-function redirectToShowWalet() {
-  window.location.href = "/home/ShowWalet";
-}
-</script>
-
-<br>
-@* <div class="">
- <div class="cta-text p-2 ">
-    <div class="row p-lg-2">
-      <div class="col-6">
-        <h6 class="text-white m-3 "> مشاهده امتیاز ها </h6></div>
-        <div class="col-6">
-        <a class="btn btn-warning m-3" href="/home/viewrate"> کلیک کن </a></div>
-      
-   <div></div>
-  </div>
-</div> *@
-</div>
-
-
-
-
-
-</div>
-<!-- Internet Connection Status-->
-<div class="internet-connection-status" id="internetStatus"></div>
-
-<script>
-
-   function redirect() {
-    window.location.href = "/home/cat";
+        </div>
+      </div>
+    </div>
   }
+  <div>
 
-  function redirecttolist() {
-    window.location.href = "/home/request";
-  }
+    <div class="container mt-3 " OnClick="redirecttolist()">
+      <div class="cta-text p-2 p-lg-4">
+        <div class="row p-lg-2">
+          <div class="col-12">
+            <h6 class="text-white m-3  text-center"> لیست خدمات </h6>
+          </div>
 
-  function call() {
-    window.location.href = "tel:09130495923";
-  }
+        </div>
+      </div>
+    </div>
+    <div>
+
+      <div>
+        <div class="container mt-3 ">
+          <div class="cta-text p-2 p-lg-4">
+            <div class="row p-lg-2">
+              <div class="col-12">
+                <h6 class="text-white m-3  text-center"> سود شما تاکنون : @ViewBag.Sum تومان </h6>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div>
+          <div>
 
 
-  </script>
+
+
+
+
+            <!-- Dark Mode -->
+            <div class="container">
+              <div class="dark-mode-wrapper mt-3 bg-img p-4 p-lg-5">
+                <div class="form-check form-switch mb-0">
+                  <label class="form-check-label text-white h6 mb-0" for="darkSwitch">به حالت تاریک بروید</label>
+                  <input class="form-check-input" id="darkSwitch" type="checkbox" role="switch">
+                </div>
+              </div>
+
+
+              <div class=" row">
+
+                <div class="container mt-3 " OnClick="redirect()">
+                  <div class="cta-text p-2 p-lg-4"
+                    style="background: linear-gradient(to left, #00b894, #198754) !important;">
+                    <div class="row p-lg-2">
+                      <div class="col-12">
+                        <h6 class="text-white m-3  text-center"> درخواست شستشوی فوری </h6>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="container mt-3 " onclick="call()">
+                  <div class="cta-text p-2 p-lg-4"
+                    style="background: linear-gradient(to left, #00b894, #198754) !important;">
+                    <div class="row p-lg-2">
+                      <div class="col-12">
+                        <h6 class="text-white m-3  text-center"> تماس فوری با ما </h6>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div>
+
+
+
+
+                </div>
+
+                <div class="container mt-3" onclick="redirectToShowWalet()">
+                  <div class="cta-text p-2 p-lg-4"
+                    style="background: linear-gradient(to left, #00b894, #198754) !important;">
+                    <div class="row p-lg-2">
+                      <div class="col-12">
+                        <h6 class="text-white m-3 text-center">مشاهده شماره کارت ها</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <script>
+                  function redirectToShowWalet() {
+                    window.location.href = "/home/ShowWalet";
+                  }
+                </script>
+
+                <br>
+                @* <div class="">
+                <div class="cta-text p-2 ">
+                <div class="row p-lg-2">
+                <div class="col-6">
+                <h6 class="text-white m-3 "> مشاهده امتیاز ها </h6></div>
+                <div class="col-6">
+                <a class="btn btn-warning m-3" href="/home/viewrate"> کلیک کن </a></div>
+
+                <div></div>
+                </div>
+                </div> *@
+              </div>
+
+
+
+
+
+            </div>
+            <!-- Internet Connection Status-->
+            <div class="internet-connection-status" id="internetStatus"></div>
+
+            <script>
+
+              function redirect() {
+                window.location.href = "/home/cat";
+              }
+
+              function redirecttolist() {
+                window.location.href = "/home/request";
+              }
+
+              function call() {
+                window.location.href = "tel:09130495923";
+              }
+
+
+            </script>

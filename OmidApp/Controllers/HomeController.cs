@@ -61,8 +61,9 @@ public class HomeController : Controller
                 ViewBag.Mondeh=user.free-result;
             }
          
-          
+        
         }
+        ViewBag.description = user.description;
 
         //context request table 
        int sum=0;

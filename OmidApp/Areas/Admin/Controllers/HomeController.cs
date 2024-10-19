@@ -67,11 +67,13 @@ public class HomeController : Controller
          
     }
 
-    public IActionResult setnew(int id,int free)
+    public IActionResult setnew(int id,int free,string description)
     {
         //get user by id context
         var user=_context.Users.Find(id);
         user.free=free;
+        
+        user.description = description;
        
         _context.Users.Update(user);
         _context.SaveChanges();
