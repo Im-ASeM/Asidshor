@@ -435,6 +435,7 @@ public IActionResult SaveAdditionalDescription(int requestId, string description
        
     request.Description = description;
     request.Status = "در انتظار تایید";
+    
     db.SaveChanges();
 
     return Ok(new { success = true, message = "Description saved successfully" });

@@ -93,7 +93,7 @@
                     <td>@item.Date</td>
                     <td>@item.Status</td>
                     <td>
-                    @if(item.Status == "پیش فاکتور")
+                    @if(item.Status == "پیش فاکتور" || item.Status == "در انتظار تایید")
                     {
                         <a class="btn btn-warning">نامشخص  </a>
                         }else if(item.Mony == false)
