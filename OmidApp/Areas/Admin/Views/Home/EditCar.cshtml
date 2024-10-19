@@ -1,0 +1,66 @@
+<style>
+    th, td, tr {
+        padding: 5px;
+        text-align: center !important;
+    }
+</style>
+        <div class="page-body " >
+
+
+
+ <div class="container-fluid">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="page-header-left">
+                                <h3>داشبورد
+
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ol class="breadcrumb pull-right">
+                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                                <li class="breadcrumb-item active">داشبورد</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+                    <div class="col-xl-12 xl-100 mt-7">
+
+                        <div class="card">
+                            <div class="card-header">
+                          <h5 class="text-center">  نام قدیم خودرو : @ViewBag.catname  </h5>
+                           <div class="text-center mt-7 row   ">
+
+
+                    @* add car to categoris *@
+
+                            <form action="/admin/home/saveCar" method="post" class="col-12">
+                                   <div class="row justify-content-center  p-3" >
+
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                                <input name="CatName" class="form-control" type="text" placeholder=" نام جدید خودرو رو وارد کنید  "  required>
+                                            </div>
+                                            <input name="id" class="hidden" type="hidden" value="@ViewBag.id">
+
+                                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                                                <button type="submit" class="btn btn-primary form-control"> ثبت تغییر </button>
+
+                                            </div>
+
+                                    </div>
+                               </form>
+                     </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+

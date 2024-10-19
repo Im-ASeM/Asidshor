@@ -80,7 +80,7 @@
                                                 <td>@item.Id</td>
                                                 <td>@item.CatName</td>
                                                 <td><a href="/admin/home/mainservice/@item.Id" class="btn btn-primary">لیست خدمات</a></td>
-                                                <td><a href="/" class="btn btn-primary">ویرایش</a></td>
+                                                <td><a href="/admin/home/editCar?id=@item.Id" class="btn btn-primary">ویرایش</a></td>
                                                 <td><a href="/admin/home/catdelete?id=@item.Id" class="btn btn-danger" onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف</a></td>
                                             </tr>
                                         }

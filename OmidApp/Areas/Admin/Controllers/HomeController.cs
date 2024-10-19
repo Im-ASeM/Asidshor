@@ -383,6 +383,21 @@ public IActionResult deatils(int id)
       ViewBag.meesage=meesage;
       return View();
     }
+    public IActionResult EditCar(int id ){
+      //viewbad catname
+      ViewBag.catname=_context.Categories.Find(id).CatName;
+      //viewbad id
+      ViewBag.id=id;
+        return View();
+    }
+
+    public IActionResult saveCar(int id , string CatName){
+        Category check = _context.Categories.Find(id);
+        check.CatName = CatName;
+        _context.Categories.Update(check);
+        _context.SaveChanges();
+        return RedirectToAction("car" , "home" , new {Area = "admin" , id = HttpContext.Session.GetInt32("id")});
+    }
 
     public IActionResult Service()
     {
