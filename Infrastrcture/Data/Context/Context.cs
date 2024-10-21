@@ -18,10 +18,10 @@ public class Context:DbContext
    public DbSet<City> Cities { get; set; }
        
 
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     optionsBuilder.UseSqlServer("server=.\\SQL2019;database=OmidApp;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
-    // }
+    //  protected override void OnConfiguring(DbContextOptionsBuilder db)
+    //      {
+    //          db.UseSqlServer("server=.;database=asidshoor3;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
+    //      }
 
     //  protected override void OnConfiguring(DbContextOptionsBuilder db)
     //  {
