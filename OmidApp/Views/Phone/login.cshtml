@@ -33,198 +33,245 @@
 </head>
 
 <body>
-  <div class="login-wrapper d-flex align-items-center justify-content-center text-center p-3" style="border:none">
-    <div class="background-shape">
-      <div class="container ">
-        <div class="row justify-content-center border">
-          <div class="col-10 col-lg-8"><img class="big-logo" src="img/core-img/logo-white.png" alt="">
-            <h6 style="margin:20px"> اولین اپلکیشن اسید شویی ایران </h6>
-          </div>
+  <div id="PMain" style="display: block;">
 
-          @if (TempData["error"] != null)
-          {
-            <div class="alert alert-danger text-dark" role="alert">
-              @TempData["error"]
+    <div class="login-wrapper d-flex align-items-center justify-content-center text-center p-3" style="border:none">
+      <div class="background-shape">
+        <div class="container ">
+          <div class="row justify-content-center border">
+            <div class="col-10 col-lg-8"><img class="big-logo" src="img/core-img/logo-white.png" alt="">
+              <h6 style="margin:20px"> اولین اپلکیشن اسید شویی ایران </h6>
             </div>
-          }
 
-          @if (TempData["success"] != null)
-          {
-            <div class="alert alert-success" role="alert">
-              @TempData["success"]
+            @if (TempData["error"] != null)
+            {
+              <div class="alert alert-danger text-dark" role="alert">
+                @TempData["error"]
+              </div>
+            }
+
+            @if (TempData["success"] != null)
+            {
+              <div class="alert alert-success" role="alert">
+                @TempData["success"]
+              </div>
+            }
+
+            <div class="mt-1" id="menu">
+              <button onclick="login()" class="btn btn-warning form-control m-1 text-white">ورود به حساب کاربری</button>
+              <button onclick="register()" class="btn btn-warning form-control m-1 text-white">ثبت نام</button>
             </div>
-          }
 
-          <div class="mt-1" id="menu">
-            <button onclick="login()" class="btn btn-warning form-control m-1 text-white">ورود به حساب کاربری</button>
-            <button onclick="register()" class="btn btn-warning form-control m-1 text-white">ثبت نام</button>
+            <div class=" mt-1" id="register" style="display: none;">
+              <form action="/phone/check" method="post" id="Myform">
+                <p id="msg" class="alert alert-danger d-none"> لطفا شماره تلفن و تیک قوانین را بزنید</p>
+
+                <div class="form-group text-start mb-4">
+                  <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
+                    type="text" placeholder="نام و نام خانوادگی خود را وارد کنید" name="name">
+                </div>
+
+                <div class="form-group text-start mb-4">
+                  <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
+                    type="number" placeholder="شماره موبایل خود را وارد کنید" name="phone">
+                </div>
+
+                <div class="form-group text-start mb-4">
+                  <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
+                    type="text" placeholder="نام تعمیرگاه خود را وارد کنید" name="Url">
+                </div>
+
+                <div class="form-group text-start mb-4">
+                  <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
+                    type="password" placeholder="رمز عبور خود را وارد کنید" name="password">
+                  <input type="text" id="dev" name="dev" style="display: none;">
+                </div>
+
+                <div class="form-group text-start mb-4">
+                  <input required style="margin-top:20px;" autocomplete="off" class="form-control text-black"
+                    type="text" id="locationInput" placeholder="آدرس تعمیرگاه خود را وارد کنید" name="Adress">
+                </div>
+                @* تکمیلی *@
+                <div id="map" style="height: 300px; margin-bottom: 20px;"></div>
+                <button type="button" id="showLocation" class="btn btn-sm btn-warning btn-lg">نمایش موقعیت فعلی</button>
+
+
+                <div class="form-group text-start mb-4">
+                  <input type="hidden" id="latitude" name="latitude">
+                  <input type="hidden" id="longitude" name="longitude">
+                </div>
+
+                <div class="form-check m-3" style="margin-right:0px ;">
+                  <input required style="width:20px ; height: 20px;" class="form-check-input" type="checkbox" id="rule">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    <a class="link link-primary" onclick="return showPRole()">قوانین و مقررات</a> را خوانده و قبول دارم.
+                  </label>
+                </div>
+
+                <button type="submit" class="btn btn-warning btn-lg w-100">ثبت نام </button>
+                <a onclick="back()" class="btn btn-link btn-lg w-100"> بازگشت </a>
+              </form>
+            </div>
+
+            <div class="mt-1" id="login" style="display:none;">
+              <form action="/phone/loginme" method="post" id="Myform">
+                <div class="form-group text-start mb-4">
+                  <input required style="margin-top:20px ;" class="form-control text-black" type="number"
+                    placeholder="شماره موبایل خود را وارد کنید" name="phone">
+                </div>
+
+                <div class="form-group text-start mb-4">
+                  <input required style="margin-top:20px ;" class="form-control text-black" type="password"
+                    placeholder="رمز عبور خود را وارد کنید" name="password">
+                  <input type="text" id="dev2" name="dev2" style="display: none;">
+                </div>
+
+                <button type="submit" class="btn btn-warning btn-lg w-100">ورود </button>
+                <a onclick="back()" class="btn btn-link btn-lg w-100 "> بازگشت </a>
+              </form>
+            </div>
+
+            <h6 style="margin:20px"> با ما در منافع خود ؛ هم قدم باشید</h6>
           </div>
 
-          <div class=" mt-1" id="register" style="display: none;">
-            <form action="/phone/check" method="post" id="Myform">
-              <p id="msg" class="alert alert-danger d-none"> لطفا شماره تلفن و تیک قوانین را بزنید</p>
-
-              <div class="form-group text-start mb-4">
-                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black" type="text"
-                  placeholder="نام و نام خانوادگی خود را وارد کنید" name="name">
-              </div>
-
-              <div class="form-group text-start mb-4">
-                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
-                  type="number" placeholder="شماره موبایل خود را وارد کنید" name="phone">
-              </div>
-
-              <div class="form-group text-start mb-4">
-                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black" type="text"
-                  placeholder="نام تعمیرگاه خود را وارد کنید" name="Url">
-              </div>
-
-              <div class="form-group text-start mb-4">
-                <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
-                  type="password" placeholder="رمز عبور خود را وارد کنید" name="password">
-                <input type="text" id="dev" name="dev" style="display: none;">
-              </div>
-
-              <div class="form-group text-start mb-4">
-                <input required style="margin-top:20px;" autocomplete="off" class="form-control text-black" type="text"
-                  id="locationInput" placeholder="آدرس تعمیرگاه خود را وارد کنید" name="Adress">
-              </div>
-@* تکمیلی *@
-              <div id="map" style="height: 300px; margin-bottom: 20px;"></div> 
-              <button type="button" id="showLocation" class="btn btn-sm btn-warning btn-lg">نمایش موقعیت فعلی</button>
-
-
-              <div class="form-group text-start mb-4">
-                <input type="hidden" id="latitude" name="latitude">
-                <input type="hidden" id="longitude" name="longitude">
-              </div>
-
-              <div class="form-check m-3" style="margin-right:0px ;">
-                <input required style="width:20px ; height: 20px;" class="form-check-input" type="checkbox" id="rule">
-                <label class="form-check-label" for="flexCheckDefault">
-                  <a href="/phone/rule" target="_blank">قوانین و مقررات</a> را خوانده و قبول دارم.
-                </label>
-              </div>
-
-              <button type="submit" class="btn btn-warning btn-lg w-100">ثبت نام </button>
-              <a onclick="back()" class="btn btn-link btn-lg w-100"> بازگشت </a>
-            </form>
+          <div class="text-center" id="load" style="display: none;">
+            <img src="/img/core-img/loading.gif" alt="">
+            <b class="text-center mt-3">درحال بارگذاری...</b>
           </div>
 
-          <div class="mt-1" id="login" style="display:none;">
-            <form action="/phone/loginme" method="post" id="Myform">
-              <div class="form-group text-start mb-4">
-                <input required style="margin-top:20px ;" class="form-control text-black" type="number"
-                  placeholder="شماره موبایل خود را وارد کنید" name="phone">
-              </div>
-
-              <div class="form-group text-start mb-4">
-                <input required style="margin-top:20px ;" class="form-control text-black" type="password"
-                  placeholder="رمز عبور خود را وارد کنید" name="password">
-                <input type="text" id="dev2" name="dev2" style="display: none;">
-              </div>
-
-              <button type="submit" class="btn btn-warning btn-lg w-100">ورود </button>
-              <a onclick="back()" class="btn btn-link btn-lg w-100 "> بازگشت </a>
-            </form>
-          </div>
-
-          <h6 style="margin:20px"> با ما در منافع خود ؛ هم قدم باشید</h6>
         </div>
-
-        <div class="text-center" id="load" style="display: none;">
-          <img src="/img/core-img/loading.gif" alt="">
-          <b class="text-center mt-3">درحال بارگذاری...</b>
-        </div>
-
       </div>
     </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script>
+      function show() {
+        var phone = document.getElementById("phone").value;
+        if (document.getElementById("rule").checked && phone != "") {
+          document.getElementById("m").style.display = "none";
+          document.getElementById("load").style.display = "block";
+          document.getElementById("Myform").submit();
+        } else {
+          document.getElementById("msg").classList.remove("d-none");
+        }
+      }
+
+      function register() {
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("register").style.display = "block";
+        document.getElementById("login").style.display = "none";
+      }
+
+      function login() {
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("login").style.display = "block";
+        document.getElementById("register").style.display = "none";
+      }
+
+      function back() {
+        document.getElementById("menu").style.display = "block";
+        document.getElementById("login").style.display = "none";
+        document.getElementById("register").style.display = "none";
+      }
+
+      var userAgent = navigator.userAgent;
+      document.getElementById("dev").value = userAgent;
+      document.getElementById("dev2").value = userAgent;
+    </script>
+
+    <script>
+      var map, marker;
+
+      function initMap() {
+        map = L.map('map').setView([30.2839, 57.0834], 13); // نمای پیش‌فرض بر روی تهران
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        marker = L.marker([35.6892, 51.3890], { draggable: true }).addTo(map);
+
+        marker.on('dragend', function (event) {
+          var position = marker.getLatLng();
+          updateLocationInputs(position.lat, position.lng);
+        });
+
+        map.on('click', function (e) {
+          marker.setLatLng(e.latlng);
+          updateLocationInputs(e.latlng.lat, e.latlng.lng);
+        });
+      }
+
+      function updateLocationInputs(lat, lng) {
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lng;
+      }
+
+      function showCurrentLocation() {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            map.setView([lat, lng], 15);
+            marker.setLatLng([lat, lng]);
+            updateLocationInputs(lat, lng);
+          }, function (error) {
+            alert("خطا در دریافت موقعیت: " + error.message);
+          });
+        } else {
+          alert("Geolocation در مرورگر شما پشتیبانی نمی‌شود.");
+        }
+      }
+
+
+      document.getElementById('showLocation').addEventListener('click', showCurrentLocation);
+
+      window.onload = initMap;
+    </script>
+
+  </div>
+  <div id="PRole" style="display: none;">
+    <iframe id="myIframe" src="phone/rule" frameborder="0" style="width: 100%; height: 100%; border: none;"></iframe>
+
+    <footer>
+      <!-- Footer Nav-->
+      <div class="footer-nav-area" id="footerNav">
+        <div class="suha-footer-nav">
+          <ul class="h-100 d-flex align-items-center justify-content-between ps-0 d-flex rtl-flex-d-row-r">
+            <li><a class="button btn" onclick="return showPMain();"><i class="fa-solid fa-backward"></i>بازگشت</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
   </div>
 
-  <script src="/js/jquery.min.js"></script>
   <script>
-    function show() {
-      var phone = document.getElementById("phone").value;
-      if (document.getElementById("rule").checked && phone != "") {
-        document.getElementById("m").style.display = "none";
-        document.getElementById("load").style.display = "block";
-        document.getElementById("Myform").submit();
-      } else {
-        document.getElementById("msg").classList.remove("d-none");
-      }
+    function setIframeHeight() {
+      var height = window.innerHeight;
+      document.getElementById('myIframe').style.height = height + 'px';
+    }
+    function startPage() {
+      setIframeHeight();
+      initMap();
     }
 
-    function register() {
-      document.getElementById("menu").style.display = "none";
-      document.getElementById("register").style.display = "block";
-      document.getElementById("login").style.display = "none";
-    }
+    window.onload = startPage;
 
-    function login() {
-      document.getElementById("menu").style.display = "none";
-      document.getElementById("login").style.display = "block";
-      document.getElementById("register").style.display = "none";
-    }
+    window.onresize = setIframeHeight;
 
-    function back() {
-      document.getElementById("menu").style.display = "block";
-      document.getElementById("login").style.display = "none";
-      document.getElementById("register").style.display = "none";
-    }
-
-    var userAgent = navigator.userAgent;
-    document.getElementById("dev").value = userAgent;
-    document.getElementById("dev2").value = userAgent;
   </script>
 
   <script>
-    var map, marker;
-
-    function initMap() {
-      map = L.map('map').setView([30.2839, 57.0834], 13); // نمای پیش‌فرض بر روی تهران
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-
-      marker = L.marker([35.6892, 51.3890], { draggable: true }).addTo(map);
-
-      marker.on('dragend', function (event) {
-        var position = marker.getLatLng();
-        updateLocationInputs(position.lat, position.lng);
-      });
-
-      map.on('click', function (e) {
-        marker.setLatLng(e.latlng);
-        updateLocationInputs(e.latlng.lat, e.latlng.lng);
-      });
+    function showPMain() {
+      document.getElementById("PMain").style.display = "block";
+      document.getElementById("PRole").style.display = "none";
     }
 
-    function updateLocationInputs(lat, lng) {
-      document.getElementById('latitude').value = lat;
-      document.getElementById('longitude').value = lng;
+    function showPRole() {
+      document.getElementById("PMain").style.display = "none";
+      document.getElementById("PRole").style.display = "block";
     }
-
-    function showCurrentLocation() {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          var lat = position.coords.latitude;
-          var lng = position.coords.longitude;
-          map.setView([lat, lng], 15);
-          marker.setLatLng([lat, lng]);
-          updateLocationInputs(lat, lng);
-        }, function (error) {
-          alert("خطا در دریافت موقعیت: " + error.message);
-        });
-      } else {
-        alert("Geolocation در مرورگر شما پشتیبانی نمی‌شود.");
-      }
-    }
-
-
-    document.getElementById('showLocation').addEventListener('click', showCurrentLocation);
-
-    window.onload = initMap;
   </script>
 </body>
 
