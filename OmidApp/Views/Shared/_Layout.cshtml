@@ -78,7 +78,8 @@
           @try
           {
             <p class="available-balance text-white"> موجودی <span class="counter">@User.FindFirst("walet").Value</span>
-              <span>تومان</span> </p>
+              <span>تومان</span>
+            </p>
           }
           catch
           {
@@ -146,15 +147,18 @@
           <li><a href="/home/request"><i class="fa-solid fa-star"></i> درخواست ها </a></li>
 
 
-          <li><a class="button btn" onclick="return confirmAction();"><i
-                class="fa-solid fa-backward"></i>بازگشت</a></li>
+          <li><a class="button btn" onclick="return confirmAction();"><i class="fa-solid fa-backward"></i>بازگشت</a>
+          </li>
           <script>
             function confirmAction() {
-              var result = confirm("آیا از بازگشت مطمئن هستید ؟؟");
-              if (result) {
-                window.history.back();
+              if (window.location.pathname.toLocaleLowerCase() === '/home/home') {
+                var result = confirm("آیا از خروج مطمئن هستید ؟؟");
+                if (result) {
+                  window.history.back();
+                }
+                return false;
               }
-              return false;
+              window.history.back();
             }
           </script>
         </ul>
