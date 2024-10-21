@@ -13,6 +13,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IUser,SUser>();
 builder.Services.AddScoped<IWalet,SWalet>();
+builder.Services.AddScoped<pubdo>();
 //session
 
 builder.Services.AddSession(
