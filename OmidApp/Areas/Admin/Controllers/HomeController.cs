@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OmidApp.Models;
 using Extensions;
-using Infrastrcture.Migrations;
 
 [Area("Admin")]
 public class HomeController : Controller

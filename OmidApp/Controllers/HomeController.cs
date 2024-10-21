@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Security.Claims;
-using Infrastrcture.Migrations;
 using Kavenegar;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
