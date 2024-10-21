@@ -79,8 +79,8 @@
                                 </div> *@
                             </div>
                             <div class="card-body">
-                                <div class="user-status table-responsive latest-order-table">
-                                      <table class="table table-bordernone">
+                                <div class="user-status table-responsive latest-order-table ">
+                                      <table class="table table-bordernone nowrap">
                         <thead>
 
                             <tr>
@@ -104,26 +104,26 @@
                             {
                                 <tr>
                                 <td>@i</td>
-                                <td class="font-danger">@item.FirstAndLastName </td>
-                                <td class="font-danger">@item.Url </td>
-                                <td class="digits"> @item.Phone</td>
-                                  <td class="digits"> @item.Email</td>
+                                <td class="font-danger   white-space-nowrap">@item.FirstAndLastName </td>
+                                <td class="font-danger  white-space-nowrap">@item.Url </td>
+                                <td class="digits  white-space-nowrap"> @item.Phone</td>
+                                  <td class="digits  white-space-nowrap"> @item.Email</td>
 
                                 <td class="font-danger"> 
 
                                 @if(@item.free==0)
                                 {
-                                   <a href="/admin/home/set?Id=@item.Id" class="alert alert-primary"> 5  | ست کردن شاخصه جدید</a>
+                                   <a href="/admin/home/set?Id=@item.Id" class="alert alert-primary "> 5  | ست کردن شاخصه جدید</a>
                                 }
                                 else
                                 {
-                                   <a href="/admin/home/set?Id=@item.Id" class="alert alert-primary"> @item.free  | ست کردن شاخصه جدید</a>
+                                   <a href="/admin/home/set?Id=@item.Id" class="alert alert-primary "> @item.free  | ست کردن شاخصه جدید</a>
 
                                 }
                                 
                                 
                                 </td>
-                                <td class="font-danger">
+                                <td class="font-danger white-space-nowrap">
                                     <a href="/admin/home/deatils/@item.Id" class="btn btn-warning form-control">مشاهده سفارشات</a>
                                 </td>
                                 

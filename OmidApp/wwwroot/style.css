@@ -45,7 +45,7 @@ Template Name: Suha - Multipurpose Ecommerce Mobile HTML Template
 body,
 html {
   font-family:iransans;
-  color: #747794;
+  
   overflow-x: hidden;
   background-color: #E9EEFF;
   scrollbar-width: thin;
@@ -61,9 +61,10 @@ h3,
 h4,
 h5,
 h6 {
-  color: #020310;
+ color: #020310;
   font-weight: 500;
 }
+
 
 p {
   color: #747794;
@@ -294,8 +295,8 @@ textarea:invalid {
 }
 
 .btn-success {
-  background-color: #00b894;
-  border-color: #00b894;
+  background-color: #d182fa;
+
 }
 
 .btn-info {
@@ -360,6 +361,7 @@ textarea:invalid {
   -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   border-radius: 6px;
+  background-color: #cd0450;
 }
 
 
@@ -4118,7 +4120,7 @@ li.suha-dropdown-menu .dropdown-trigger-btn.active i {
   background: #e52d27;
   background: -webkit-gradient(linear, right top, left top, from(#b31217), to(#ea4c62));
   background: -o-linear-gradient(right, #b31217, #ea4c62);
-  background: linear-gradient(to left, #1224b3, #908bc5);
+  background: linear-gradient(to left,#cd0450, #cd0450);
   overflow: hidden;
   border-radius: 6px;
 }
@@ -4549,17 +4551,17 @@ li.suha-dropdown-menu .dropdown-trigger-btn.active i {
 [theme-color=dark] h3,
 [theme-color=dark] h4,
 [theme-color=dark] h5,
-[theme-color=dark] h6 {
-  color: #ffffff;
-}
+[theme-color=dark] h6 
+ 
+
 [theme-color=dark] .header-area {
-  background-color: #0C153B;
-  -webkit-box-shadow: 0 3px 12px rgba(255, 255, 255, 0.1);
-  box-shadow: 0 3px 12px rgba(255, 255, 255, 0.1);
+  
+  -webkit-box-shadow: 
+  box-shadow 
 }
 [theme-color=dark] .card {
-  border-color: #242644;
-  background-color: #242644;
+ 
+  background-color: #cd0450;
 }
 [theme-color=dark] .border,
 [theme-color=dark] .border-start,
@@ -4667,7 +4669,7 @@ li.suha-dropdown-menu .dropdown-trigger-btn.active i {
 }
 [theme-color=dark] .form-control {
   border-color: rgba(255, 255, 255, 0.1);
-  background-color: #242644;
+  background-color:#d182fa;
   color: #ffffff;
 }
 [theme-color=dark] .product-catagories a {

@@ -31,12 +31,14 @@
           }
           else
           {
-            
-            <h6 class="text-white m-3  text-center">  تعداد مانده تا اسید شویی رایگان @{
-                if(ViewBag.description != null){
+
+            <h6 class="text-white m-3  text-center"> تعداد مانده تا اسید شویی رایگان @{
+                if (ViewBag.description != null)
+                {
                   <span>و پاداش شما</span>
                 }
-              } : @ViewBag.Mondeh </h6>
+              } : @ViewBag.Mondeh
+            </h6>
 
           }
         </div>
@@ -104,7 +106,7 @@
 
                 <div class="container mt-3 " OnClick="redirect()">
                   <div class="cta-text p-2 p-lg-4"
-                    style="background: linear-gradient(to left, #00b894, #198754) !important;">
+                    style="background: linear-gradient(to left,#d182fa, #d182fa) !important;">
                     <div class="row p-lg-2">
                       <div class="col-12">
                         <h6 class="text-white m-3  text-center"> درخواست شستشوی فوری </h6>
@@ -113,14 +115,39 @@
                     </div>
                   </div>
                 </div>
-
+                <div class="container mt-3" onclick="redirectToShowWalet()">
+                  <div class="cta-text p-2 p-lg-4"
+                    style="background: linear-gradient(to left, #cd0450, #cd0450) !important;">
+                    <div class="row p-lg-2">
+                      <div class="col-12">
+                        <h6 class="text-white m-3 text-center">مشاهده شماره کارت ها</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="container mt-3 " onclick="call()">
                   <div class="cta-text p-2 p-lg-4"
-                    style="background: linear-gradient(to left, #00b894, #198754) !important;">
+                    style="background: linear-gradient(to left,#cd0450, #cd0450) !important;">
                     <div class="row p-lg-2">
                       <div class="col-12">
-                        <h6 class="text-white m-3  text-center"> تماس فوری با ما </h6>
+                        <a href="tel:+989130495923">
+
+                        <h6 class="text-white m-3  text-center"> تماس فوری 1</h6>
+                        </a>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="container mt-3 " onclick="call()">
+                  <div class="cta-text p-2 p-lg-4"
+                    style="background: linear-gradient(to left,#cd0450, #cd0450) !important;">
+                    <div class="row p-lg-2">
+                      <div class="col-12">
+                        <a href="tel:+9899390916408"> 
+                        <h6 class="text-white m-3  text-center" > تماس فوری 2</h6>
+                        </a>
                       </div>
 
                     </div>
@@ -133,16 +160,7 @@
 
                 </div>
 
-                <div class="container mt-3" onclick="redirectToShowWalet()">
-                  <div class="cta-text p-2 p-lg-4"
-                    style="background: linear-gradient(to left, #00b894, #198754) !important;">
-                    <div class="row p-lg-2">
-                      <div class="col-12">
-                        <h6 class="text-white m-3 text-center">مشاهده شماره کارت ها</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
 
                 <script>
                   function redirectToShowWalet() {
