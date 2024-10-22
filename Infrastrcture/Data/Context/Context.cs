@@ -16,6 +16,7 @@ public class Context:DbContext
     public DbSet<Admin> Admins { get; set; }
     public DbSet<Card> Cards { get; set; }
    public DbSet<City> Cities { get; set; }
+   public DbSet<Phones> Phones { get; set; }
        
 
     //  protected override void OnConfiguring(DbContextOptionsBuilder db)
@@ -25,7 +26,7 @@ public class Context:DbContext
 
     //  protected override void OnConfiguring(DbContextOptionsBuilder db)
     //      {
-    //          db.UseSqlServer("server=.;database=asidshoor3;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
+    //          db.UseSqlServer("server=.;database=asidshoor4;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
     //      }
 
     //  protected override void OnConfiguring(DbContextOptionsBuilder db)

@@ -164,6 +164,22 @@ namespace Infrastrcture.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("Phones", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Phones");
+                });
+
             modelBuilder.Entity("Price", b =>
                 {
                     b.Property<int>("Id")

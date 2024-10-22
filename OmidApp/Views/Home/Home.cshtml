@@ -10,7 +10,7 @@
     transition: 0.5s;
 
 
-background-color: #d10d0dfa;
+    background-color: #d10d0dfa;
 
   }
 </style>
@@ -131,10 +131,15 @@ background-color: #d10d0dfa;
                     style="background: linear-gradient(to left,#cd0450, #cd0450) !important;">
                     <div class="row p-lg-2">
                       <div class="col-12">
-                        <a href="tel:+989130495923">
+                            @{
+                                            string n = $"tel:+98{ViewBag.n1}";
+                          <a href=@n>
+                            <h6 class="text-white m-3  text-center"> تماس فوری 1</h6>
+                          </a>
+                        }
 
-                        <h6 class="text-white m-3  text-center"> تماس فوری 1</h6>
-                        </a>
+
+                        
                       </div>
 
                     </div>
@@ -145,9 +150,13 @@ background-color: #d10d0dfa;
                     style="background: linear-gradient(to left,#cd0450, #cd0450) !important;">
                     <div class="row p-lg-2">
                       <div class="col-12">
-                        <a href="tel:+9899390916408"> 
-                        <h6 class="text-white m-3  text-center" > تماس فوری 2</h6>
-                        </a>
+                        @{
+                                            string m = $"tel:+98{ViewBag.n2}";
+                          <a href=@m>
+                            <h6 class="text-white m-3  text-center"> تماس فوری 2</h6>
+                          </a>
+                        }
+
                       </div>
 
                     </div>
@@ -200,6 +209,6 @@ background-color: #d10d0dfa;
                 window.location.href = "/home/request";
               }
 
-             
+
 
             </script>

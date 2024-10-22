@@ -735,6 +735,7 @@ public class HomeController : Controller
         return RedirectToAction("deatils", new { id = request.UserId });
 
     }
+   
 
     // Path: OmidApp/Models/RequestModel.cs
     public class RequestModel

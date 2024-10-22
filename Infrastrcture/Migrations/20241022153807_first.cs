@@ -34,7 +34,8 @@ namespace Infrastrcture.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CardNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -86,6 +87,19 @@ namespace Infrastrcture.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Phones",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Phones", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Prices",
                 columns: table => new
                 {
@@ -131,6 +145,7 @@ namespace Infrastrcture.Migrations
                     Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     free = table.Column<int>(type: "int", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     use = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -234,6 +249,9 @@ namespace Infrastrcture.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Phones");
 
             migrationBuilder.DropTable(
                 name: "Prices");

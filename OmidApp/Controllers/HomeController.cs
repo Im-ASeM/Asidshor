@@ -27,7 +27,8 @@ public class HomeController : Controller
   
     public async Task<IActionResult> home()
     {
-      
+      ViewBag.n1 = db.Phones.Find(1).Phone;
+      ViewBag.n2 = db.Phones.Find(2).Phone;
          //get count request
         var id=User.Identity.GetId();
 
