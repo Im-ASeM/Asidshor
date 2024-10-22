@@ -47,7 +47,7 @@ html {
   font-family:iransans;
   
   overflow-x: hidden;
-  background-color: #E9EEFF;
+  background-color: #da8bd3e7;
   scrollbar-width: thin;
   padding-left: 0 !important;
   letter-spacing: -0.5px;
@@ -67,7 +67,7 @@ h6 {
 
 
 p {
-  color: #747794;
+  color: #ffffff;
 }
 
 a,
@@ -1606,9 +1606,9 @@ textarea:invalid {
   width: 240px !important;
   border-left: 0 !important;
   background: #100DD1;
-  background: -o-linear-gradient(left, #100DD1, #0d5cd1);
-  background: -webkit-gradient(linear, left top, right top, from(#100DD1), to(#0d5cd1));
-  background: linear-gradient(to right, #100dd173, #0d5cd199)
+  background: -o-linear-gradient(left,#d10d0d73,#d10d0d73);
+  background: -webkit-gradient(linear, left top, right top, from(#d10d0d73), to(#d10d0d73));
+  background: linear-gradient(to right, #d10d0d73, #d10d0d73)
 }
 .suha-offcanvas-wrap .btn-close {
   position: absolute;
@@ -4537,11 +4537,11 @@ li.suha-dropdown-menu .dropdown-trigger-btn.active i {
 
 /* Night Mode */
 [theme-color=dark] {
-  background-color: #0C153B;
+  background-color: #270724e7;
 }
 [theme-color=dark] body,
 [theme-color=dark] #preloader {
-  background-color: #0C153B;
+  background-color: #270724e7;
 }
 [theme-color=dark] a,
 [theme-color=dark] a:hover,
