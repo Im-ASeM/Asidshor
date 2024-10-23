@@ -1,0 +1,69 @@
+<style>
+    th, td, tr {
+        padding: 5px;
+        text-align: center !important;
+    }
+</style>
+        <div class="page-body " >
+
+
+
+ <div class="container-fluid">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="page-header-left">
+                                <h3>داشبورد
+
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ol class="breadcrumb pull-right">
+                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                                <li class="breadcrumb-item active">داشبورد</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+                    <div class="col-xl-12 xl-100 mt-7">
+
+                        <div class="card">
+                            <div class="card-header">
+                          <h5 class="text-center">کاهش موجودی / برداشت از حساب</h5>
+                           <div class="text-center mt-7 row   ">
+
+
+                    @* add car to categoris *@
+
+                            <form action="/admin/home/NewWaletMinus" method="post" class="col-12">
+                                   <div class="row justify-content-center  p-3" >
+
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12 mt-3">
+                                                <input name="bardasht" class="form-control" type="number" placeholder="مبلغ را وارد کنید (تومان)"  required>
+                                            </div>
+                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12 mt-3">
+                                                <input name="babat" class="form-control" type="text" placeholder="توضیحات را وارد کنید (بابت)"  required>
+                                            </div>
+                                            <input name="id" class="hidden" type="hidden" value="@ViewBag.id">
+
+                                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-2 ">
+                                                <button type="submit" class="btn btn-primary form-control" onclick="return confirm(`آیا از انجام این عملیات مطمئن هستید ؟ \n این عمل غیر قابل بازگشت میباشد`)"> ثبت تغییر </button>
+
+                                            </div>
+
+                                    </div>
+                               </form>
+                     </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
