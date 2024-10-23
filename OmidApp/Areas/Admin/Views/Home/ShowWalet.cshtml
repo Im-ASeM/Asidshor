@@ -45,11 +45,11 @@
         <div class="card">
             <div class="card-header">
 
-                <form action="/admin/home/inWalet" method="post">
+                <form action="/admin/home/ShowWalet/@ViewBag.id" method="post">
                     <div class="row justify-content-center  p-3">
 
                         <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
-                            <input name="txt" class="form-control" type="text" placeholder="جستجوی شماره تلفن یا نام" value="@ViewBag.txt">
+                            <input name="txt" class="form-control" type="text" placeholder="جستجوی توضیحات" value="@ViewBag.txt">
 
 
                         </div>
@@ -64,7 +64,7 @@
 
 
 
-                <h5> تعداد کاربران : @ViewBag.User.Count
+                <h5> تعداد تراکنش : @ViewBag.walets.Count
                 </h5>
 
                 @* search *@
@@ -87,52 +87,40 @@
 
                             <tr>
                                 <td scope="col">ردیف</td>
-                                <td scope="col">نام و نام خانوادگی</td>
-                                <td scope="col">نام تعمیرگاه </td>
-                                <td scope="col">شماره تماس</td>
-                                <td scope="col">موجودی (تومان)</td>
-                                <td scope="col">سوابق</td>
-                                <td scope="col">عملیات</td>
-
+                                <td scope="col">مبلغ (تومان)</td>
+                                <td scope="col">بابت (توضیحات)</td>
+                                <td scope="col">نوع</td>
+                                <td scope="col">تاریخ</td>
                             </tr>
 
 
                         </thead>
                         <tbody>
-                            @if (ViewBag.User != null)
+                            @if (ViewBag.walets != null)
                             {
                                 int i = 1;
-                                @foreach (var item in ViewBag.User)
+                                @foreach (var item in ViewBag.walets)
                                 {
                                     <tr>
                                         <td>@i</td>
-                                        <td class="font-danger   white-space-nowrap">@item.FirstAndLastName </td>
-                                        <td class="font-danger  white-space-nowrap">@item.Url </td>
-                                        <td class="digits  white-space-nowrap"> @item.Phone</td>
-                                        <td class="font-danger  white-space-nowrap">
-                                            @{
-                                                var moz = 0;
-                                                foreach (var walet in item.walets)
-                                                {
-                                                    moz += walet.variz;
-                                                    moz -= walet.bardasht;
-                                                }
-                                                @moz
+                                        <td class="font-danger   white-space-nowrap">
+                                            @if(item.variz == 0){
+                                                <span>@item.bardasht-</span>;
+                                            }
+                                            else{
+                                                <span>@item.variz+</span>
                                             }
                                         </td>
-                                        <td class="font-danger white-space-nowrap">
-                                            <a href="/admin/home/ShowWalet/@item.Id" class="btn btn-success form-control">مشاهده سابقه تراکنش</a>
+                                        <td class="font-danger  white-space-nowrap">@item.babat </td>
+                                        <td class="digits  white-space-nowrap">
+                                            @if(item.variz == 0){
+                                                <span>برداشت</span>
+                                            }
+                                            else{
+                                                <span>واریز</span>
+                                            }
                                         </td>
-                                        <td class="font-danger white-space-nowrap">
-                                            <a href="/admin/home/NewWalet/@item.Id" class="btn btn-primary form-control">تراکنش جدید</a>
-                                        </td>
-
-
-
-
-
-
-
+                                        <td class="digits  white-space-nowrap">@PersianDate.ToPersianDateString(item.date)</td>
                                     </tr>
                                     i++;
                                 }

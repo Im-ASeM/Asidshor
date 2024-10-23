@@ -24,41 +24,64 @@ public class HomeController : Controller
         dbWalet = _dbWalet;
         this._context = _context;
     }
-    public IActionResult NewWaletMinus(int id , int bardasht , string babat){
-        _context.waletNews.Add(new WaletNew{
-            babat = babat ,
-            bardasht = bardasht ,
+    public IActionResult ShowWalet(int id, string txt)
+    {
+        if (txt != null)
+        {
+            ViewBag.walets = dbUser.ShowUser(id).walets.Where(x => x.babat.Contains(txt)).ToList();
+        }
+        else
+        {
+            ViewBag.walets = dbUser.ShowUser(id).walets.ToList();
+        }
+        ViewBag.id = id;
+        ViewBag.txt = txt;
+        return View();
+    }
+    public IActionResult NewWaletMinus(int id, int bardasht, string babat)
+    {
+        _context.waletNews.Add(new WaletNew
+        {
+            babat = babat,
+            bardasht = bardasht,
             date = DateTime.UtcNow,
-            UserId = id ,
+            UserId = id,
             variz = 0
         });
         _context.SaveChanges();
-        return RedirectToAction("inWalet" , "home" , new{Area="admin"});
+        return RedirectToAction("inWalet", "home", new { Area = "admin" });
     }
-    public IActionResult NewWaletM(int id){
+    public IActionResult NewWaletM(int id)
+    {
         ViewBag.id = id;
         return View();
     }
-    public IActionResult NewWaletPlus(int id , int variz , string babat){
-        _context.waletNews.Add(new WaletNew{
-            babat = babat ,
-            bardasht = 0 ,
-            date = DateTime.UtcNow ,
+    public IActionResult NewWaletPlus(int id, int variz, string babat)
+    {
+        _context.waletNews.Add(new WaletNew
+        {
+            babat = babat,
+            bardasht = 0,
+            date = DateTime.UtcNow,
             UserId = id,
             variz = variz
         });
         _context.SaveChanges();
-        return RedirectToAction("inWalet" , "home" , new{Area="admin"});
+        return RedirectToAction("inWalet", "home", new { Area = "admin" });
     }
-    public IActionResult NewWaletP(int id){
+    public IActionResult NewWaletP(int id)
+    {
         ViewBag.id = id;
         return View();
     }
-    public IActionResult NewWalet(int id){
+    public IActionResult NewWalet(int id)
+    {
         ViewBag.id = id;
         return View();
     }
-    public IActionResult inWalet(string txt){
+    public IActionResult inWalet(string txt)
+    {
+        ViewBag.txt = txt;
         ViewBag.User = dbUser.ShowAllUser(txt);
         return View();
     }
@@ -184,7 +207,8 @@ public class HomeController : Controller
             _context.SaveChanges();
         }
 
-        if (_context.Text.Count() == 0){
+        if (_context.Text.Count() == 0)
+        {
             _context.Text.Add(new Text
             {
                 text = "اپلیکیشن اسیدشویی آنلاین\nسرویس آنلاین اسیدشویی قطعات برای تعمیرکاران\n\nاپلیکیشن اسیدشویی آنلاین با هدف تسهیل فرآیند اسیدشویی قطعات برای تعمیرکاران در سال 1402 راه‌اندازی شد. ایده اصلی ما این بود که چگونه می‌توانیم زمان و هزینه‌های تعمیرکاران را کاهش دهیم و کیفیت خدمات اسیدشویی را افزایش دهیم."

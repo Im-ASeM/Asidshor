@@ -87,14 +87,13 @@
 
                                         <td class="font-danger">
 
-                                            @if (@item.Status == "فعال")
+                                            @if (@item.UserName == "admin")
+                                            {
+                                                <a class="alert alert-success disabled">
+                                                    فعال</a>
+                                            }else if (@item.Status == "فعال")
                                             {
                                                 <a href="/admin/home/Active?Id=@item.Id" class="alert alert-success"> فعال</a>
-                                            }
-                                            else if (@item.UserName == "admin")
-                                            {
-                                                <a class="alert alert-warning disabled">
-                                                    فعال</a>
                                             }
                                             else
                                             {
