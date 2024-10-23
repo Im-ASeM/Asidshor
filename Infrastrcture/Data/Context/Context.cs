@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-public class Context:DbContext
+public class Context : DbContext
 {
     public Context(DbContextOptions<Context> options) : base(options)
     {
-    
+
     }
 
     public DbSet<User> Users { get; set; }
@@ -16,10 +16,11 @@ public class Context:DbContext
     public DbSet<Orders> Orders { get; set; }
     public DbSet<Admin> Admins { get; set; }
     public DbSet<Card> Cards { get; set; }
-   public DbSet<City> Cities { get; set; }
-   public DbSet<Phones> Phones { get; set; }
-   public DbSet<Text> Text { get; set; }
-       
+    public DbSet<City> Cities { get; set; }
+    public DbSet<Phones> Phones { get; set; }
+    public DbSet<Text> Text { get; set; }
+    public DbSet<WaletNew> waletNews { get; set; }
+
 
     // protected override void OnConfiguring(DbContextOptionsBuilder db)
     //     {

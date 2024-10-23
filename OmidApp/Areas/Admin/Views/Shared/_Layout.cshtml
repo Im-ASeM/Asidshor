@@ -198,6 +198,10 @@
 
                         @if (User.FindFirst("Role").Value == "admin")
                         {
+                            <li><a class="sidebar-header" href="/admin/home/inWalet"><i data-feather="home"></i><span>موجودی تعمیرگاه ها </span></a></li>
+                        }
+                        @if (User.FindFirst("Role").Value == "admin")
+                        {
                             <li><a class="sidebar-header" href="/admin/home/category"><i data-feather="home"></i><span>دسته
                                         بندی </span></a></li>
                         }

@@ -24,6 +24,10 @@ public class HomeController : Controller
         dbWalet = _dbWalet;
         this._context = _context;
     }
+    public IActionResult inWalet(string txt){
+        ViewBag.User = dbUser.ShowAllUser(txt);
+        return View();
+    }
 
     public IActionResult SaveAdminMsg(string adminMsg)
     {

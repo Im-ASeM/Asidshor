@@ -16,5 +16,6 @@ public class VmUser
     public int free { get; set; }
     public int use { get; set; }
     public string description { get; set; }
+    public ICollection<Vm_WaletNew> walets { get; set; }
 
 }

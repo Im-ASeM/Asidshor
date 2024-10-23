@@ -17,6 +17,6 @@ public class User
     public string? description { get; set; }
     public int use { get; set; }
 
-    ICollection<WaletNew> walets { get; set; }
+    public ICollection<WaletNew> walets { get; set; }
 
 }

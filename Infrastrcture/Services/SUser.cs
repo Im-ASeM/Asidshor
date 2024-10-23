@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -48,7 +49,7 @@ public class SUser : IUser
     }
     public VmUser ShowUser(int id)
     {
-      var q= db.Users.Where(a=>a.Id==id).FirstOrDefault();
+      var q= db.Users.Where(a=>a.Id==id).Include(x=>x.walets).FirstOrDefault();
       VmUser u = new VmUser()
       {
           Id=q.Id,
@@ -61,11 +62,10 @@ public class SUser : IUser
           Adress=q.Adress,
           Latitude=q.Latitude,
           Longitude=q.Longitude,
-            free=q.free,
-            use=q.use,
-            description = q.description
-
-         
+          free=q.free,
+          use=q.use,
+          description = q.description,
+          walets = SWaletNew.convert(q.walets) 
       };
       
       return u;
@@ -130,7 +130,7 @@ public class SUser : IUser
     public List<VmUser> ShowAllUser(string txt)
     {
               
-              var q=db.Users.ToList();
+              var q=db.Users.Include(x=>x.walets).ToList();
               if (txt != null)
               {
                  q=db.Users.Where(x=>x.Phone.Contains(txt) || x.FirstAndLastName.Contains(txt)).ToList();
@@ -153,8 +153,8 @@ public class SUser : IUser
                 Adress=item.Adress,
                 Latitude=item.Latitude,
                 Longitude=item.Longitude,
-                free=item.free
-                
+                free=item.free,
+                walets = SWaletNew.convert(item.walets)
             };
             u.Add(v);
         }
