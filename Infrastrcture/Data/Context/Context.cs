@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 public class Context:DbContext
 {
-       public Context(DbContextOptions<Context> options) : base(options)
-       {
-        
-       }
+    public Context(DbContextOptions<Context> options) : base(options)
+    {
+    
+    }
+
     public DbSet<User> Users { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<Walet> walets { get; set; }
@@ -19,10 +20,10 @@ public class Context:DbContext
    public DbSet<Phones> Phones { get; set; }
        
 
-    //  protected override void OnConfiguring(DbContextOptionsBuilder db)
-    //      {
-    //          db.UseSqlServer("server=.\\SQL2019;database=OmidApp;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
-    //      }
+    // protected override void OnConfiguring(DbContextOptionsBuilder db)
+    //     {
+    //         db.UseSqlServer("server=.\\SQL2019;database=OmidApp;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
+    //     }
 
     //  protected override void OnConfiguring(DbContextOptionsBuilder db)
     //      {

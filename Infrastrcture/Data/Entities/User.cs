@@ -7,7 +7,7 @@ public class User
     [Required]
     public string Phone { get; set; }
     public string Email { get; set; }
-    public string Url  { get; set; }
+    public string Url { get; set; }
     public int Code { get; set; }
     public string Cart { get; set; }
     public string Adress { get; set; }
@@ -16,5 +16,7 @@ public class User
     public int free { get; set; }
     public string? description { get; set; }
     public int use { get; set; }
+
+    ICollection<WaletNew> walets { get; set; }
 
 }
