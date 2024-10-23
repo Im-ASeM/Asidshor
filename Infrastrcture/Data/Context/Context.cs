@@ -18,6 +18,7 @@ public class Context:DbContext
     public DbSet<Card> Cards { get; set; }
    public DbSet<City> Cities { get; set; }
    public DbSet<Phones> Phones { get; set; }
+   public DbSet<Text> Text { get; set; }
        
 
     // protected override void OnConfiguring(DbContextOptionsBuilder db)
