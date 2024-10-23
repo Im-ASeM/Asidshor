@@ -25,7 +25,27 @@ public class HomeController : Controller
         this._context = _context;
     }
 
+    public IActionResult EditPhone()
+    {
+        ViewBag.Num1 = _context.Phones.Find(1).Phone;
+        ViewBag.Num2 = _context.Phones.Find(2).Phone;
+        return View();
+    }
 
+    public IActionResult SavePhone(string Phone1, string Phone2)
+    {
+        var phone1 = _context.Phones.Find(1);
+        var phone2 = _context.Phones.Find(2);
+
+        phone1.Phone = Phone1;
+        phone2.Phone = Phone2;
+
+        _context.Phones.Update(phone1);
+        _context.Phones.Update(phone2);
+
+        _context.SaveChanges();
+        return RedirectToAction("index", "home", new { Area = "Admin" });
+    }
 
     public IActionResult Index(string txt)
     {
@@ -93,6 +113,17 @@ public class HomeController : Controller
         if (_context.Admins.Count() == 0)
         {
             _context.Admins.Add(new Admin { UserName = "admin", Password = "admin", Role = "admin", Status = "فعال", PhoneNumber = "09130495923", NameFamily = "آقای حمزه ای نژاد" });
+            _context.SaveChanges();
+
+            _context.Phones.Add(new Phones
+            {
+                Phone = "09130495923"
+            });
+            _context.SaveChanges();
+            _context.Phones.Add(new Phones
+            {
+                Phone = "09390916408"
+            });
             _context.SaveChanges();
         }
 
@@ -735,7 +766,7 @@ public class HomeController : Controller
         return RedirectToAction("deatils", new { id = request.UserId });
 
     }
-   
+
 
     // Path: OmidApp/Models/RequestModel.cs
     public class RequestModel

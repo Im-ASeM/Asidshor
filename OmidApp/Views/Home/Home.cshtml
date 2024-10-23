@@ -131,15 +131,15 @@
                     style="background: linear-gradient(to left,#cd0450, #cd0450) !important;">
                     <div class="row p-lg-2">
                       <div class="col-12">
-                            @{
-                                            string n = $"tel:+98{ViewBag.n1}";
+                        @{
+                          string n = $"tel:{ViewBag.n1}";
                           <a href=@n>
                             <h6 class="text-white m-3  text-center"> تماس فوری 1</h6>
                           </a>
                         }
 
 
-                        
+
                       </div>
 
                     </div>
@@ -151,7 +151,7 @@
                     <div class="row p-lg-2">
                       <div class="col-12">
                         @{
-                                            string m = $"tel:+98{ViewBag.n2}";
+                          string m = $"tel:{ViewBag.n2}";
                           <a href=@m>
                             <h6 class="text-white m-3  text-center"> تماس فوری 2</h6>
                           </a>

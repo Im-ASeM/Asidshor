@@ -1,0 +1,92 @@
+<style>
+    th,
+    td,
+    tr {
+        padding: 5px;
+        text-align: center !important;
+    }
+</style>
+<div class="page-body ">
+
+
+
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-left">
+                        <h3>داشبورد
+
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <ol class="breadcrumb pull-right">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item active">داشبورد</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <form action="/admin/home/SavePhone" method="post" class="col-12">
+        <div class="col-12">
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center"> شماره تماس 1 </h5>
+                    <div class="text-center mt-7">
+
+
+                        @* add car to categoris *@
+
+                        <div class="row justify-content-center  p-3">
+
+                            <div class="col-12">
+                                <input name="phone1" class="form-control" type="text"
+                                    placeholder=" شماره تماس 1 را وارد کنید " value="@ViewBag.Num1" required>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center"> شماره تماس 2 </h5>
+                    <div class="text-center mt-7">
+
+
+                        @* add car to categoris *@
+
+                        <div class="row justify-content-center  p-3">
+
+                            <div class="col-12">
+                                <input name="phone2" class="form-control" type="text"
+                                    placeholder=" شماره تماس 2 را وارد کنید " value="@ViewBag.Num2" required>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-1">
+            <button type="submit" class="btn btn-primary form-control"> ثبت تغییر </button>
+
+        </div>
+    </form>
+</div>
+
+</div>
+</div>
+
+</div>
