@@ -22,6 +22,11 @@ public class HomeController : Controller
         dbWalet = _dbWalet;
         db = _db;
     }
+
+    public IActionResult ShowCard(){
+        ViewBag.Cards = db.Cards.ToList();
+        return View("Cards");
+    }
     
     public IActionResult aboutme(){
         ViewBag.txt = db.Phones.Find(3).Phone;
