@@ -25,16 +25,18 @@ public class HomeController : Controller
         this._context = _context;
     }
 
-    public IActionResult SaveAdminMsg(string adminMsg){
-        var Check = _context.Phones.Find(3);
-        Check.Phone = adminMsg;
+    public IActionResult SaveAdminMsg(string adminMsg)
+    {
+        var Check = _context.Text.Find(1);
+        Check.text = adminMsg;
 
-        _context.Phones.Update(Check);
+        _context.Text.Update(Check);
         _context.SaveChanges();
-        return RedirectToAction("index","home",new {Area="Admin"});
+        return RedirectToAction("index", "home", new { Area = "Admin" });
     }
-    public IActionResult AdminMsg(){
-        ViewBag.txt = _context.Phones.Find(3).Phone;
+    public IActionResult AdminMsg()
+    {
+        ViewBag.txt = _context.Text.Find(1).text;
         return View();
     }
 
@@ -128,6 +130,10 @@ public class HomeController : Controller
             _context.Admins.Add(new Admin { UserName = "admin", Password = "admin", Role = "admin", Status = "فعال", PhoneNumber = "09130495923", NameFamily = "آقای حمزه ای نژاد" });
             _context.SaveChanges();
 
+
+        }
+        if (_context.Phones.Count() == 0)
+        {
             _context.Phones.Add(new Phones
             {
                 Phone = "09130495923"
@@ -138,9 +144,12 @@ public class HomeController : Controller
                 Phone = "09390916408"
             });
             _context.SaveChanges();
-            _context.Phones.Add(new Phones
+        }
+
+        if (_context.Text.Count() == 0){
+            _context.Text.Add(new Text
             {
-                Phone = "اپلیکیشن اسیدشویی آنلاین\nسرویس آنلاین اسیدشویی قطعات برای تعمیرکاران\n\nاپلیکیشن اسیدشویی آنلاین با هدف تسهیل فرآیند اسیدشویی قطعات برای تعمیرکاران در سال 1402 راه‌اندازی شد. ایده اصلی ما این بود که چگونه می‌توانیم زمان و هزینه‌های تعمیرکاران را کاهش دهیم و کیفیت خدمات اسیدشویی را افزایش دهیم."
+                text = "اپلیکیشن اسیدشویی آنلاین\nسرویس آنلاین اسیدشویی قطعات برای تعمیرکاران\n\nاپلیکیشن اسیدشویی آنلاین با هدف تسهیل فرآیند اسیدشویی قطعات برای تعمیرکاران در سال 1402 راه‌اندازی شد. ایده اصلی ما این بود که چگونه می‌توانیم زمان و هزینه‌های تعمیرکاران را کاهش دهیم و کیفیت خدمات اسیدشویی را افزایش دهیم."
             });
             _context.SaveChanges();
         }
