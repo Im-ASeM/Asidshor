@@ -23,7 +23,10 @@ public class HomeController : Controller
         db = _db;
     }
     
- //test diff
+    public IActionResult aboutme(){
+        ViewBag.txt = db.Phones.Find(3).Phone;
+        return View();
+    }
   
     public async Task<IActionResult> home()
     {

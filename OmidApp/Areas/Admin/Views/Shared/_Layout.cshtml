@@ -212,12 +212,12 @@
                         }
                         <li><a class="sidebar-header" href="/admin/home/request"><i data-feather="user-plus"></i><span>
                                     درخواست ها
-                                    <span class="badge badge-pill badge-primary pull-right notification-badge">
-                                        @if (num != 0)
-                                        {
+                                    @if (num != 0)
+                                    {
+                                        <span class="badge badge-pill badge-primary pull-right notification-badge">
                                             @num
-                                        }
-                                    </span>
+                                        </span>
+                                    }
                             </a>
                             @if (User.FindFirst("Role").Value == "admin")
                             {
@@ -226,7 +226,14 @@
 
                             </li>
                             }
-                                @if (User.FindFirst("Role").Value == "admin")
+                            @if (User.FindFirst("Role").Value == "admin")
+                            {
+                            <li><a class="sidebar-header" href="/admin/home/adminmsg"><i data-feather="chrome"></i><span>
+                                        پیام مدیر </span></a>
+
+                            </li>
+                            }
+                            @if (User.FindFirst("Role").Value == "admin")
                             {
                             <li><a class="sidebar-header" href="/admin/home/EditPhone"><i data-feather="chrome"></i><span>
                                         تعریف شماره تلفن</span></a>
@@ -250,7 +257,7 @@
 
                         </li> *@
 
-                        
+
 
 
 

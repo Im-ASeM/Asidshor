@@ -25,6 +25,19 @@ public class HomeController : Controller
         this._context = _context;
     }
 
+    public IActionResult SaveAdminMsg(string adminMsg){
+        var Check = _context.Phones.Find(3);
+        Check.Phone = adminMsg;
+
+        _context.Phones.Update(Check);
+        _context.SaveChanges();
+        return RedirectToAction("index","home",new {Area="Admin"});
+    }
+    public IActionResult AdminMsg(){
+        ViewBag.txt = _context.Phones.Find(3).Phone;
+        return View();
+    }
+
     public IActionResult EditPhone()
     {
         ViewBag.Num1 = _context.Phones.Find(1).Phone;
@@ -123,6 +136,11 @@ public class HomeController : Controller
             _context.Phones.Add(new Phones
             {
                 Phone = "09390916408"
+            });
+            _context.SaveChanges();
+            _context.Phones.Add(new Phones
+            {
+                Phone = "اپلیکیشن اسیدشویی آنلاین\nسرویس آنلاین اسیدشویی قطعات برای تعمیرکاران\n\nاپلیکیشن اسیدشویی آنلاین با هدف تسهیل فرآیند اسیدشویی قطعات برای تعمیرکاران در سال 1402 راه‌اندازی شد. ایده اصلی ما این بود که چگونه می‌توانیم زمان و هزینه‌های تعمیرکاران را کاهش دهیم و کیفیت خدمات اسیدشویی را افزایش دهیم."
             });
             _context.SaveChanges();
         }
