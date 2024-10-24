@@ -31,7 +31,7 @@ public class HomeController : Controller
 
     public IActionResult aboutme()
     {
-        ViewBag.txt = db.Phones.Find(3).Phone;
+        ViewBag.txt = db.Text.Find(1).text;
         return View();
     }
 
@@ -145,7 +145,7 @@ public class HomeController : Controller
             result -= walet.bardasht ;
         }
         ViewBag.Walet = result;
-        ViewBag.Walets = user.walets;
+        ViewBag.Walets = user.walets.OrderByDescending(x=>x.Id);
         return View();
     }
 

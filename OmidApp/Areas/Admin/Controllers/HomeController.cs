@@ -28,11 +28,11 @@ public class HomeController : Controller
     {
         if (txt != null)
         {
-            ViewBag.walets = dbUser.ShowUser(id).walets.Where(x => x.babat.Contains(txt)).ToList();
+            ViewBag.walets = dbUser.ShowUser(id).walets.Where(x => x.babat.Contains(txt)).OrderByDescending(x=>x.Id).ToList();
         }
         else
         {
-            ViewBag.walets = dbUser.ShowUser(id).walets.ToList();
+            ViewBag.walets = dbUser.ShowUser(id).walets.OrderByDescending(x=>x.Id).ToList();
         }
         ViewBag.id = id;
         ViewBag.txt = txt;
