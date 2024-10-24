@@ -2393,7 +2393,7 @@ $(function() {
         isRTL:true,
         from: 0,
         to: 3000,
-        prefix: ' تومان',
+        prefix: ' ریال',
         onStart: updateInputs,
         onChange: updateInputs,
         step: 100,
