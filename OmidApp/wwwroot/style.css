@@ -59,13 +59,15 @@ h1,
 h2,
 h3,
 h4,
-h5,
-h6 {
- color: #020310;
-  font-weight: 500;
+h5
+ {
+ color: #ffffff;
+ font-weight: 500;
 }
 
-
+h6{color: #020310;
+  font-weight: 500;
+}
 p {
   color: #ffffff;
 }
