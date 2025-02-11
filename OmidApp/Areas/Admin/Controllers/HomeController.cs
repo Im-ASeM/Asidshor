@@ -507,6 +507,13 @@ public class HomeController : Controller
         return RedirectToAction("addMenu");
     }
 
+    public IActionResult AddService(string Name , int MenuId , int ParentId)
+    {
+        _context.Services.Add(new Service { Srvicename = Name, Parentid = 0, Status = "فعال", MenuId = MenuId });
+        _context.SaveChanges();
+        return RedirectToAction("mainservice" , new {id = ParentId});
+    }
+
 
     //add category
     public IActionResult addcar(string CatName)
@@ -521,7 +528,7 @@ public class HomeController : Controller
             int ParentId = HttpContext.Session.GetInt32("id").Value;
 
 
-            _context.Categories.Add(new Category { CatName = CatName, ParentId = ParentId, Status = "فعال" });
+            _context.Categories.Add(new Category { CatName = CatName, ParentId = ParentId, Status = "فعال", MenuId = _context.Categories.Find(ParentId).MenuId });
             _context.SaveChanges();
             msg = "دسته بندی با موفقیت ثبت شد";
         }
@@ -632,17 +639,17 @@ public class HomeController : Controller
 
         ///session add idcar
         HttpContext.Session.SetInt32("idcar", id);
+        var Parent = _context.Categories.Find(id)!;
 
         //if services is null
         if (_context.Services.Count() == 0)
         {
-            _context.Services.Add(new Service { Srvicename = "موتور", Parentid = 0, Status = "فعال" });
-            _context.Services.Add(new Service { Srvicename = "گیربکس", Parentid = 0, Status = "فعال" });
-
+            _context.Services.Add(new Service { Srvicename = "موتور", Parentid = 0, Status = "فعال", MenuId = 1 });
+            _context.Services.Add(new Service { Srvicename = "گیربکس", Parentid = 0, Status = "فعال", MenuId = 1 });
+            _context.SaveChanges();
         }
-
-        _context.SaveChanges();
-        ViewBag.Services = _context.Services.Where(x => x.Parentid == 0).ToList();
+        ViewBag.Parent = Parent;
+        ViewBag.Services = _context.Services.Where(x => x.Parentid == 0 && x.MenuId == Parent.MenuId).ToList();
 
 
 

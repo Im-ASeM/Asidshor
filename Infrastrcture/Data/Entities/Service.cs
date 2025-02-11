@@ -10,4 +10,6 @@ public class Service
     public string Status { get; set; }
     [NotMapped]
     public int Price { get; set; }
+    public int? MenuId { get; set; }
+    public Menu Menu { get; set; }
     }

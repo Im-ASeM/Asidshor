@@ -1,62 +1,83 @@
 <style>
-    th, td, tr {
+    th,
+    td,
+    tr {
         padding: 5px;
         text-align: center !important;
     }
 </style>
-        <div class="page-body " >
+<div class="page-body ">
 
-           
 
- <div class="container-fluid">
-                <div class="page-header">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="page-header-left">
-                                <h3>داشبورد
-                                    
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <ol class="breadcrumb pull-right">
-                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
-                                <li class="breadcrumb-item active">داشبورد</li>
-                            </ol>
-                        </div>
+
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-left">
+                        <h3>داشبورد
+
+                        </h3>
                     </div>
                 </div>
+                <div class="col-lg-6">
+                    <ol class="breadcrumb pull-right">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item active">داشبورد</li>
+                    </ol>
+                </div>
             </div>
+        </div>
+    </div>
 
 
 
 
-                 
-                    <div class="col-xl-12 xl-100 mt-7">
-                        
-                        <div class="card">
-                            <div class="card-header">
-                          <h5 class="text-center">سرویس ها</h5>
-                           <div class="text-center mt-7 row   ">
-                            @foreach(var item in ViewBag.Services)
-                            {
-                                    //div center text
 
-                                     <div class="text-center xpl-xl-4 col-lg-4 col-md-4 col-lg-4 col-12  mt-7  " style="margin-top:15px">
-                                      
-                                        <a href="/admin/home/price?serviceparentid=@item.Id " class="btn btn-primary m-1 form-control ">@item.Srvicename</a>      
+    <div class="col-xl-12 xl-100 mt-7">
 
-                                        </div>  
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">سرویس ها</h5>
+                <form action="/admin/home/AddService" method="post" class="col-12">
+                    <div class="row justify-content-center  p-3">
 
-                                   
-
-                            }
-
-                     </div>
-
-                            </div>
+                        <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                            <input name="Name" class="form-control" type="text"
+                                placeholder=" نام دسته سرویس جدید را وارد کنید  " required>
                         </div>
-                        
-                    </div>
 
-  
+                        <input name="MenuId" class="form-control " style="display:none" type="text"
+                            value="@ViewBag.Parent.MenuId" required>
+                        <input name="ParentId" class="form-control " style="display:none" type="text"
+                            value="@ViewBag.Parent.Id" required>
+
+                        <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                            <button type="submit" class="btn btn-primary form-control"> اضافه کردن </button>
+
+                        </div>
+
+                    </div>
+                </form>
+                <div class="text-center mt-7 row   ">
+                    @foreach (var item in ViewBag.Services)
+                    {
+                        //div center text
+
+                        <div class="text-center xpl-xl-4 col-lg-4 col-md-4 col-lg-4 col-12  mt-7  " style="margin-top:15px">
+
+                            <a href="/admin/home/price?serviceparentid=@item.Id "
+                                class="btn btn-primary m-1 form-control ">@item.Srvicename</a>
+
+                        </div>
+
+
+
+                    }
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
