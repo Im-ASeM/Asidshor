@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OmidApp.Models;
 using Extensions;
+using Infrastrcture.Migrations;
 
 [Area("Admin")]
 public class HomeController : Controller
@@ -433,7 +434,7 @@ public class HomeController : Controller
 
 
     // category
-    public IActionResult category()
+    public IActionResult category(int Id)
     {
 
         //check if Categories is empty add default category parent "خودروهای سبک" و"خودروهای سنگین" "سایر"
@@ -443,11 +444,10 @@ public class HomeController : Controller
             _context.SaveChanges();
             _context.Categories.Add(new Category { CatName = "خودروهای سبک", ParentId = 0, Status = "فعال", MenuId = 1 });
             _context.Categories.Add(new Category { CatName = "خودروهای سنگین", ParentId = 0, Status = "فعال", MenuId = 1 });
-            _context.Categories.Add(new Category { CatName = "سایر", ParentId = 0, Status = "فعال", MenuId = 1 });
             _context.SaveChanges();
         }
-        ViewBag.Category = _context.Categories.Where(x => x.ParentId == 0).ToList();
-
+        ViewBag.Category = _context.Categories.Where(x => x.ParentId == 0 && x.MenuId == Id).ToList();
+        ViewBag.Menu = _context.Menus.Find(Id);
         return View();
     }
 
@@ -481,6 +481,28 @@ public class HomeController : Controller
         {
             _context.Menus.Remove(menu);
             _context.SaveChanges();
+        }
+        return RedirectToAction("addMenu");
+    }
+
+    [HttpPost]
+    public IActionResult AddCategory(Category category)
+    {
+        category.ParentId = 0;
+        category.Status = "فعال";
+        _context.Categories.Add(category);
+        _context.SaveChanges();
+        return RedirectToAction("category", new { Id = category.MenuId });
+    }
+
+    public IActionResult DeleteCategory(int Id)
+    {
+        var category = _context.Categories.Find(Id);
+        if (category != null)
+        {
+            _context.Categories.Remove(category);
+            _context.SaveChanges();
+            return RedirectToAction("category", new { Id = category.MenuId });
         }
         return RedirectToAction("addMenu");
     }
