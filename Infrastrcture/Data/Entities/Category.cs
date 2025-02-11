@@ -10,8 +10,6 @@ public class Category
 
     public string Status { get; set; }
     
-    
-    
-    
-   
+    public int? MenuId { get; set; }
+    public Menu Menu { get; set; }
 }

@@ -20,6 +20,7 @@ public class Context : DbContext
     public DbSet<Phones> Phones { get; set; }
     public DbSet<Text> Text { get; set; }
     public DbSet<WaletNew> waletNews { get; set; }
+    public DbSet<Menu> Menus { get; set; }
 
 
     // protected override void OnConfiguring(DbContextOptionsBuilder db)

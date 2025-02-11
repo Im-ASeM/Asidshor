@@ -28,11 +28,11 @@ public class HomeController : Controller
     {
         if (txt != null)
         {
-            ViewBag.walets = dbUser.ShowUser(id).walets.Where(x => x.babat.Contains(txt)).OrderByDescending(x=>x.Id).ToList();
+            ViewBag.walets = dbUser.ShowUser(id).walets.Where(x => x.babat.Contains(txt)).OrderByDescending(x => x.Id).ToList();
         }
         else
         {
-            ViewBag.walets = dbUser.ShowUser(id).walets.OrderByDescending(x=>x.Id).ToList();
+            ViewBag.walets = dbUser.ShowUser(id).walets.OrderByDescending(x => x.Id).ToList();
         }
         ViewBag.id = id;
         ViewBag.txt = txt;
@@ -437,18 +437,52 @@ public class HomeController : Controller
     {
 
         //check if Categories is empty add default category parent "خودروهای سبک" و"خودروهای سنگین" "سایر"
-        if (_context.Categories.Count() == 0)
+        if (_context.Menus.Count() == 0)
         {
-            _context.Categories.Add(new Category { CatName = "خودروهای سبک", ParentId = 0, Status = "فعال" });
-            _context.Categories.Add(new Category { CatName = "خودروهای سنگین", ParentId = 0, Status = "فعال" });
-            _context.Categories.Add(new Category { CatName = "سایر", ParentId = 0, Status = "فعال" });
+            _context.Menus.Add(new Menu { Name = "اسیدشویی فوری" });
+            _context.SaveChanges();
+            _context.Categories.Add(new Category { CatName = "خودروهای سبک", ParentId = 0, Status = "فعال", MenuId = 1 });
+            _context.Categories.Add(new Category { CatName = "خودروهای سنگین", ParentId = 0, Status = "فعال", MenuId = 1 });
+            _context.Categories.Add(new Category { CatName = "سایر", ParentId = 0, Status = "فعال", MenuId = 1 });
             _context.SaveChanges();
         }
         ViewBag.Category = _context.Categories.Where(x => x.ParentId == 0).ToList();
 
         return View();
+    }
 
-
+    public IActionResult addMenu()
+    {
+        ViewBag.Menu = _context.Menus.OrderByDescending(x => x.Id).ToList();
+        return View();
+    }
+    public IActionResult editMenu(int? id)
+    {
+        return View(id.HasValue ? _context.Menus.Find(id.Value) : new Menu());
+    }
+    [HttpPost]
+    public IActionResult editMenu(Menu menu)
+    {
+        if (menu.Id == 0)
+        {
+            _context.Menus.Add(menu);
+        }
+        else
+        {
+            _context.Menus.Update(menu);
+        }
+        _context.SaveChanges();
+        return RedirectToAction("addMenu");
+    }
+    public IActionResult DeleteMenu(int id)
+    {
+        var menu = _context.Menus.Find(id);
+        if (menu != null)
+        {
+            _context.Menus.Remove(menu);
+            _context.SaveChanges();
+        }
+        return RedirectToAction("addMenu");
     }
 
 
@@ -461,9 +495,6 @@ public class HomeController : Controller
         var q = _context.Categories.Where(x => x.CatName == CatName).FirstOrDefault();
         if (q == null)
         {
-
-            //get session id
-
             //get session id
             int ParentId = HttpContext.Session.GetInt32("id").Value;
 

@@ -198,7 +198,8 @@
 
                         @if (User.FindFirst("Role").Value == "admin")
                         {
-                            <li><a class="sidebar-header" href="/admin/home/inWalet"><i data-feather="home"></i><span>تراکنش تعمیرگاه ها </span></a></li>
+                            <li><a class="sidebar-header" href="/admin/home/inWalet"><i data-feather="home"></i><span>تراکنش
+                                        تعمیرگاه ها </span></a></li>
                         }
                         @if (User.FindFirst("Role").Value == "admin")
                         {
@@ -229,34 +230,42 @@
                                         تعریف مدیران </span></a>
 
                             </li>
-                            }
-                            @if (User.FindFirst("Role").Value == "admin")
-                            {
+                        }
+                        @if (User.FindFirst("Role").Value == "admin")
+                        {
                             <li><a class="sidebar-header" href="/admin/home/adminmsg"><i data-feather="chrome"></i><span>
                                         پیام مدیر </span></a>
 
                             </li>
-                            }
-                            @if (User.FindFirst("Role").Value == "admin")
-                            {
+                        }
+                        @if (User.FindFirst("Role").Value == "admin")
+                        {
                             <li><a class="sidebar-header" href="/admin/home/EditPhone"><i data-feather="chrome"></i><span>
                                         تعریف شماره تلفن</span></a>
 
                             </li>
-                            }
-                            @if (User.FindFirst("Role").Value == "admin")
-                            {
+                        }
+                        @if (User.FindFirst("Role").Value == "admin")
+                        {
                             @* <li><a class="sidebar-header" href="/admin/home/paystatus"><i
                                         data-feather="bar-chart"></i><span>وضعیت تراکنش ها </span></a></li> *@
-                            <li><a class="sidebar-header" href="/admin/home/CardOfBanks"><i
-                                        data-feather="bar-chart"></i><span>اضافه کردن کارت بانکی </span></a></li>
-                            }
-                            @* <li><a class="sidebar-header" href="/admin/home/setting"><i
+                            <li>
+                                <a class="sidebar-header" href="/admin/home/CardOfBanks"><i
+                                        data-feather="bar-chart"></i><span>اضافه کردن کارت بانکی </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="sidebar-header" href="/admin/home/AddMenu">
+                                <i data-feather="user-plus"></i><span>افزودن منو</span>
+                                </a>
+                            </li>
+                        }
+                        @* <li><a class="sidebar-header" href="/admin/home/setting"><i
                         data-feather="settings"></i><span>تنظیمات</span></a>
 
                         </li> *@
 
-                            @* <li><a class="sidebar-header" href="/admin/home/question"><i
+                        @* <li><a class="sidebar-header" href="/admin/home/question"><i
                         data-feather="settings"></i><span>اضافه کردن سوالات</span></a>
 
                         </li> *@
