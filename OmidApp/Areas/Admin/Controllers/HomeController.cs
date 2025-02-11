@@ -651,8 +651,6 @@ public class HomeController : Controller
         ViewBag.Parent = Parent;
         ViewBag.Services = _context.Services.Where(x => x.Parentid == 0 && x.MenuId == Parent.MenuId).ToList();
 
-
-
         return View();
     }
 
@@ -660,6 +658,7 @@ public class HomeController : Controller
     public IActionResult Price(int serviceparentid)
     {
         int? id = HttpContext.Session.GetInt32("idcar");
+        int MenuId = Convert.ToInt32(_context.Categories.Find(id.Value).MenuId);
 
         if (id == null)
         {
@@ -675,6 +674,8 @@ public class HomeController : Controller
         }
 
         ViewBag.carname = category.CatName;
+        ViewBag.MenuId = MenuId;
+        ViewBag.id = serviceparentid;
 
         var services = _context.Services.Where(x => x.Parentid == serviceparentid).ToList();
         var prices = _context.Prices.Where(p => p.carId == id.Value).ToDictionary(p => p.IdService, p => p.PriceValue);

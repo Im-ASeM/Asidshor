@@ -1,96 +1,121 @@
 <style>
-    th, td, tr {
+    th,
+    td,
+    tr {
         padding: 5px;
         text-align: center !important;
     }
 </style>
-        <div class="page-body " >
+<div class="page-body ">
 
-           
 
- <div class="container-fluid">
-                <div class="page-header">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="page-header-left">
-                                <h3>داشبورد
-                                    
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <ol class="breadcrumb pull-right">
-                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
-                                <li class="breadcrumb-item active">داشبورد</li>
-                            </ol>
-                        </div>
+
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-left">
+                        <h3>داشبورد
+
+                        </h3>
                     </div>
                 </div>
+                <div class="col-lg-6">
+                    <ol class="breadcrumb pull-right">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item active">داشبورد</li>
+                    </ol>
+                </div>
             </div>
+        </div>
+    </div>
 
 
 
-<form method="post" action="/Admin/Home/SavePrices">
-                 
-                    <div class="col-xl-12 xl-100 mt-7">
-                        
-                        <div class="card">
-                            <div class="card-header">
-                          <h5 class="text-center">سرویس های خودرو @ViewBag.carname بخش @ViewBag.Srvicename</h5>
-                           <div class="text-center mt-7 row   ">
 
-                          
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ردیف</th>
-                                            <th>نام سرویس</th>
-                                            <th>قیمت</th>
-                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    
-                                         @{
-                                                int i = 1;
-                                                foreach(var item in ViewBag.Services)
-                                                {
-                                                    <tr>
-                                                        <td>@i</td>
-                                                        <td>@item.Srvicename</td>
-                                                        <td>
-                                                            <input type="hidden" name="ServiceIds" value="@item.Id" />
-                                                            <input type="text" class="form-control" name="Prices" value="@item.Price" />
-                                                        </td>
-                                                    </tr>
-                                                    i++;
-                                                }
-                                            }
-                                    </tbody>
-                                </table>
+    <div class="col-xl-12 xl-100 mt-7">
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">سرویس های خودرو @ViewBag.carname بخش @ViewBag.Srvicename</h5>
+                <div class="col-12">
+                    <form action="/admin/services/addserviceme" method="post" class="col-12">
+                        <div class="row justify-content-center  p-3">
+
+                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                <input name="Servicename" class="form-control" type="text"
+                                    placeholder=" نام سرویس  رو وارد کنید  " required>
+
 
                             </div>
 
-                            @* button save and back *@
-
-                            <div class="col-12 text-center mt-7">
-                                <button class="btn btn-primary">ذخیره</button>
-                                <a href="/Admin/Home/category" class="btn btn-danger">بازگشت</a>
-
-                            </div>
+                            <input name="id" class="form-control " style="display:none" type="text" value="@ViewBag.id">
+                            <input name="MenuId" class="form-control " style="display:none" type="text" value="@ViewBag.MenuId">
                             
 
 
 
-                           
-
-                     </div>
+                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                                <button type="submit" class="btn btn-primary form-control"> اضافه کردن </button>
 
                             </div>
-                        </div>
-                        
-                    </div>
 
-  </form>
+                        </div>
+                    </form>
+                </div>
+                <div class="text-center mt-7">
+
+                    <form method="post" action="/Admin/Home/SavePrices">
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ردیف</th>
+                                        <th>نام سرویس</th>
+                                        <th>قیمت</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @{
+                                        int i = 1;
+                                        foreach (var item in ViewBag.Services)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@item.Srvicename</td>
+                                                <td>
+                                                    <input type="hidden" name="ServiceIds" value="@item.Id" />
+                                                    <input type="text" class="form-control" name="Prices" value="@item.Price" />
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        @* button save and back *@
+
+                        <div class="col-12 text-center mt-7">
+                            <button class="btn btn-primary">ذخیره</button>
+                        </div>
+
+
+
+
+
+
+                    </form>
+                </div>
+
+            </div>
         </div>
+
+    </div>
+
+</div>
