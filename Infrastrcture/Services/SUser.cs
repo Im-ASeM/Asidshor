@@ -130,7 +130,7 @@ public class SUser : IUser
     public List<VmUser> ShowAllUser(string txt)
     {
               
-              var q=db.Users.Include(x=>x.walets).ToList();
+              var q=db.Users.Include(x=>x.walets).Include(x=>x.City).ToList();
               if (txt != null)
               {
                  q=db.Users.Where(x=>x.Phone.Contains(txt) || x.FirstAndLastName.Contains(txt)).ToList();
@@ -154,7 +154,8 @@ public class SUser : IUser
                 Latitude=item.Latitude,
                 Longitude=item.Longitude,
                 free=item.free,
-                walets = SWaletNew.convert(item.walets)
+                walets = SWaletNew.convert(item.walets),
+                CityName = item.City.CityName
             };
             u.Add(v);
         }

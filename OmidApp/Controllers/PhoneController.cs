@@ -33,18 +33,23 @@ public class PhoneController : Controller
         if (User.Identity.IsAuthenticated)
             return RedirectToAction("home", "Home");
 
-
+        ViewBag.City = _context.Cities.ToList();
         return View();
 
     }
 
-    public IActionResult Check(string phone, string name, string password,string dev,string url,string Adress,string latitude,string longitude)
+    public IActionResult Check(string phone, string name, string password,string dev,string url,string Adress,string latitude,string longitude,int CityId)
 {
     //check if user exist into _context
     var user = _context.Users.FirstOrDefault(u => u.Phone == phone);
     if (phone.Length != 11)
     {
         TempData["error"] = "شماره تلفن وارد شده نادرست است";
+        return RedirectToAction("Login");
+    }
+    else if(CityId == 0)
+    {
+        TempData["error"] = "لطفا شهر یا منطقه خود را انتخاب کنید";
         return RedirectToAction("Login");
     }
     else if (user == null)
@@ -66,8 +71,7 @@ public class PhoneController : Controller
                     Latitude = latitude,
                     Longitude = longitude,
                     free = 5,
-                   
-                    
+                    CityId = CityId
                 };
                 _context.Users.Add(us);
                 _context.SaveChanges();

@@ -88,6 +88,16 @@
                 </div>
 
                 <div class="form-group text-start mb-4">
+                  <select class="form-control text-black" id="city" name="cityId">
+                    <option value="0" disabled selected>شماره یا منطقه خود را انتخاب کنید</option>
+                    @foreach(City city in ViewBag.City)
+                    {
+                      <option value="@city.Id">@city.CityName</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="form-group text-start mb-4">
                   <input required style="margin-top:20px;" autocomplete="off" class="form-control text-black"
                     type="text" id="locationInput" placeholder="آدرس تعمیرگاه خود را وارد کنید" name="Adress">
                 </div>

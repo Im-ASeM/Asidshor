@@ -89,6 +89,7 @@
                                 <td scope="col">نام تعمیرگاه </td>
                                 <td scope="col">شماره تماس</td>
                                 <td scope="col">رمز عبور</td>
+                                <td scope="col">شهر یا منطقه</td>
                                 <td scope="col">شاخصه سرویس رایگان</td>
                                 <td scope="col">سفارشات</td>
                                 
@@ -100,14 +101,15 @@
                         <tbody>
                             @if(ViewBag.User != null){
                                 int i = 1;
-                             @foreach (var item in ViewBag.User)
+                             @foreach (VmUser item in ViewBag.User)
                             {
                                 <tr>
                                 <td>@i</td>
                                 <td class="font-danger   white-space-nowrap">@item.FirstAndLastName </td>
                                 <td class="font-danger  white-space-nowrap">@item.Url </td>
                                 <td class="digits  white-space-nowrap"> @item.Phone</td>
-                                  <td class="digits  white-space-nowrap"> @item.Email</td>
+                                <td class="digits  white-space-nowrap"> @item.Email</td>
+                                <td class="digits  white-space-nowrap"> @item.CityName</td>
 
                                 <td class="font-danger"> 
 
