@@ -467,19 +467,51 @@ public class HomeController : Controller
     }
     public IActionResult editMenu(int? id)
     {
-        return View(id.HasValue ? _context.Menus.Find(id.Value) : new Menu());
+        var citys = _context.Cities.ToList();
+        ViewBag.city = citys;
+        var menu = id.HasValue ? _context.Menus.Include(x => x.City).ThenInclude(x => x.City).FirstOrDefault(x => x.Id == id.Value) : new Menu();
+        var viewModel = new MenuCityViewModel
+        {
+            MenuId = menu.Id,
+            MenuName = menu.Name,
+            Cities = citys.Select(c => new CitySelection
+            {
+                CityId = c.Id,
+                CityName = c.CityName,
+                IsSelected = menu.City != null ? menu.City.Any(mc => mc.CityId == c.Id) : false
+            }).ToList()
+        };
+
+        return View(viewModel);
     }
     [HttpPost]
-    public IActionResult editMenu(Menu menu)
+    public IActionResult editMenu(MenuCityViewModel model)
     {
-        if (menu.Id == 0)
+        Menu menu;
+        if (model.MenuId == 0)
         {
+            menu = new Menu
+            {
+                Name = model.MenuName,
+                City = new List<CityMenu>()
+            };
             _context.Menus.Add(menu);
         }
         else
         {
-            _context.Menus.Update(menu);
+            menu = _context.Menus.Include(x => x.City).FirstOrDefault(x => x.Id == model.MenuId);
+            menu.Name = model.MenuName;
+            menu.City.Clear();
         }
+
+        foreach (var city in model.Cities)
+        {
+            if (city.IsSelected)
+            {
+                menu.City.Add(new CityMenu { CityId = city.CityId });
+            }
+        }
+
         _context.SaveChanges();
         return RedirectToAction("addMenu");
     }
@@ -1001,7 +1033,7 @@ public class HomeController : Controller
 
     public IActionResult Listadmin()
     {
-        ViewBag.User = _context.Admins.OrderByDescending(x => x.Id).Include(x=>x.City).ToList();
+        ViewBag.User = _context.Admins.OrderByDescending(x => x.Id).Include(x => x.City).ToList();
         return View();
     }
 
@@ -1160,13 +1192,13 @@ public class HomeController : Controller
         HttpContext.Session.SetInt32("id", id);
         //get list city by userid
         ViewBag.listcities = _context.Cities.ToList();
-        ViewBag.City = _context.Admins.Include(x=>x.City).Where(x => x.Id == id).FirstOrDefault()?.City;
+        ViewBag.City = _context.Admins.Include(x => x.City).Where(x => x.Id == id).FirstOrDefault()?.City;
         return View();
     }
 
     public IActionResult ListCity()
     {
-        ViewBag.City = _context.Cities.Include(x=>x.Admins).Include(x=>x.Users).ToList();
+        ViewBag.City = _context.Cities.Include(x => x.Admins).Include(x => x.Users).ToList();
         return View();
     }
     public IActionResult AddCity(string CityName)

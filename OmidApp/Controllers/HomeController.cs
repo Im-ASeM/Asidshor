@@ -249,7 +249,8 @@ public class HomeController : Controller
     }
     public IActionResult Menus()
     {
-        ViewBag.ListMenus = db.Menus.ToList();
+        var userCityId = db.Users.Find(Convert.ToInt32(User.Identity.GetId())).CityId;
+        ViewBag.ListMenus = db.Menus.Include(x=>x.City).Where(m => m.City.Any(c=> c.CityId == userCityId)).ToList();
         return View();
     }
 
