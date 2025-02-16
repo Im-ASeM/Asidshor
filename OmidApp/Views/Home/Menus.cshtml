@@ -1,0 +1,80 @@
+<style>
+  img {
+    border: 5px;
+  }
+
+
+  .cta-text:hover {
+
+    transform: scale(1.1);
+    transition: 0.5s;
+
+
+    background-color: #d10d0dfa;
+
+  }
+</style>
+
+
+
+<div class="page-content-wrapper py-3 p-3">
+
+
+  <div class="container mt-3 ">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Dark Mode -->
+    <div class="container">
+
+
+      <div class=" row">
+
+        @foreach (Menu item in ViewBag.ListMenus)
+        {
+          <div class="container mt-3 " OnClick="redirect(@item.Id)">
+            <div class="cta-text p-2 p-lg-4" style="background: linear-gradient(to left,#64317e, #64317e) !important;">
+              <div class="row p-lg-2">
+                <div class="col-12">
+                  <h6 class="text-white m-3  text-center">@item.Name</h6>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        }
+
+        <br>
+
+      </div>
+
+
+
+
+
+    </div>
+    <!-- Internet Connection Status-->
+    <div class="internet-connection-status" id="internetStatus"></div>
+
+    <script>
+
+      function redirect(id) {
+        window.location.href = `/home/cat/${id}`;
+      }
+    </script>
+  </div>
+</div>

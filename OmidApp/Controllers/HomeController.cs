@@ -134,18 +134,19 @@ public class HomeController : Controller
     {
         // TODO: Your code here
         //   updateclaimAsync();
-          var id=User.Identity.GetId();
+        var id = User.Identity.GetId();
         //   var user=dbuser.ShowUser(Convert.ToInt32(id));
         //   ViewBag.tel=user.Phone;
         // var id = HttpContext.Session.GetString("id");
         var user = dbuser.ShowUser(Convert.ToInt32(id));
         var result = 0;
-        foreach(var walet in user.walets){
-            result += walet.variz ;
-            result -= walet.bardasht ;
+        foreach (var walet in user.walets)
+        {
+            result += walet.variz;
+            result -= walet.bardasht;
         }
         ViewBag.Walet = result;
-        ViewBag.Walets = user.walets.OrderByDescending(x=>x.Id);
+        ViewBag.Walets = user.walets.OrderByDescending(x => x.Id);
         return View();
     }
 
@@ -240,10 +241,15 @@ public class HomeController : Controller
     }
 
 
-    public IActionResult cat()
+    public IActionResult cat(int id)
     {
         //viewbag list category parentid =0 use  db
-        ViewBag.ListCategory = db.Categories.Where(a => a.ParentId == 0).ToList();
+        ViewBag.ListCategory = db.Categories.Where(a => a.ParentId == 0 && a.MenuId == id).ToList();
+        return View();
+    }
+    public IActionResult Menus()
+    {
+        ViewBag.ListMenus = db.Menus.ToList();
         return View();
     }
 
@@ -263,7 +269,7 @@ public class HomeController : Controller
             System.Console.WriteLine("mainservice id:" + id);
             HttpContext.Session.SetInt32("idcar", id);
         }
-
+        int MenuId = db.Categories.Find(id).MenuId.Value;
 
         ///session add idcar
 
@@ -271,13 +277,13 @@ public class HomeController : Controller
         //if services is null
         if (db.Services.Count() == 0)
         {
-            db.Services.Add(new Service { Srvicename = "موتور", Parentid = 0, Status = "فعال" });
-            db.Services.Add(new Service { Srvicename = "گیربکس", Parentid = 0, Status = "فعال" });
+            db.Services.Add(new Service { Srvicename = "موتور", Parentid = 0, Status = "فعال", MenuId = 1 });
+            db.Services.Add(new Service { Srvicename = "گیربکس", Parentid = 0, Status = "فعال", MenuId = 1 });
 
         }
 
         db.SaveChanges();
-        ViewBag.Services = db.Services.Where(x => x.Parentid == 0).ToList();
+        ViewBag.Services = db.Services.Where(x => x.Parentid == 0 && x.MenuId == MenuId).ToList();
 
 
 
@@ -315,20 +321,17 @@ public class HomeController : Controller
 
         var services = db.Services.Where(x => x.Parentid == serviceparentid).ToList();
         var prices = db.Prices.Where(p => p.carId == id.Value).ToDictionary(p => p.IdService, p => p.PriceValue);
-
+        List<Service> result = new List<Service>();
         foreach (var service in services)
         {
             if (prices.TryGetValue(service.Id, out int price))
             {
                 service.Price = price;
-            }
-            else
-            {
-                service.Price = 0;
-            }
+                if(price != 0) result.Add(service);
+            }            
         }
 
-        ViewBag.Services = services;
+        ViewBag.Services = result;
 
         var parentService = db.Services.Find(serviceparentid);
         if (parentService == null)

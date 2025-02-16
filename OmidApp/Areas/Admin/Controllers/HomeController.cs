@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using OmidApp.Models;
 using Extensions;
 using Infrastrcture.Migrations;
+using Microsoft.EntityFrameworkCore;
 
 [Area("Admin")]
 public class HomeController : Controller
@@ -453,6 +454,14 @@ public class HomeController : Controller
 
     public IActionResult addMenu()
     {
+        if (_context.Menus.Count() == 0)
+        {
+            _context.Menus.Add(new Menu { Name = "اسیدشویی فوری" });
+            _context.SaveChanges();
+            _context.Categories.Add(new Category { CatName = "خودروهای سبک", ParentId = 0, Status = "فعال", MenuId = 1 });
+            _context.Categories.Add(new Category { CatName = "خودروهای سنگین", ParentId = 0, Status = "فعال", MenuId = 1 });
+            _context.SaveChanges();
+        }
         ViewBag.Menu = _context.Menus.OrderByDescending(x => x.Id).ToList();
         return View();
     }
@@ -507,11 +516,11 @@ public class HomeController : Controller
         return RedirectToAction("addMenu");
     }
 
-    public IActionResult AddService(string Name , int MenuId , int ParentId)
+    public IActionResult AddService(string Name, int MenuId, int ParentId)
     {
         _context.Services.Add(new Service { Srvicename = Name, Parentid = 0, Status = "فعال", MenuId = MenuId });
         _context.SaveChanges();
-        return RedirectToAction("mainservice" , new {id = ParentId});
+        return RedirectToAction("mainservice", new { id = ParentId });
     }
 
 
@@ -992,7 +1001,7 @@ public class HomeController : Controller
 
     public IActionResult Listadmin()
     {
-        ViewBag.User = _context.Admins.OrderByDescending(x => x.Id).ToList();
+        ViewBag.User = _context.Admins.OrderByDescending(x => x.Id).Include(x=>x.City).ToList();
         return View();
     }
 
@@ -1129,42 +1138,58 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpPost]
-    public IActionResult AssignCityRegion(string CitytName)
-    {
-        //get userid from session
-        var UserId = HttpContext.Session.GetInt32("id");
+    // [HttpPost]
+    // public IActionResult AssignCityRegion(string CitytName)
+    // {
+    //     //get userid from session
+    //     var UserId = HttpContext.Session.GetInt32("id");
 
-        if (!_context.Cities.Any(x => x.CityName == CitytName && x.UserId == UserId))
-        {
-            _context.Cities.Add(new City { CityName = CitytName, UserId = UserId ?? 0 });
-            _context.SaveChanges();
+    //     if (!_context.Cities.Any(x => x.CityName == CitytName && x.UserId == UserId))
+    //     {
+    //         _context.Cities.Add(new City { CityName = CitytName, UserId = UserId ?? 0 });
+    //         _context.SaveChanges();
 
 
-        }
-        return RedirectToAction("AssignCityRegion", new { id = UserId });
-    }
+    //     }
+    //     return RedirectToAction("AssignCityRegion", new { id = UserId });
+    // }
     [HttpGet]
     public IActionResult AssignCityRegion(int id)
     {
         //id set session
         HttpContext.Session.SetInt32("id", id);
-        //get user by id
-        var user = _context.Users.Find(id);
         //get list city by userid
-        ViewBag.listcities = _context.Cities.Where(x => x.UserId == id).ToList();
+        ViewBag.listcities = _context.Cities.ToList();
+        ViewBag.City = _context.Admins.Include(x=>x.City).Where(x => x.Id == id).FirstOrDefault()?.City;
         return View();
     }
 
-    public IActionResult citydelete(int id)
+    public IActionResult ListCity()
     {
-        var city = _context.Cities.Find(id);
-        if (city != null)
+        ViewBag.City = _context.Cities.Include(x=>x.Admins).Include(x=>x.Users).ToList();
+        return View();
+    }
+    public IActionResult AddCity(string CityName)
+    {
+        if (!_context.Cities.Any(x => x.CityName == CityName))
         {
-            _context.Cities.Remove(city);
+            _context.Cities.Add(new City { CityName = CityName });
             _context.SaveChanges();
         }
-        return RedirectToAction("AssignCityRegion", new { id = HttpContext.Session.GetInt32("id") });
+        return RedirectToAction("ListCity");
+    }
+
+    public IActionResult CitySelect(int id)
+    {
+        int Userid = HttpContext.Session.GetInt32("id").Value;
+
+        var UserAdmin = _context.Admins.Find(Userid);
+        // id == 0 ? User.CityId = null : User.CityId = id;
+        UserAdmin.CityId = id == 0 ? null : id;
+        _context.Admins.Update(UserAdmin);
+        _context.SaveChanges();
+
+        return RedirectToAction("Listadmin");
     }
 
 

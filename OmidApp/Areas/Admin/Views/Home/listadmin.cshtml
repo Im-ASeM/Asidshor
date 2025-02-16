@@ -104,7 +104,16 @@
                                         </td>
                                         <td class="font-danger">
                                             <a href="/admin/home/AssignCityRegion/@item.Id"
-                                                class="btn btn-info form-control">اختصاص</a>
+                                                class="btn btn-info form-control">@{
+                                                    if(item.City == null)
+                                                    {
+                                                        <span>اختصاص</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@item.City.CityName</span>
+                                                    }
+                                                }</a>
 
 
                                         </td>

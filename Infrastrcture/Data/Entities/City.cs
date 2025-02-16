@@ -5,8 +5,7 @@ public class City
     [Key]
     public int Id { get; set; }
     public string CityName { get; set; }
-    public int UserId  { get; set; }
+    public List<User> Users { get; set; }
+    public List<Admin> Admins { get; set; }
 
-    
-   
 }

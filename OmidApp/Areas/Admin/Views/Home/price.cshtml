@@ -74,6 +74,7 @@
                                         <th>ردیف</th>
                                         <th>نام سرویس</th>
                                         <th>قیمت</th>
+                                        <th>حذف</th>
 
                                     </tr>
                                 </thead>
@@ -88,7 +89,11 @@
                                                 <td>@item.Srvicename</td>
                                                 <td>
                                                     <input type="hidden" name="ServiceIds" value="@item.Id" />
-                                                    <input type="text" class="form-control" name="Prices" value="@item.Price" />
+                                                    <input type="number" class="form-control" name="Prices" value="@item.Price" />
+                                                </td>
+                                                <td>
+                                                    <a href="/admin/services/servicedelete?id=@item.Id" class="btn btn-warning form-control"
+                                                onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف </a>
                                                 </td>
                                             </tr>
                                             i++;

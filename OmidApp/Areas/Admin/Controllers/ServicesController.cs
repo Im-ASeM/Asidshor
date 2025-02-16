@@ -84,9 +84,10 @@ public class ServicesController : Controller
   public IActionResult servicedelete(int id)
   {
     //delete
-    _context.Services.Remove(_context.Services.Find(id));
+    var check = _context.Services.Find(id);
+    _context.Services.Remove(check);
     _context.SaveChanges();
-    return RedirectToAction("service", new { id = Convert.ToInt32(HttpContext.Session.GetInt32("id")), meesage = "خدمت با موفقیت حذف شد" });
+    return RedirectToAction("price", "home", new { serviceparentid = check.Parentid });
   }
 
 

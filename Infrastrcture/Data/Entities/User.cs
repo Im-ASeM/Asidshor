@@ -16,6 +16,8 @@ public class User
     public int free { get; set; }
     public string? description { get; set; }
     public int use { get; set; }
+    public int CityId { get; set; }
+    public City City { get; set; }
 
     public ICollection<WaletNew> walets { get; set; }
 

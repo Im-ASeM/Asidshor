@@ -201,20 +201,20 @@
                             <li><a class="sidebar-header" href="/admin/home/inWalet"><i data-feather="home"></i><span>تراکنش
                                         تعمیرگاه ها </span></a></li>
                         }
-                        @if (User.FindFirst("Role").Value == "admin")
+                        @* @if (User.FindFirst("Role").Value == "admin")
                         {
                             <li><a class="sidebar-header" href="/admin/home/category"><i data-feather="home"></i><span>دسته
                                         بندی </span></a></li>
-                        }
+                        } *@
 
 
-                        @if (User.FindFirst("Role").Value == "admin")
+                        @* @if (User.FindFirst("Role").Value == "admin")
                         {
                             <li><a class="sidebar-header" href="/admin/services/index"><i
                                         data-feather="user-plus"></i><span> سرویس ها </span></a>
 
                             </li>
-                        }
+                        } *@
                         <li><a class="sidebar-header" href="/admin/home/request"><i data-feather="user-plus"></i><span>
                                     درخواست ها
                                     @if (num != 0)
@@ -228,6 +228,10 @@
                             {
                             <li><a class="sidebar-header" href="/admin/home/listadmin"><i data-feather="chrome"></i><span>
                                         تعریف مدیران </span></a>
+
+                            </li>
+                            <li><a class="sidebar-header" href="/admin/home/listCity"><i data-feather="chrome"></i><span>
+                                        تعریف شهر ها </span></a>
 
                             </li>
                         }

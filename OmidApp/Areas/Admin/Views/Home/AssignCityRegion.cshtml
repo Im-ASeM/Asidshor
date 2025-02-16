@@ -1,106 +1,103 @@
 <style>
-    th, td, tr {
+    th,
+    td,
+    tr {
         padding: 5px;
         text-align: center !important;
     }
 </style>
-        <div class="page-body " >
+<div class="page-body ">
 
-           
 
- <div class="container-fluid">
-                <div class="page-header">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="page-header-left">
-                                <h3>داشبورد
-                                    
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <ol class="breadcrumb pull-right">
-                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
-                                <li class="breadcrumb-item active">داشبورد</li>
-                            </ol>
-                        </div>
+
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-left">
+                        <h3>داشبورد
+
+                        </h3>
                     </div>
                 </div>
+                <div class="col-lg-6">
+                    <ol class="breadcrumb pull-right">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item active">داشبورد</li>
+                    </ol>
+                </div>
             </div>
+        </div>
+    </div>
 
 
 
 
-                 
-                    <div class="col-xl-12 xl-100 mt-7">
-                        
-                        <div class="card">
-                            <div class="card-header">
-                         
-                           <div class="text-center mt-7 row   ">
+
+    <div class="col-xl-12 xl-100 mt-7">
+
+        <div class="card">
+            <div class="card-header">
+
+                <div class="text-center mt-7 row   ">
 
 
-                           @* add car to categoris *@
+                    @* add car to categoris *@
 
-                            <form action="/admin/home/AssignCityRegion" method="post" class="col-12">
-                                   <div class="row justify-content-center  p-3" >
+                    <h5 class="text-center">شهر انتخاب شده : @{
+                        if (ViewBag.City != null)
+                        {
+                            <span>@ViewBag.City.CityName</span>
+                        }
+                        else
+                        {
+                            <span>شهری انتخاب نشده است</span>
+                        }
+                                                }
+                    </h5>
 
-                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
-                                                <input name="CitytName" class="form-control" type="text" placeholder="نام شهر یا منطقه"  required>
-                                            
+                    @* create table show list car row  car name  and edit and delete *@
 
-                                            </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ردیف</th>
+                                    <th>نام شهر یا منطقه</th>
 
-                                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
-                                                <button type="submit" class="btn btn-primary form-control"> اضافه کردن </button>
+                                    <th>انتخاب</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>-</td>
+                                    <td>بدون شهر</td>
+                                    <td><a href="/admin/home/citySelect?id=0" class="btn btn-danger"
+                                            onclick="return confirm('ایا از انتخاب مطمئن هستید ')">انتخاب</a></td>
+                                </tr>
+                                @foreach (var item in ViewBag.listcities)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.CityName</td>
+                                        <td><a href="/admin/home/citySelect?id=@item.Id" class="btn btn-danger"
+                                                onclick="return confirm('ایا از انتخاب مطمئن هستید ')">انتخاب</a></td>
+                                    </tr>
+                                }
 
-                                            </div>
-                                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1">
-                                                <a href="/admin/home/listadmin" class="btn btn-secondary form-control">بازگشت</a>
-                                            </div>
-                                            
+                            </tbody>
 
-                                    </div>
-                               </form>
-                                      
+                        </table>
 
-                       @* create table show list car row  car name  and edit and delete *@
-
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ردیف</th>
-                                            <th>نام شهر یا منطقه</th>
-                                        
-                                            <th>حذف</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in ViewBag.listcities)
-                                        {   
-                                            <tr>
-                                                <td>@item.Id</td>
-                                                <td>@item.CityName</td>
-                                                  <td><a href="/admin/home/citydelete?id=@item.Id" class="btn btn-danger" onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف</a></td>
-                                            </tr>
-                                        }
-
-                                    </tbody>
-
-                                </table>
-
-                            </div>
-
-
-                           
-                           
-
-                     </div>
-
-                            </div>
-                        </div>
-                        
                     </div>
 
-  
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>

@@ -44,9 +44,22 @@
 
         <div class="card">
 
-            <a href="/admin/home/editMenu" class="btn btn-info">
-                افزودن منوی جدید
-            </a>
+            <form action="/admin/home/AddCity" method="post" class="col-12">
+                <div class="row justify-content-center  p-3">
+
+                    <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                        <input name="CityName" class="form-control" type="text"
+                            placeholder=" نام شهر جدید را وارد کنید  " required>
+                    </div>
+
+                    <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                        <button type="submit" class="btn btn-primary form-control"> اضافه کردن </button>
+
+                    </div>
+
+                </div>
+            </form>
+
             <div class="card-body">
                 <div class="user-status table-responsive latest-order-table">
                     <table class="table table-bordernone">
@@ -54,8 +67,9 @@
 
                             <tr>
                                 <td scope="col">ردیف</td>
-                                <td scope="col">نام منو</td>
-                                <td scope="col">افزودن و ویرایش دسته بندی ها</td>
+                                <td scope="col">نام شهر</td>
+                                <td scope="col">ادمین مربوطه</td>
+                                <td scope="col">تعداد کاربر</td>
                                 <td scope="col">ویرایش</td>
                                 <td scope="col">حذف</td>
                             </tr>
@@ -63,35 +77,42 @@
 
                         </thead>
                         <tbody>
-                            @if (ViewBag.Menu != null)
+                            @if (ViewBag.City != null)
                             {
                                 int i = 1;
-                                @foreach (var item in ViewBag.Menu)
+                                @foreach (City item in ViewBag.City)
                                 {
                                     <tr>
                                         <td>@i</td>
-                                        <td class="font-danger">@item.Name </td>
-                                       
-                                        <td class="font-danger">
-                                            <a href="/admin/home/category/@item.Id" class="btn btn-warning form-control"> دسته بندی ها
-                                            </a>
-                                        </td>
+                                        <td class="font-danger">@item.CityName </td>
 
                                         <td class="font-danger">
-                                            <a href="/admin/home/editMenu/@item.Id" class="btn btn-warning form-control">ویرایش
-                                            </a>
-                                        </td>
-
-                                        <td class="font-danger">
-                                            @if (@item.Id == 1)
+                                            @if (item.Admins.Count == 0)
                                             {
-                                                <a href="" class="btn btn-danger form-control disabled"
-                                                    onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف </a>
+                                                <span>ندارد</span>
                                             }
-                                            else{
-                                            <a href="/admin/home/DeleteMenu/@item.Id" class="btn btn-warning form-control"
+                                            else
+                                            {
+                                                @foreach (Admin admin in item.Admins)
+                                                {
+                                                    <span>[@admin.NameFamily] </span>
+                                                }
+                                            }
+                                        </td>
+
+                                        <td class="font-danger">
+                                            @item.Users.Count کاربر
+                                        </td>
+                                        <td class="font-danger">
+                                            <a href="/admin/home/editCity/@item.Id" class="btn btn-warning form-control">ویرایش
+                                            </a>
+                                        </td>
+
+                                        <td class="font-danger">
+
+                                            <a href="/admin/home/DeleteCity/@item.Id" class="btn btn-warning form-control"
                                                 onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف </a>
-                                            }
+
                                         </td>
 
 
