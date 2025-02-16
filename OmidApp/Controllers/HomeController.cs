@@ -373,17 +373,18 @@ public class HomeController : Controller
                 //get id  NameIdentifier, quser.Id.ToString()),
                 var id = User.Identity.GetId();
                 Request.UserId = Convert.ToInt32(id);
-                //car name get seeionidcar quesry
 
+                //car name get seeionidcar quesry
                 var category = db.Categories.Find(idcar.Value);
                 Request.CarName = category.CatName;
+                Request.MenuId = category.MenuId.Value;
+
                 //find parendname one model data
                 var parentService = db.Services.Find(model.SelectedServices[0]).Parentid;
                 Request.ParentServiceName = db.Services.Find(parentService).Srvicename;
                 Request.Description = "";
                 db.Requests.Add(Request);
                 db.SaveChanges();
-
             }
 
             // Here you can process the selected service IDs

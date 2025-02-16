@@ -472,7 +472,7 @@ public class HomeController : Controller
             int Userid = Convert.ToInt32(User.Identity.GetId());
             var UserAdmin = _context.Admins.Find(Userid);
 
-            ViewBag.Menu = _context.Menus.Include(x=>x.City).Where(x=>x.City.Any(c=>c.CityId == UserAdmin.CityId)).OrderByDescending(x => x.Id).ToList();
+            ViewBag.Menu = _context.Menus.Include(x => x.City).Where(x => x.City.Any(c => c.CityId == UserAdmin.CityId)).OrderByDescending(x => x.Id).ToList();
         }
         return View();
     }
@@ -797,7 +797,16 @@ public class HomeController : Controller
 
     public IActionResult Request(int page = 1, int pageSize = 10)
     {
-        var requests = _context.Requests.OrderByDescending(x => x.Id).ToList();
+        var q = _context.Requests.AsEnumerable();
+        if (User.FindFirst("Role").Value != "admin")
+        {
+            var id = Convert.ToInt32(User.Identity.GetId());
+            var admin = _context.Admins.Include(x => x.City).ThenInclude(x => x.Menu).FirstOrDefault(x => x.Id == id);
+            q = q.Where(x => admin.City.Menu.Any(m => m.MenuId == x.MenuId));
+        }
+
+        var requests = q.OrderByDescending(x => x.Id).ToList();
+
         var requestModels = new List<RequestModel>();
 
         foreach (var request in requests)
@@ -1234,15 +1243,5 @@ public class HomeController : Controller
 
         return RedirectToAction("Listadmin");
     }
-
-
-
-
-
-
-
-
-
-
 }
 

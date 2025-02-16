@@ -11,7 +11,7 @@ public class Request
     public string CarName { get; set; }
     public string ParentServiceName { get; set; }
     public string Description { get; set; }
-
+    public int MenuId { get; set; }
     public bool Mony { get; set; }
 
 
