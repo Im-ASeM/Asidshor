@@ -122,6 +122,29 @@ namespace Infrastrcture.Migrations
                     b.ToTable("Cities");
                 });
 
+            modelBuilder.Entity("CityMenu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("CityMenu");
+                });
+
             modelBuilder.Entity("Device", b =>
                 {
                     b.Property<int>("Id")
@@ -444,6 +467,25 @@ namespace Infrastrcture.Migrations
                     b.Navigation("Menu");
                 });
 
+            modelBuilder.Entity("CityMenu", b =>
+                {
+                    b.HasOne("City", "City")
+                        .WithMany("Menu")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Menu", "Menu")
+                        .WithMany("City")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Menu");
+                });
+
             modelBuilder.Entity("Orders", b =>
                 {
                     b.HasOne("Request", "Request")
@@ -499,7 +541,14 @@ namespace Infrastrcture.Migrations
                 {
                     b.Navigation("Admins");
 
+                    b.Navigation("Menu");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Menu", b =>
+                {
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("Request", b =>

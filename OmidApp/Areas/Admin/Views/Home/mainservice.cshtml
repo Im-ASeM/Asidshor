@@ -39,26 +39,30 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="text-center">سرویس ها</h5>
-                <form action="/admin/home/AddService" method="post" class="col-12">
-                    <div class="row justify-content-center  p-3">
+                @if (User.FindFirst("Role").Value == "admin")
+                {
 
-                        <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
-                            <input name="Name" class="form-control" type="text"
-                                placeholder=" نام دسته سرویس جدید را وارد کنید  " required>
+                    <form action="/admin/home/AddService" method="post" class="col-12">
+                        <div class="row justify-content-center  p-3">
+
+                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                <input name="Name" class="form-control" type="text"
+                                    placeholder=" نام دسته سرویس جدید را وارد کنید  " required>
+                            </div>
+
+                            <input name="MenuId" class="form-control " style="display:none" type="text"
+                                value="@ViewBag.Parent.MenuId" required>
+                            <input name="ParentId" class="form-control " style="display:none" type="text"
+                                value="@ViewBag.Parent.Id" required>
+
+                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                                <button type="submit" class="btn btn-primary form-control"> اضافه کردن </button>
+
+                            </div>
+
                         </div>
-
-                        <input name="MenuId" class="form-control " style="display:none" type="text"
-                            value="@ViewBag.Parent.MenuId" required>
-                        <input name="ParentId" class="form-control " style="display:none" type="text"
-                            value="@ViewBag.Parent.Id" required>
-
-                        <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
-                            <button type="submit" class="btn btn-primary form-control"> اضافه کردن </button>
-
-                        </div>
-
-                    </div>
-                </form>
+                    </form>
+                }
                 <div class="text-center mt-7 row   ">
                     @foreach (var item in ViewBag.Services)
                     {

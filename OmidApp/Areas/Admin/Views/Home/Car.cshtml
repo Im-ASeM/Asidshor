@@ -1,111 +1,117 @@
 <style>
-    th, td, tr {
+    th,
+    td,
+    tr {
         padding: 5px;
         text-align: center !important;
     }
 </style>
-        <div class="page-body " >
+<div class="page-body ">
 
-           
 
- <div class="container-fluid">
-                <div class="page-header">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="page-header-left">
-                                <h3>داشبورد
-                                    
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <ol class="breadcrumb pull-right">
-                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
-                                <li class="breadcrumb-item active">داشبورد</li>
-                            </ol>
-                        </div>
+
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-left">
+                        <h3>داشبورد
+
+                        </h3>
                     </div>
                 </div>
+                <div class="col-lg-6">
+                    <ol class="breadcrumb pull-right">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item active">داشبورد</li>
+                    </ol>
+                </div>
             </div>
+        </div>
+    </div>
 
 
 
 
-                 
-                    <div class="col-xl-12 xl-100 mt-7">
-                        
-                        <div class="card">
-                            <div class="card-header">
-                          <h5 class="text-center">  دسته  @ViewBag.catname  </h5>
-                           <div class="text-center mt-7 row   ">
+
+    <div class="col-xl-12 xl-100 mt-7">
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center"> دسته @ViewBag.catname </h5>
+                <div class="text-center mt-7 row   ">
 
 
-                           @* add car to categoris *@
+                    @* add car to categoris *@
 
-                            <form action="/admin/home/addcar" method="post" class="col-12">
-                                   <div class="row justify-content-center  p-3" >
-
-                                            <div class="col-xxl-7 col-lg-7 col-xl-7 col-md-7 col-12 mb-3 ">
-                                                <a href="/admin/home/DeleteCategory/@ViewBag.id" class="btn btn-warning form-control"
-                                                onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف دسته بندی</a>
-                                            </div>
-                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
-                                                <input name="CatName" class="form-control" type="text" placeholder=" نام خودرو رو وارد کنید  "  required>
-                                            
-
-                                            </div>
-
-                                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
-                                                <button type="submit" class="btn btn-primary form-control"> اضافه کردن </button>
-
-                                            </div>
-                                            
+                    <form action="/admin/home/addcar" method="post" class="col-12">
+                        <div class="row justify-content-center  p-3">
+                            @if (User.FindFirst("Role").Value == "admin")
+                            {
+                                <div class="col-xxl-7 col-lg-7 col-xl-7 col-md-7 col-12 mb-3 ">
+                                    <a href="/admin/home/DeleteCategory/@ViewBag.id" class="btn btn-warning form-control"
+                                        onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف دسته بندی</a>
+                                </div>
+                            }
+                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                <input name="CatName" class="form-control" type="text"
+                                    placeholder=" نام خودرو رو وارد کنید  " required>
 
 
-                                    </div>
-                               </form>
-                                      
+                            </div>
 
-                       @* create table show list car row  car name  and edit and delete *@
-
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ردیف</th>
-                                            <th>نام خودرو</th>
-                                            <th>لیست خدمات</th>
-                                            <th>ویرایش</th>
-                                            <th>حذف</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in ViewBag.listcars)
-                                        {   
-                                            <tr>
-                                                <td>@item.Id</td>
-                                                <td>@item.CatName</td>
-                                                <td><a href="/admin/home/mainservice/@item.Id" class="btn btn-primary">لیست خدمات</a></td>
-                                                <td><a href="/admin/home/editCar?id=@item.Id" class="btn btn-primary">ویرایش</a></td>
-                                                <td><a href="/admin/home/catdelete?id=@item.Id" class="btn btn-danger" onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف</a></td>
-                                            </tr>
-                                        }
-
-                                    </tbody>
-
-                                </table>
+                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                                <button type="submit" class="btn btn-primary form-control"> اضافه کردن </button>
 
                             </div>
 
 
-                           
-                           
 
-                     </div>
-
-                            </div>
                         </div>
-                        
+                    </form>
+
+
+                    @* create table show list car row  car name  and edit and delete *@
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ردیف</th>
+                                    <th>نام خودرو</th>
+                                    <th>لیست خدمات</th>
+                                    <th>ویرایش</th>
+                                    <th>حذف</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.listcars)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.CatName</td>
+                                        <td><a href="/admin/home/mainservice/@item.Id" class="btn btn-primary">لیست
+                                                خدمات</a></td>
+                                        <td><a href="/admin/home/editCar?id=@item.Id" class="btn btn-primary">ویرایش</a>
+                                        </td>
+                                        <td><a href="/admin/home/catdelete?id=@item.Id" class="btn btn-danger"
+                                                onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف</a></td>
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
                     </div>
 
-  
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>

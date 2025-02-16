@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastrcture.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20241023214136_three")]
-    partial class three
+    [Migration("20250216180156_ok")]
+    partial class ok
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,9 @@ namespace Infrastrcture.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("NameFamily")
                         .HasColumnType("nvarchar(max)");
@@ -50,6 +53,8 @@ namespace Infrastrcture.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
 
                     b.ToTable("Admins");
                 });
@@ -87,6 +92,9 @@ namespace Infrastrcture.Migrations
                     b.Property<string>("CatName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MenuId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ParentId")
                         .HasColumnType("int");
 
@@ -94,6 +102,8 @@ namespace Infrastrcture.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
 
                     b.ToTable("Categories");
                 });
@@ -109,12 +119,32 @@ namespace Infrastrcture.Migrations
                     b.Property<string>("CityName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("CityMenu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("CityMenu");
                 });
 
             modelBuilder.Entity("Device", b =>
@@ -137,6 +167,22 @@ namespace Infrastrcture.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Devices");
+                });
+
+            modelBuilder.Entity("Menu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Menus");
                 });
 
             modelBuilder.Entity("Orders", b =>
@@ -248,6 +294,9 @@ namespace Infrastrcture.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("MenuId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Parentid")
                         .HasColumnType("int");
 
@@ -258,6 +307,8 @@ namespace Infrastrcture.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
 
                     b.ToTable("Services");
                 });
@@ -292,6 +343,9 @@ namespace Infrastrcture.Migrations
                     b.Property<string>("Cart")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Code")
                         .HasColumnType("int");
 
@@ -324,6 +378,8 @@ namespace Infrastrcture.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
 
                     b.ToTable("Users");
                 });
@@ -395,6 +451,43 @@ namespace Infrastrcture.Migrations
                     b.ToTable("waletNews");
                 });
 
+            modelBuilder.Entity("Admin", b =>
+                {
+                    b.HasOne("City", "City")
+                        .WithMany("Admins")
+                        .HasForeignKey("CityId");
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("Category", b =>
+                {
+                    b.HasOne("Menu", "Menu")
+                        .WithMany()
+                        .HasForeignKey("MenuId");
+
+                    b.Navigation("Menu");
+                });
+
+            modelBuilder.Entity("CityMenu", b =>
+                {
+                    b.HasOne("City", "City")
+                        .WithMany("Menu")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Menu", "Menu")
+                        .WithMany("City")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Menu");
+                });
+
             modelBuilder.Entity("Orders", b =>
                 {
                     b.HasOne("Request", "Request")
@@ -415,6 +508,26 @@ namespace Infrastrcture.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Service", b =>
+                {
+                    b.HasOne("Menu", "Menu")
+                        .WithMany()
+                        .HasForeignKey("MenuId");
+
+                    b.Navigation("Menu");
+                });
+
+            modelBuilder.Entity("User", b =>
+                {
+                    b.HasOne("City", "City")
+                        .WithMany("Users")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+                });
+
             modelBuilder.Entity("WaletNew", b =>
                 {
                     b.HasOne("User", "User")
@@ -424,6 +537,20 @@ namespace Infrastrcture.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("City", b =>
+                {
+                    b.Navigation("Admins");
+
+                    b.Navigation("Menu");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Menu", b =>
+                {
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("Request", b =>

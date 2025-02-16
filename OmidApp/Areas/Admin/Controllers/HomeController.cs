@@ -462,7 +462,18 @@ public class HomeController : Controller
             _context.Categories.Add(new Category { CatName = "خودروهای سنگین", ParentId = 0, Status = "فعال", MenuId = 1 });
             _context.SaveChanges();
         }
-        ViewBag.Menu = _context.Menus.OrderByDescending(x => x.Id).ToList();
+        if (User.FindFirst("Role").Value == "admin")
+        {
+            ViewBag.Menu = _context.Menus.OrderByDescending(x => x.Id).ToList();
+        }
+        else
+        {
+            // int Userid = HttpContext.Session.GetInt32("id").Value;
+            int Userid = Convert.ToInt32(User.Identity.GetId());
+            var UserAdmin = _context.Admins.Find(Userid);
+
+            ViewBag.Menu = _context.Menus.Include(x=>x.City).Where(x=>x.City.Any(c=>c.CityId == UserAdmin.CityId)).OrderByDescending(x => x.Id).ToList();
+        }
         return View();
     }
     public IActionResult editMenu(int? id)

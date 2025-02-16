@@ -7,5 +7,5 @@ public class City
     public string CityName { get; set; }
     public List<User> Users { get; set; }
     public List<Admin> Admins { get; set; }
-
+    public List<CityMenu> Menu { get; set; }
 }

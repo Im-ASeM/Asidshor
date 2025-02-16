@@ -2,5 +2,5 @@ public class Menu
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    
+    public List<CityMenu> City { get; set; }
 }
