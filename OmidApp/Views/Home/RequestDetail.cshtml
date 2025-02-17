@@ -3,12 +3,6 @@
 <div class="page-content-wrapper">
     <div class="page-content mt-3" style="margin-top: 7px !important;">
         <div class="container mt-4 card p-3">
-
-
-           
-
-
-
             <h2 class="text-center mb-4">پیش فاکتور</h2>
             
             <div class="row">
@@ -32,33 +26,33 @@
                 <table class="table table-bordered table-striped">
                     <thead class="thead-light">
                         <tr>
-                            <th>ردیف</th>
-                            <th>نام سرویس</th>
-                            <th>قیمت (ریال)</th>
+                            <th class="text-white">ردیف</th>
+                            <th class="text-white">نام سرویس</th>
+                            <th class="text-white">قیمت (ریال)</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var (order, index) in Model.Orders.Select((o, i) => (o, i + 1)))
                         {
                             <tr>
-                                <td>@index</td>
-                                <td>@order.ChildServiceName</td>
-                                <td>@order.Price.ToString("N0")</td>
+                                <td class="text-white">@index</td>
+                                <td class="text-white">@order.ChildServiceName</td>
+                                <td class="text-white">@order.Price.ToString("N0")</td>
                             </tr>
                         }
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2" class="text-right"><strong>مجموع کل:</strong></td>
-                            <td><strong>@Model.TotalPrice.ToString("N0")</strong></td>
+                            <td colspan="2" class="text-right text-white"><strong>مجموع کل:</strong></td>
+                            <td class="text-white"><strong>@Model.TotalPrice.ToString("N0")</strong></td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
 
             <div class="form-group mt-4">
-                <label for="additionalDescription">توضیحات اضافی:</label>
-                <textarea id="additionalDescription" class="form-control" rows="3">@Model.Request.Description</textarea>
+                <label for="additionalDescription" class="text-white">توضیحات اضافی:</label>
+                <textarea id="additionalDescription" class="form-control text-black" rows="3">@Model.Request.Description</textarea>
             </div>
 
             @if(Model.Request.Status == "پیش فاکتور")

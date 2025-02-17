@@ -47,7 +47,8 @@ html {
   font-family:iransans;
   
   overflow-x: hidden;
-  background-color: #da8bd3e7;
+  background-color: #EEEEEE;
+  /* بکگراند */
   scrollbar-width: thin;
   padding-left: 0 !important;
   letter-spacing: -0.5px;
@@ -297,8 +298,9 @@ textarea:invalid {
 }
 
 .btn-success {
-  background-color: #d182fa;
+  background-color: #393E46;
 
+  /* دکمه مشاهده */
 }
 
 .btn-info {
@@ -363,7 +365,8 @@ textarea:invalid {
   -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   border-radius: 6px;
-  background-color: #cd0450;
+  background-color: #222831;
+  /* پسزمینه کارت */
 }
 
 
@@ -4119,10 +4122,11 @@ li.suha-dropdown-menu .dropdown-trigger-btn.active i {
 .cta-text {
   position: relative;
   z-index: 1;
-  background: #e52d27;
-  background: -webkit-gradient(linear, right top, left top, from(#b31217), to(#ea4c62));
-  background: -o-linear-gradient(right, #b31217, #ea4c62);
-  background: linear-gradient(to left,#cd0450, #cd0450);
+  background: #00ADB5;
+  /* دکمه */
+  background: -webkit-gradient(linear, right top, left top, from(#393E46), to(#00ADB5));
+  background: -o-linear-gradient(right, #393E46, #00ADB5);
+  background: linear-gradient(to left,#393E46, #00ADB5);
   overflow: hidden;
   border-radius: 6px;
 }
@@ -4539,11 +4543,11 @@ li.suha-dropdown-menu .dropdown-trigger-btn.active i {
 
 /* Night Mode */
 [theme-color=dark] {
-  background-color: #270724e7;
+  background-color: #222831;
 }
 [theme-color=dark] body,
 [theme-color=dark] #preloader {
-  background-color: #270724e7;
+  background-color: #222831;
 }
 [theme-color=dark] a,
 [theme-color=dark] a:hover,
@@ -4563,7 +4567,7 @@ li.suha-dropdown-menu .dropdown-trigger-btn.active i {
 }
 [theme-color=dark] .card {
  
-  background-color: #cd0450;
+  background-color: #393E46;
 }
 [theme-color=dark] .border,
 [theme-color=dark] .border-start,
@@ -4671,7 +4675,7 @@ li.suha-dropdown-menu .dropdown-trigger-btn.active i {
 }
 [theme-color=dark] .form-control {
   border-color: rgba(255, 255, 255, 0.1);
-  background-color:#d182fa;
+  background-color:#222831;
   color: #ffffff;
 }
 [theme-color=dark] .product-catagories a {
