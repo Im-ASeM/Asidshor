@@ -5,15 +5,15 @@
   
 
 
-<div class="container mt-4 card p-3" style="background-color: #393E46;">
+<div class="container mt-4 card p-3" style="">
     <form id="serviceForm" action="/home/ProcessSelectedServices" method="post">
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th class="text-white">انتخاب</th>
-                        <th class="text-white">نام سرویس</th>
-                        <th class="text-white">قیمت (ریال)</th>
+                        <th class="">انتخاب</th>
+                        <th class="">نام سرویس</th>
+                        <th class="">قیمت (ریال)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,17 +21,17 @@
                     {
                         
                         <tr>
-                            <td class="text-white">
+                            <td class="">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="SelectedServices" value="@item.Id" id="service-@item.Id">
                                 </div>
                             </td>
-                            <td class="text-white">
+                            <td class="">
                                 <label class="form-check-label" for="service-@item.Id">
                                     @item.Srvicename
                                 </label>
                             </td>
-                            <td class="text-white">@item.Price.ToString("N0")</td>
+                            <td class="">@item.Price.ToString("N0")</td>
                         </tr>
                     }
                 </tbody>

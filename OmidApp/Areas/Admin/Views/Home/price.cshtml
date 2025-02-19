@@ -37,16 +37,19 @@
 
         <div class="card">
             <div class="card-header">
-                <h5 class="text-center">سرویس های خودرو @ViewBag.carname بخش @ViewBag.Srvicename</h5>
+                <h5 class="text-center">سرویس های @ViewBag.carname بخش @ViewBag.Srvicename</h5>
                 <div class="col-12">
                     <form action="/admin/services/addserviceme" method="post" class="col-12">
                         <div class="row justify-content-center  p-3">
 
+                            <div class="col-xxl-7 col-lg-7 col-xl-7 col-md-7 col-12 mb-3 ">
+                                <a href="/admin/home/DeleteService/@ViewBag.id" class="btn btn-warning form-control"
+                                    onclick="return confirm('ایا از حذف مطمئن هستید ')">حذف @ViewBag.Srvicename</a>
+                            </div>
+
                             <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
                                 <input name="Servicename" class="form-control" type="text"
-                                    placeholder=" نام سرویس  رو وارد کنید  " required>
-
-
+                                    placeholder=" نام را انتخاب کنید  " required>
                             </div>
 
                             <input name="id" class="form-control " style="display:none" type="text" value="@ViewBag.id">
@@ -67,7 +70,7 @@
 
                     <form method="post" action="/Admin/Home/SavePrices">
 
-                        <div class="table-responsive">
+                        <div class="table-responsive latest-order-table">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>

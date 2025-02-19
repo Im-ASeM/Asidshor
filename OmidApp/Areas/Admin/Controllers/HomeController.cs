@@ -1216,6 +1216,19 @@ public class HomeController : Controller
         return View();
     }
 
+    // deleteCity
+    public IActionResult DeleteCity(int Id)
+    {
+        var city = _context.Cities.Include(x => x.Admins).FirstOrDefault(x => x.Id == Id);
+        if (city != null)
+        {
+            _context.Cities.Remove(city);
+            _context.SaveChanges();
+
+        }
+        return RedirectToAction("ListCity");
+    }
+
     public IActionResult ListCity()
     {
         ViewBag.City = _context.Cities.Include(x => x.Admins).Include(x => x.Users).ToList();
