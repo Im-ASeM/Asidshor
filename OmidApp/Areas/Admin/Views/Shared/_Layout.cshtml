@@ -63,7 +63,8 @@
             <div class="main-header-right row">
                 <div class="main-header-left d-lg-none">
                     <div class="logo-wrapper"><a href="#">
-                            <img class="blur-up lazyloaded" src="/img/core-img/logo-small.png" alt="" style="width: 50px; height: auto;">
+                            <img class="blur-up lazyloaded" src="/img/core-img/logo-small.png" alt=""
+                                style="width: 50px; height: auto;">
                         </a>
                     </div>
 
@@ -246,21 +247,30 @@
 
                             </li>
                         }
+
+
+                        <li>
+                            <a class="sidebar-header" href="/admin/home/CardOfBanks"><i
+                                    data-feather="bar-chart"></i><span>اضافه کردن کارت بانکی </span>
+                            </a>
+                        </li>
                         @if (User.FindFirst("Role").Value == "admin")
                         {
-                            @* <li><a class="sidebar-header" href="/admin/home/paystatus"><i
-                                        data-feather="bar-chart"></i><span>وضعیت تراکنش ها </span></a></li> *@
                             <li>
-                                <a class="sidebar-header" href="/admin/home/CardOfBanks"><i
-                                        data-feather="bar-chart"></i><span>اضافه کردن کارت بانکی </span>
+                                <a class="sidebar-header" href="/admin/home/AddMenu">
+                                    <i data-feather="user-plus"></i><span>افزودن منو</span>
                                 </a>
                             </li>
                         }
-                        <li>
-                            <a class="sidebar-header" href="/admin/home/AddMenu">
-                                <i data-feather="user-plus"></i><span>افزودن منو</span>
-                            </a>
-                        </li>
+                        else
+                        {
+                            <li>
+                                <a class="sidebar-header" href="/admin/home/AddMenu">
+                                    <i data-feather="user-plus"></i><span>ویرایش منو</span>
+                                </a>
+                            </li>
+                        }
+
                         @* <li><a class="sidebar-header" href="/admin/home/setting"><i
                         data-feather="settings"></i><span>تنظیمات</span></a>
 
