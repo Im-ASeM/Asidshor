@@ -63,15 +63,16 @@
                     {
                         //div center text
 
-                        <div class="text-center xpl-xl-4 col-lg-4 col-md-4 col-lg-4 col-12  mt-7  " style="margin-top:15px">
-
-                            <a href="/admin/home/car?id=@item.Id "
-                                class="btn btn-primary m-1 form-control ">@item.CatName</a>
-
+                        <div class="text-center xpl-xl-4 col-lg-4 col-md-4 col-lg-4 col-12 mt-7" style="margin-top:15px">
+                            <a href="/admin/home/car?id=@item.Id" class="btn btn-primary mt-1 ml-1 mr-1 mb-0 form-control">
+                                @item.CatName
+                            </a>
+                            <a href="/admin/home/DeleteCategory/@item.Id" class="btn btn-danger m-1 form-control"
+                                onclick="return confirm('آیا از حذف مطمئن هستید؟')">
+                                حذف @item.CatName
+                            </a>
                         </div>
-
                     }
-
                 </div>
 
             </div>

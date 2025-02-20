@@ -26,6 +26,18 @@ public class HomeController : Controller
         dbWalet = _dbWalet;
         this._context = _context;
     }
+
+    public IActionResult DeleteService(int Id, int returnId)
+    {
+        var service = _context.Services.Find(Id);
+        if (service != null)
+        {
+            _context.Services.Remove(service);
+            _context.SaveChanges();
+        }
+        return RedirectToAction("mainservice", new { Id = returnId });
+    }
+
     public IActionResult ShowWalet(int id, string txt)
     {
         if (txt != null)
@@ -531,6 +543,10 @@ public class HomeController : Controller
         var menu = _context.Menus.Find(id);
         if (menu != null)
         {
+            var categories = _context.Categories.Where(x => x.MenuId == id).ToList();
+            var services = _context.Services.Where(x => x.MenuId == id).ToList();
+            _context.Services.RemoveRange(services);
+            _context.Categories.RemoveRange(categories);
             _context.Menus.Remove(menu);
             _context.SaveChanges();
         }
@@ -754,6 +770,7 @@ public class HomeController : Controller
         }
 
         ViewBag.Srvicename = parentService.Srvicename;
+        ViewBag.catId = id.Value;
 
         return View();
     }
