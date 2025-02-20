@@ -139,9 +139,15 @@ public class HomeController : Controller
 
     public IActionResult Index(string txt)
     {
+        var users = dbUser.ShowAllUser(txt);
         //search
-
-        ViewBag.User = dbUser.ShowAllUser(txt);
+        if (User.FindFirst("Role").Value != "admin")
+        {
+            int adminID = Convert.ToInt32(User.Identity.GetId());
+            string adminCity = _context.Admins.Include(x => x.City).FirstOrDefault(x => x.Id == adminID).City.CityName;
+            users = users.Where(x => x.CityName == adminCity).ToList();
+        }
+        ViewBag.User = users;
         return View();
     }
     public IActionResult set(int Id)
@@ -360,6 +366,12 @@ public class HomeController : Controller
     public IActionResult deatils(int id)
     {
         var requests = _context.Requests.Where(r => r.UserId == Convert.ToInt32(id)).ToList();
+        if (User.FindFirst("Role").Value != "admin")
+        {
+            int adminID = Convert.ToInt32(User.Identity.GetId()); 
+            Admin admin = _context.Admins.Include(x=>x.City).ThenInclude(x=>x.Menu).FirstOrDefault(x=>x.Id == adminID);
+            requests = requests.AsEnumerable().Where(x=> admin.City.Menu.Any(m=> m.MenuId == x.MenuId)).ToList();
+        }
 
         //create list of requestmodel
         List<RequestModel2> requestModels = new List<RequestModel2>();

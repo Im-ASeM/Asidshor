@@ -88,9 +88,13 @@
                                 <td scope="col">نام و نام خانوادگی</td>
                                 <td scope="col">نام تعمیرگاه </td>
                                 <td scope="col">شماره تماس</td>
+                                @if (User.FindFirst("Role").Value == "admin"){
                                 <td scope="col">رمز عبور</td>
+                                }
                                 <td scope="col">شهر یا منطقه</td>
+                                @if (User.FindFirst("Role").Value == "admin"){
                                 <td scope="col">شاخصه سرویس رایگان</td>
+                                }
                                 <td scope="col">سفارشات</td>
                                 
                               
@@ -108,23 +112,26 @@
                                 <td class="font-danger   white-space-nowrap">@item.FirstAndLastName </td>
                                 <td class="font-danger  white-space-nowrap">@item.Url </td>
                                 <td class="digits  white-space-nowrap"> @item.Phone</td>
+                                @if (User.FindFirst("Role").Value == "admin"){
                                 <td class="digits  white-space-nowrap"> @item.Email</td>
+                                }
                                 <td class="digits  white-space-nowrap"> @item.CityName</td>
 
+                                @if (User.FindFirst("Role").Value == "admin"){
                                 <td class="font-danger"> 
+                                    @if(@item.free==0)
+                                    {
+                                    <a href="/admin/home/set?Id=@item.Id" class="alert alert-primary "> 5  | ست کردن شاخصه جدید</a>
+                                    }
+                                    else
+                                    {
+                                    <a href="/admin/home/set?Id=@item.Id" class="alert alert-primary "> @item.free  | ست کردن شاخصه جدید</a>
 
-                                @if(@item.free==0)
-                                {
-                                   <a href="/admin/home/set?Id=@item.Id" class="alert alert-primary "> 5  | ست کردن شاخصه جدید</a>
-                                }
-                                else
-                                {
-                                   <a href="/admin/home/set?Id=@item.Id" class="alert alert-primary "> @item.free  | ست کردن شاخصه جدید</a>
-
-                                }
+                                    }
                                 
                                 
                                 </td>
+                                }
                                 <td class="font-danger white-space-nowrap">
                                     <a href="/admin/home/deatils/@item.Id" class="btn btn-warning form-control">مشاهده سفارشات</a>
                                 </td>

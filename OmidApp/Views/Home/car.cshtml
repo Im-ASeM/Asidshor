@@ -14,7 +14,7 @@
     
     <!-- Wrap the categories in a container -->
     <div id="categoriesContainer">
-        <input type="text" id="searchInput" class="form-control mb-3" placeholder="جستجوی خودرو..." autocomplete="off">
+        <input type="text" id="searchInput" class="form-control mb-3" placeholder="جستجو ..." autocomplete="off">
 
       @foreach (var item in ViewBag.ListCategory)
       {
@@ -24,7 +24,7 @@
               <div class="card-body">
                 <h5 class="card-title text-center text-black">@item.CatName</h5>
                 <p class="card-text"></p>
-                <a href="/home/mainservice/@item.Id" class="form-control btn btn-success">مشاهده سرویس ها</a>
+                <a href="/home/mainservice/@item.Id" class="form-control btn btn-success">مشاهده</a>
               </div>
             </div>
           </div>

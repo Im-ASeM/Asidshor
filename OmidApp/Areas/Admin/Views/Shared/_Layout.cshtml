@@ -92,66 +92,10 @@
                 }
                 <div class="nav-right col">
                     <ul class="nav-menus">
-                        <li>
-                            <form class="form-inline search-form">
-                                <div class="form-group">
-                                    <input class="form-control-plaintext" type="search" placeholder="جستجو کردن.."><span
-                                        class="d-sm-none mobile-search"><i data-feather="search"></i></span>
-                                </div>
-                            </form>
-                        </li>
-                        <li><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i
-                                    data-feather="maximize-2"></i></a></li>
-                        <li class="onhover-dropdown"><a class="txt-dark" href="#">
-                                <h6>زبان</h6>
-                            </a>
-                            <ul class="language-dropdown onhover-show-div p-20">
-                                <li><a href="#" data-lng="en"><i class="flag-icon flag-icon-is"></i> انگلیسی</a></li>
-                                <li><a href="#" data-lng="es"><i class="flag-icon flag-icon-um"></i> اسپانیایی</a></li>
-                                <li><a href="#" data-lng="pt"><i class="flag-icon flag-icon-uy"></i> پرتغالی</a></li>
-                                <li><a href="#" data-lng="fr"><i class="flag-icon flag-icon-nz"></i> فرانسوی </a></li>
-                            </ul>
-                        </li>
-                        <li class="onhover-dropdown"><i data-feather="bell"></i><span class="dot"></span>
-                            @* <ul class="notification-dropdown onhover-show-div p-0">
-                            <li>اعلان ها <span class="badge badge-pill badge-primary pull-right">3</span></li>
-                            <li>
-                            <div class="media">
-                            <div class="media-body">
-                            <h6 class="mt-0"><span><i class="shopping-color"
-                            data-feather="shopping-bag"></i></span>سفارش شما برای کشتی آماده
-                            است ..!</h6>
-                            <p class="mb-0">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-                            </p>
-                            </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div class="media">
-                            <div class="media-body">
-                            <h6 class="mt-0 txt-success"><span><i class="download-color font-success"
-                            data-feather="download"></i></span>بارگیری کامل شد</h6>
-                            <p class="mb-0">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-                            </p>
-                            </div>
-                            </div>
-                            </li>
-                            <li>
-                            <div class="media">
-                            <div class="media-body">
-                            <h6 class="mt-0 txt-danger"><span><i class="alert-color font-danger"
-                            data-feather="alert-circle"></i></span>250 مگابایت پرونده زباله
-                            </h6>
-                            <p class="mb-0">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
-                            </p>
-                            </div>
-                            </div>
-                            </li>
-                            <li class="txt-dark"><a href="#">همه</a> اعلان ها</li>
-                            </ul> *@
-                        </li>
-                        <li><a href="#"><i class="right_side_toggle" data-feather="message-square"></i><span
-                                    class="dot"></span></a></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
                         <li class="onhover-dropdown">
                             <div class="media align-items-center"><img
                                     class="align-self-center pull-right img-50 rounded-circle blur-up lazyloaded"
@@ -160,10 +104,8 @@
                                         class="main-circle"></span></div>
                             </div>
                             <ul class="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
-                                <li><a href="/admin/home/profile"><i data-feather="user"></i>ویرایش نمایه</a></li>
-                                @*<li><a href="#"><i data-feather="mail"></i>صندوق ورودی</a></li>
-                                <li><a href="#"><i data-feather="lock"></i>قفل صفحه</a></li>
-                                <li><a href="#"><i data-feather="settings"></i>تنظیمات</a></li> *@
+                                <li><a href="/admin/home/profile"><i data-feather="user"></i>ویرایش رمز عبور</a></li>
+                                
                                 <li><a href="/admin/home/exit"><i data-feather="log-out"></i>خروج</a></li>
                             </ul>
                         </li>
@@ -191,13 +133,19 @@
                         <p> سمت</p>
                     </div>
                     <ul class="sidebar-menu">
-                        <li><a class="sidebar-header" href="/admin/home/index"><i data-feather="home"></i><span> لیست
-                                    تعمیرگاه ها</span></a></li>
+
 
                         @if (User.FindFirst("Role").Value == "admin")
                         {
+                            <li><a class="sidebar-header" href="/admin/home/index"><i data-feather="home"></i><span> لیست
+                                        تعمیرگاه ها</span></a></li>
                             <li><a class="sidebar-header" href="/admin/home/inWalet"><i data-feather="home"></i><span>تراکنش
                                         تعمیرگاه ها </span></a></li>
+                        }
+                        else
+                        {
+                            <li><a class="sidebar-header" href="/admin/home/index"><i data-feather="home"></i><span> لیست
+                                        تعمیرگاه های شهر من</span></a></li>
                         }
                         @* @if (User.FindFirst("Role").Value == "admin")
                         {
@@ -213,17 +161,21 @@
 
                             </li>
                         } *@
-                        <li><a class="sidebar-header" href="/admin/home/request"><i data-feather="user-plus"></i><span>
-                                    درخواست ها
-                                    @if (num != 0)
-                                    {
-                                        <span class="badge badge-pill badge-primary pull-right notification-badge">
-                                            @num
-                                        </span>
-                                    }
-                            </a>
-                            @if (User.FindFirst("Role").Value == "admin")
-                            {
+                        
+                            <li>
+                                <a class="sidebar-header" href="/admin/home/request"><i data-feather="user-plus"></i><span>
+                                        درخواست ها
+                                        @if (num != 0)
+                                        {
+                                            <span class="badge badge-pill badge-primary pull-right notification-badge">
+                                                @num
+                                            </span>
+                                        }
+                                </a>
+                            </li>
+                        
+                        @if (User.FindFirst("Role").Value == "admin")
+                        {
                             <li><a class="sidebar-header" href="/admin/home/listadmin"><i data-feather="chrome"></i><span>
                                         تعریف مدیران </span></a>
 
@@ -248,14 +200,14 @@
                             </li>
                         }
 
-
-                        <li>
-                            <a class="sidebar-header" href="/admin/home/CardOfBanks"><i
-                                    data-feather="bar-chart"></i><span>اضافه کردن کارت بانکی </span>
-                            </a>
-                        </li>
                         @if (User.FindFirst("Role").Value == "admin")
                         {
+                            <li>
+                                <a class="sidebar-header" href="/admin/home/CardOfBanks"><i
+                                        data-feather="bar-chart"></i><span>اضافه کردن کارت بانکی </span>
+                                </a>
+                            </li>
+
                             <li>
                                 <a class="sidebar-header" href="/admin/home/AddMenu">
                                     <i data-feather="user-plus"></i><span>افزودن منو</span>
@@ -266,7 +218,7 @@
                         {
                             <li>
                                 <a class="sidebar-header" href="/admin/home/AddMenu">
-                                    <i data-feather="user-plus"></i><span>ویرایش منو</span>
+                                    <i data-feather="user-plus"></i><span>منوی فروشگاهی من</span>
                                 </a>
                             </li>
                         }
