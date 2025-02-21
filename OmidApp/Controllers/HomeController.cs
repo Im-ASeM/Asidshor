@@ -284,7 +284,7 @@ public class HomeController : Controller
         }
 
         db.SaveChanges();
-        ViewBag.Services = db.Services.Where(x => x.Parentid == 0 && x.MenuId == MenuId).ToList();
+        ViewBag.Services = db.Services.Where(x => x.Parentid == 0 && x.MenuId == MenuId && (x.CatId == id || x.CatId ==null)).ToList();
 
 
 

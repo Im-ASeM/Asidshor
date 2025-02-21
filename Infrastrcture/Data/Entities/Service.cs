@@ -12,4 +12,6 @@ public class Service
     public int Price { get; set; }
     public int? MenuId { get; set; }
     public Menu Menu { get; set; }
-    }
+    public int? CatId { get; set; }
+    public Category Cat { get; set; }
+}

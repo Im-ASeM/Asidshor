@@ -368,9 +368,9 @@ public class HomeController : Controller
         var requests = _context.Requests.Where(r => r.UserId == Convert.ToInt32(id)).ToList();
         if (User.FindFirst("Role").Value != "admin")
         {
-            int adminID = Convert.ToInt32(User.Identity.GetId()); 
-            Admin admin = _context.Admins.Include(x=>x.City).ThenInclude(x=>x.Menu).FirstOrDefault(x=>x.Id == adminID);
-            requests = requests.AsEnumerable().Where(x=> admin.City.Menu.Any(m=> m.MenuId == x.MenuId)).ToList();
+            int adminID = Convert.ToInt32(User.Identity.GetId());
+            Admin admin = _context.Admins.Include(x => x.City).ThenInclude(x => x.Menu).FirstOrDefault(x => x.Id == adminID);
+            requests = requests.AsEnumerable().Where(x => admin.City.Menu.Any(m => m.MenuId == x.MenuId)).ToList();
         }
 
         //create list of requestmodel
@@ -587,9 +587,9 @@ public class HomeController : Controller
         return RedirectToAction("addMenu");
     }
 
-    public IActionResult AddService(string Name, int MenuId, int ParentId)
+    public IActionResult AddService(string Name, int MenuId, int ParentId, int catId)
     {
-        _context.Services.Add(new Service { Srvicename = Name, Parentid = 0, Status = "فعال", MenuId = MenuId });
+        _context.Services.Add(new Service { Srvicename = Name, Parentid = 0, Status = "فعال", MenuId = MenuId, CatId = catId });
         _context.SaveChanges();
         return RedirectToAction("mainservice", new { id = ParentId });
     }
@@ -729,7 +729,8 @@ public class HomeController : Controller
             _context.SaveChanges();
         }
         ViewBag.Parent = Parent;
-        ViewBag.Services = _context.Services.Where(x => x.Parentid == 0 && x.MenuId == Parent.MenuId).ToList();
+        ViewBag.Services = _context.Services.Where(x => x.Parentid == 0 && x.MenuId == Parent.MenuId && (x.CatId == id || x.CatId ==null)).ToList();
+        ViewBag.Id= id;
 
         return View();
     }
