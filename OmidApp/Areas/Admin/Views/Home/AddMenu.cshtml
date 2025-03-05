@@ -57,7 +57,8 @@
                             <tr>
                                 <td scope="col">ردیف</td>
                                 <td scope="col">نام منو</td>
-                                <td scope="col">افزودن و ویرایش دسته بندی ها</td>
+                                <td scope="col">افزودن و ویرایش</td>
+                                <td scope="col">کدمعرفی</td>
                                 @if (User.FindFirst("Role").Value == "admin")
                                 {
                                     <td scope="col">مدیریت</td>
@@ -84,6 +85,8 @@
                                             </a>
                                         </td>
 
+                                        <td class="">@item.Code </td>
+
                                         @if (User.FindFirst("Role").Value == "admin")
                                         {
                                             <td class="font-danger">
@@ -102,7 +105,8 @@
                                                 }
                                                 else
                                                 {
-                                                    <a href="#" onclick="alert(`امکان واگذاری منوی مربوط به اسیدشویی وجود ندارد`)" class="btn btn-info form-control"><span>مدیریت اصلی</span></a>
+                                                    <a href="#" onclick="alert(`امکان واگذاری منوی مربوط به اسیدشویی وجود ندارد`)"
+                                                        class="btn btn-info form-control"><span>مدیریت اصلی</span></a>
                                                 }
                                             </td>
 
