@@ -60,6 +60,7 @@
                                 <td scope="col">افزودن و ویرایش دسته بندی ها</td>
                                 @if (User.FindFirst("Role").Value == "admin")
                                 {
+                                    <td scope="col">مدیریت</td>
                                     <td scope="col">ویرایش</td>
                                     <td scope="col">حذف</td>
                                 }
@@ -71,7 +72,7 @@
                             @if (ViewBag.Menu != null)
                             {
                                 int i = 1;
-                                @foreach (var item in ViewBag.Menu)
+                                @foreach (Menu item in ViewBag.Menu)
                                 {
                                     <tr>
                                         <td>@i</td>
@@ -82,9 +83,28 @@
                                                 بندی ها
                                             </a>
                                         </td>
-                                        
+
                                         @if (User.FindFirst("Role").Value == "admin")
                                         {
+                                            <td class="font-danger">
+                                                @if (item.Id != 1)
+                                                {
+                                                    <a href="/admin/home/AdminSelect/@item.Id" class="btn btn-info form-control">
+                                                        @if (item.AdminId == null)
+                                                        {
+                                                            <span>اختصاص</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>@item.Admin.NameFamily</span>
+                                                        }
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="#" onclick="alert(`امکان واگذاری منوی مربوط به اسیدشویی وجود ندارد`)" class="btn btn-info form-control"><span>مدیریت اصلی</span></a>
+                                                }
+                                            </td>
 
                                             <td class="font-danger">
                                                 <a href="/admin/home/editMenu/@item.Id" class="btn btn-warning form-control">ویرایش

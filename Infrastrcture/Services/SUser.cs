@@ -11,10 +11,10 @@ public class SUser : IUser
     private readonly IWebHostEnvironment env;
     public SUser(Context _db, IWebHostEnvironment _env)
     {
-       db=_db; 
-       env=_env;
+        db = _db;
+        env = _env;
     }
-        public string GetImageUrl(IFormFile file)
+    public string GetImageUrl(IFormFile file)
     {
         string FileExtension2 = Path.GetExtension(file.FileName);
         string NewFileName = String.Concat(Guid.NewGuid().ToString(), FileExtension2);
@@ -24,51 +24,51 @@ public class SUser : IUser
 
         return NewFileName;
     }
-     public bool EditUserProfile(VmUser user)
+    public bool EditUserProfile(VmUser user)
     {
-      var q= db.Users.Where(x=>x.Phone==user.Phone).FirstOrDefault();
+        var q = db.Users.Where(x => x.Phone == user.Phone).FirstOrDefault();
 
-          q.Latitude=user.Latitude;
-          q.Longitude=user.Longitude;
-          q.FirstAndLastName=user.FirstAndLastName;
-          q.Phone=user.Phone;
-          if ( user.Urlfirst != null)
-          {
-            q.Url=GetImageUrl(user.Urlfirst);   
-          }
-                 
-          q.Email=user.Email;
-          
-        
+        q.Latitude = user.Latitude;
+        q.Longitude = user.Longitude;
+        q.FirstAndLastName = user.FirstAndLastName;
+        q.Phone = user.Phone;
+        if (user.Urlfirst != null)
+        {
+            q.Url = GetImageUrl(user.Urlfirst);
+        }
+
+        q.Email = user.Email;
+
+
         db.Users.Update(q);
         db.SaveChanges();
 
-        
-        
-      return true;
+
+
+        return true;
     }
     public VmUser ShowUser(int id)
     {
-      var q= db.Users.Where(a=>a.Id==id).Include(x=>x.walets).FirstOrDefault();
-      VmUser u = new VmUser()
-      {
-          Id=q.Id,
-          Cart=q.Cart,
-          Url=q.Url,
-          FirstAndLastName=q.FirstAndLastName,
-          Phone=q.Phone,
-          Email=q.Email,
-          Code=q.Code,
-          Adress=q.Adress,
-          Latitude=q.Latitude,
-          Longitude=q.Longitude,
-          free=q.free,
-          use=q.use,
-          description = q.description,
-          walets = SWaletNew.convert(q.walets) 
-      };
-      
-      return u;
+        var q = db.Users.Where(a => a.Id == id).Include(x => x.walets).FirstOrDefault();
+        VmUser u = new VmUser()
+        {
+            Id = q.Id,
+            Cart = q.Cart,
+            Url = q.Url,
+            FirstAndLastName = q.FirstAndLastName,
+            Phone = q.Phone,
+            Email = q.Email,
+            Code = q.Code,
+            Adress = q.Adress,
+            Latitude = q.Latitude,
+            Longitude = q.Longitude,
+            free = q.free,
+            use = q.use,
+            description = q.description,
+            walets = SWaletNew.convert(q.walets)
+        };
+
+        return u;
     }
 
     public List<VmUser> ShowUserRate(int id)
@@ -78,8 +78,8 @@ public class SUser : IUser
 
     public bool checkdevice(string deviceid)
     {
-        var q=db.Devices.Where(a=>a.DeviceId==deviceid && a.state==true ).FirstOrDefault();
-        if (q!=null)
+        var q = db.Devices.Where(a => a.DeviceId == deviceid && a.state == true).FirstOrDefault();
+        if (q != null)
         {
             return true;
         }
@@ -93,9 +93,9 @@ public class SUser : IUser
     {
         Device d = new Device()
         {
-            DeviceId=deviceid,
-            UserId=userid,
-            state=true
+            DeviceId = deviceid,
+            UserId = userid,
+            state = true
         };
         db.Devices.Add(d);
         db.SaveChanges();
@@ -103,116 +103,117 @@ public class SUser : IUser
 
     public VmUser ShowUserByDevice(string deviceid)
     {
-        var q=db.Devices.Where(a=>a.DeviceId==deviceid && a.state==true).FirstOrDefault();
-        var quser=db.Users.Where(a=>a.Id==q.UserId).FirstOrDefault();
+        var q = db.Devices.Where(a => a.DeviceId == deviceid && a.state == true).FirstOrDefault();
+        var quser = db.Users.Where(a => a.Id == q.UserId).FirstOrDefault();
         VmUser u = new VmUser()
         {
-            Id=quser.Id,
-            Cart=quser.Cart,
-            Url=quser.Url,
-            FirstAndLastName=quser.FirstAndLastName,
-            Phone=quser.Phone,
-            Email=quser.Email,
-            Code=quser.Code,
-            Adress=quser.Adress,
+            Id = quser.Id,
+            Cart = quser.Cart,
+            Url = quser.Url,
+            FirstAndLastName = quser.FirstAndLastName,
+            Phone = quser.Phone,
+            Email = quser.Email,
+            Code = quser.Code,
+            Adress = quser.Adress,
         };
         return u;
     }
 
     public void deactivedevice(string deviceid)
     {
-        var q=db.Devices.Where(a=>a.DeviceId==deviceid && a.state==true).FirstOrDefault();
-        q.state= !q.state;
+        var q = db.Devices.Where(a => a.DeviceId == deviceid && a.state == true).FirstOrDefault();
+        q.state = !q.state;
         db.Devices.Update(q);
         db.SaveChanges();
     }
 
     public List<VmUser> ShowAllUser(string txt)
     {
-              
-              var q=db.Users.Include(x=>x.walets).Include(x=>x.City).ToList();
-              if (txt != null)
-              {
-                 q=db.Users.Where(x=>x.Phone.Contains(txt) || x.FirstAndLastName.Contains(txt)).ToList();
-              }
-           
 
-        
+        var q = db.Users.Include(x => x.walets).Include(x => x.City).Include(x=>x.UserMenus).ThenInclude(x=>x.Menu).ToList();
+        if (txt != null)
+        {
+            q = db.Users.Where(x => x.Phone.Contains(txt) || x.FirstAndLastName.Contains(txt)).ToList();
+        }
+
+
+
         List<VmUser> u = new List<VmUser>();
         foreach (var item in q)
         {
             VmUser v = new VmUser()
             {
-                Id=item.Id,
-                Cart=item.Cart,
-                Url=item.Url,
-                FirstAndLastName=item.FirstAndLastName,
-                Phone=item.Phone,
-                Email=item.Email,
-                Code=item.Code,
-                Adress=item.Adress,
-                Latitude=item.Latitude,
-                Longitude=item.Longitude,
-                free=item.free,
+                Id = item.Id,
+                Cart = item.Cart,
+                Url = item.Url,
+                FirstAndLastName = item.FirstAndLastName,
+                Phone = item.Phone,
+                Email = item.Email,
+                Code = item.Code,
+                Adress = item.Adress,
+                Latitude = item.Latitude,
+                Longitude = item.Longitude,
+                free = item.free,
                 walets = SWaletNew.convert(item.walets),
-                CityName = item.City.CityName
+                CityName = item.City.CityName,
+                Menus = item.UserMenus != null ? item.UserMenus.Select(x=>x.Menu.Id).ToList() : null
             };
             u.Add(v);
         }
-        return u.OrderByDescending(x=>x.Id).ToList();
+        return u.OrderByDescending(x => x.Id).ToList();
     }
 
-     public List<VmUser> ShowAllUseragent(string txt)
+    public List<VmUser> ShowAllUseragent(string txt)
     {
-              
-              var q=db.Users.Where(x=>x.Cart=="agent").ToList();
-              if (txt != null)
-              {
-                 q=db.Users.Where(x=>(x.Phone.Contains(txt) || x.FirstAndLastName.Contains(txt)) && x.Cart=="agent").ToList();
-              }
-           
 
-        
+        var q = db.Users.Where(x => x.Cart == "agent").ToList();
+        if (txt != null)
+        {
+            q = db.Users.Where(x => (x.Phone.Contains(txt) || x.FirstAndLastName.Contains(txt)) && x.Cart == "agent").ToList();
+        }
+
+
+
         List<VmUser> u = new List<VmUser>();
         foreach (var item in q)
         {
             VmUser v = new VmUser()
             {
-                Id=item.Id,
-                Cart=item.Cart,
-                Url=item.Url,
-                FirstAndLastName=item.FirstAndLastName,
-                Phone=item.Phone,
-                Email=item.Email,
-                Code=item.Code,
-                Adress=item.Adress,
+                Id = item.Id,
+                Cart = item.Cart,
+                Url = item.Url,
+                FirstAndLastName = item.FirstAndLastName,
+                Phone = item.Phone,
+                Email = item.Email,
+                Code = item.Code,
+                Adress = item.Adress,
             };
             u.Add(v);
         }
-        return u.OrderByDescending(x=>x.Id).ToList();
+        return u.OrderByDescending(x => x.Id).ToList();
     }
 
 
     public bool ChangeAgent(int id)
     {
-        var q=db.Users.Where(a=>a.Id==id).FirstOrDefault();
+        var q = db.Users.Where(a => a.Id == id).FirstOrDefault();
 
         if (q.Cart == "0")
         {
-            q.Cart="agent";
+            q.Cart = "agent";
         }
         else
         {
-            q.Cart="0";
-            
+            q.Cart = "0";
+
         }
-        
+
         db.Users.Update(q);
         db.SaveChanges();
         return true;
     }
 
-     public VmUser check(string phone, int code)
+    public VmUser check(string phone, int code)
     {
         var quser = db.Users.Where(x => x.Phone == phone).FirstOrDefault();
 

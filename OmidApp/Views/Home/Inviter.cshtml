@@ -1,0 +1,97 @@
+@model List<Menu>
+<style>
+    th,
+    td,
+    tr {
+        padding: 5px;
+        text-align: center !important;
+
+        white-space: nowrap;
+    }
+</style>
+
+<div class="page-content-wrapper py-3 p-3">
+    <div class="page-body">
+
+        <!-- Container-fluid starts-->
+
+
+
+        @if (TempData["msg"] != null)
+        {
+            <p class="alert alert-danger p-3 form-control">@TempData["msg"]</p>
+        }
+
+
+
+
+
+
+        <div class="col-xl-12 xl-100">
+
+            <div class="card" style="background-color: #EEEEEE;">
+                <div class="card-header">
+
+                    <form action="/home/addMenu" method="post">
+                        <div class="row justify-content-center  p-3">
+
+                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                                <input name="Code" class="form-control" type="text" placeholder="کد معرف را وارد کنید">
+                            </div>
+
+                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
+                                <button type="submit" class="btn btn-primary form-control">ثبت</button>
+                            </div>
+
+                        </div>
+                    </form>
+
+
+
+                    @* show all request  *@
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ردیف</th>
+                                    <th>عنوان</th>
+                                    <th>با مدیریت</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Admin.NameFamily</td>
+                                            <td><a href="/home/delMenu?id=@item.Id" class="btn btn-danger" onclick="confirm(`آیا از حذف @item.Name مطمئن هستید ؟ توجه کنید این عملیات غیر قابل بازگشت میباشد.`)">حذف</a></td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+
+
+
+
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- Container-fluid Ends-->
+
+        </div>
+
+    </div>

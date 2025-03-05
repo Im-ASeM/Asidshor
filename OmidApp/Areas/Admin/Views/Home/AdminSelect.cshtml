@@ -1,0 +1,110 @@
+<style>
+    th,
+    td,
+    tr {
+        padding: 5px;
+        text-align: center !important;
+    }
+</style>
+<div class="page-body">
+
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-left">
+                        <h3>داشبورد
+                            <small>پنل مدیریت چندکاره</small>
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <ol class="breadcrumb pull-right">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item active">داشبورد</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @if (TempData["msg"] != null)
+    {
+        <p class="alert alert-danger p-3 form-control">@TempData["msg"]</p>
+    }
+
+
+
+
+
+
+    <div class="col-xl-12 xl-100">
+
+        <div class="card">
+            <div class="card-body">
+                <div class="user-status table-responsive latest-order-table">
+                    <table class="table table-bordernone">
+                        <thead>
+
+                            <tr>
+                                <td scope="col">ردیف</td>
+                                <td scope="col">نام و نام خانوادگی</td>
+                                <td scope="col">شماره تماس</td>
+                                <td scope="col">نام کاربری </td>
+                                <td scope="col">شهر و منطقه</td>
+                                <td scope="col">انتخاب</td>
+                            </tr>
+
+
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.Admins != null)
+                            {
+                                int i = 1;
+                                @foreach (var item in ViewBag.Admins)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td class="font-danger">@item.NameFamily </td>
+
+                                        <td class="digits"> @item.PhoneNumber</td>
+                                        <td class="font-danger">@item.UserName </td>
+                                        <td class="font-danger">
+                                            <button class="btn btn-info form-control">
+                                                @if (item.City == null)
+                                                {
+                                                    <span>- - -</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@item.City.CityName</span>
+                                                }
+                                            </button>
+
+
+                                        </td>
+                                        <td class="font-danger">
+                                            <a href="/admin/home/selectAdmin?adminId=@item.Id&MenuId=@ViewBag.MenuId" class="btn btn-warning form-control"
+                                                onclick="return confirm('ایا از این انتخاب مطمئن هستید ؟؟')">انتخاب </a>
+                                        </td>
+
+
+                                    </tr>
+                                    i++;
+                                }
+                            }
+
+
+                        </tbody>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Container-fluid Ends-->
+
+</div>

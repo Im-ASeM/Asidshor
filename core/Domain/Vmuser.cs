@@ -18,5 +18,5 @@ public class VmUser
     public string description { get; set; }
     public ICollection<Vm_WaletNew> walets { get; set; }
     public string CityName { get; set; }
-
+    public List<int> Menus { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Security.Claims;
+using Infrastrcture.Migrations;
 using Kavenegar;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -249,8 +250,8 @@ public class HomeController : Controller
     }
     public IActionResult Menus()
     {
-        var userCityId = db.Users.Find(Convert.ToInt32(User.Identity.GetId())).CityId;
-        ViewBag.ListMenus = db.Menus.Include(x=>x.City).Where(m => m.City.Any(c=> c.CityId == userCityId)).ToList();
+
+        ViewBag.ListMenus = db.Users.Include(x => x.UserMenus).ThenInclude(x => x.Menu).FirstOrDefault(x => x.Id == Convert.ToInt32(User.Identity.GetId())).UserMenus.Select(x => x.Menu).ToList();
         return View();
     }
 
@@ -284,14 +285,57 @@ public class HomeController : Controller
         }
 
         db.SaveChanges();
-        ViewBag.Services = db.Services.Where(x => x.Parentid == 0 && x.MenuId == MenuId && (x.CatId == id || x.CatId ==null)).ToList();
+        ViewBag.Services = db.Services.Where(x => x.Parentid == 0 && x.MenuId == MenuId && (x.CatId == id || x.CatId == null)).ToList();
 
 
 
         return View();
     }
 
+    public IActionResult Inviter()
+    {
+        var id = Convert.ToInt32(User.Identity!.GetId());
+        var Menus = db.Users.Include(x => x.UserMenus).ThenInclude(x => x.Menu).ThenInclude(x => x.Admin).FirstOrDefault(x => x.Id == id).UserMenus.Select(x => x.Menu).ToList();
+        return View(Menus);
+    }
 
+    [HttpPost]
+    public IActionResult AddMenu(string Code)
+    {
+        Menu menu = db.Menus.FirstOrDefault(x => x.Code == Code.Trim());
+        if (menu == null)
+        {
+            TempData["msg"] = "کد معرف صحیح نمیباشد .";
+            return RedirectToAction("Inviter");
+        }
+        var id = Convert.ToInt32(User.Identity!.GetId());
+
+        if (db.UserMenus.Any(x => x.UserId == id && x.MenuId == menu.Id))
+        {
+            TempData["msg"] = "کد استفاده شده است .";
+            return RedirectToAction("Inviter");
+        }
+
+        db.UserMenus.Add(new UserMenu()
+        {
+            MenuId = menu.Id,
+            UserId = id
+        });
+        db.SaveChanges();
+        return RedirectToAction("Inviter");
+    }
+
+    public IActionResult DelMenu(int id)
+    {
+        var UserId = Convert.ToInt32(User.Identity!.GetId());
+        var menu = db.UserMenus.FirstOrDefault(x => x.MenuId == id && x.UserId == UserId);
+        if (menu != null)
+        {
+            db.UserMenus.Remove(menu);
+            db.SaveChanges();
+        }
+        return RedirectToAction("Inviter");
+    }
 
 
     public IActionResult price(int serviceparentid)
@@ -328,8 +372,8 @@ public class HomeController : Controller
             if (prices.TryGetValue(service.Id, out int price))
             {
                 service.Price = price;
-                if(price != 0) result.Add(service);
-            }            
+                if (price != 0) result.Add(service);
+            }
         }
 
         ViewBag.Services = result;

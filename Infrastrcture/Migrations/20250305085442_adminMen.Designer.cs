@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastrcture.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250305085442_adminMen")]
+    partial class adminMen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,6 +57,32 @@ namespace Infrastrcture.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("AdminMenu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Menu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("AdminMenu");
                 });
 
             modelBuilder.Entity("Card", b =>
@@ -175,9 +203,6 @@ namespace Infrastrcture.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AdminId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
@@ -185,8 +210,6 @@ namespace Infrastrcture.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
 
                     b.ToTable("Menus");
                 });
@@ -418,7 +441,7 @@ namespace Infrastrcture.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserMenus");
+                    b.ToTable("UserMenu");
                 });
 
             modelBuilder.Entity("Walet", b =>
@@ -497,6 +520,23 @@ namespace Infrastrcture.Migrations
                     b.Navigation("City");
                 });
 
+            modelBuilder.Entity("AdminMenu", b =>
+                {
+                    b.HasOne("Admin", "Admin")
+                        .WithMany("AdminMenus")
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Menu", null)
+                        .WithMany("AdminMenus")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Admin");
+                });
+
             modelBuilder.Entity("Category", b =>
                 {
                     b.HasOne("Menu", "Menu")
@@ -523,15 +563,6 @@ namespace Infrastrcture.Migrations
                     b.Navigation("City");
 
                     b.Navigation("Menu");
-                });
-
-            modelBuilder.Entity("Menu", b =>
-                {
-                    b.HasOne("Admin", "Admin")
-                        .WithMany("AdminMenus")
-                        .HasForeignKey("AdminId");
-
-                    b.Navigation("Admin");
                 });
 
             modelBuilder.Entity("Orders", b =>
@@ -626,6 +657,8 @@ namespace Infrastrcture.Migrations
 
             modelBuilder.Entity("Menu", b =>
                 {
+                    b.Navigation("AdminMenus");
+
                     b.Navigation("City");
 
                     b.Navigation("UserMenus");

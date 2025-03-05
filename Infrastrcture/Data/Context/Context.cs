@@ -1,15 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 public class Context : DbContext
 {
-    public Context(DbContextOptions<Context> options) : base(options)
-    {
-
-    }
+    public Context(DbContextOptions<Context> options) : base(options){}
     // protected override void OnConfiguring(DbContextOptionsBuilder db)
     // {
     //     db.UseSqlServer("server=.\\SQL2019;database=OmidApp;trusted_connection=true;MultipleActiveResultSets=True;TrustServerCertificate=True");
     // }
     
+    public DbSet<UserMenu> UserMenus { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<Walet> walets { get; set; }

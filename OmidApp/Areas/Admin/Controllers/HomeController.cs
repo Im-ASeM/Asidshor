@@ -144,8 +144,11 @@ public class HomeController : Controller
         if (User.FindFirst("Role").Value != "admin")
         {
             int adminID = Convert.ToInt32(User.Identity.GetId());
-            string adminCity = _context.Admins.Include(x => x.City).FirstOrDefault(x => x.Id == adminID).City.CityName;
-            users = users.Where(x => x.CityName == adminCity).ToList();
+            Admin admin = _context.Admins.Include(x => x.AdminMenus).FirstOrDefault(x => x.Id == adminID)!;
+
+            List<int> adminMenus = admin.AdminMenus.Count != 0 ? admin.AdminMenus.Select(x => x.Id).ToList() : new List<int>();
+
+            users = users.Where(x => x.Menus.Any(m => adminMenus.Contains(m))).ToList();
         }
         ViewBag.User = users;
         return View();
@@ -369,8 +372,9 @@ public class HomeController : Controller
         if (User.FindFirst("Role").Value != "admin")
         {
             int adminID = Convert.ToInt32(User.Identity.GetId());
-            Admin admin = _context.Admins.Include(x => x.City).ThenInclude(x => x.Menu).FirstOrDefault(x => x.Id == adminID);
-            requests = requests.AsEnumerable().Where(x => admin.City.Menu.Any(m => m.MenuId == x.MenuId)).ToList();
+            // Admin admin = _context.Admins.Include(x => x.City).ThenInclude(x => x.Menu).FirstOrDefault(x => x.Id == adminID);
+            List<int> adminMenus = _context.Admins.Include(x => x.AdminMenus).FirstOrDefault(x => x.Id == adminID).AdminMenus.Select(x => x.Id).ToList();
+            requests = requests.Where(x => adminMenus.Contains(x.MenuId)).ToList();
         }
 
         //create list of requestmodel
@@ -406,7 +410,21 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult AdminSelect(int Id)
+    {
+        ViewBag.Admins = _context.Admins.Where(x => x.Status == "فعال" && x.Id != 1).ToList();
+        ViewBag.MenuId = Id;
+        return View();
+    }
 
+    public IActionResult SelectAdmin(int adminID, int MenuId)
+    {
+        Menu menu = _context.Menus.Find(MenuId)!;
+        menu.AdminId = adminID;
+        _context.Menus.Update(menu);
+        _context.SaveChanges();
+        return RedirectToAction("addMenu");
+    }
 
 
     public IActionResult exit()
@@ -480,7 +498,7 @@ public class HomeController : Controller
     {
         if (_context.Menus.Count() == 0)
         {
-            _context.Menus.Add(new Menu { Name = "اسیدشویی فوری" });
+            _context.Menus.Add(new Menu { Name = "اسیدشویی فوری", Code = "1" });
             _context.SaveChanges();
             _context.Categories.Add(new Category { CatName = "خودروهای سبک", ParentId = 0, Status = "فعال", MenuId = 1 });
             _context.Categories.Add(new Category { CatName = "خودروهای سنگین", ParentId = 0, Status = "فعال", MenuId = 1 });
@@ -488,15 +506,15 @@ public class HomeController : Controller
         }
         if (User.FindFirst("Role").Value == "admin")
         {
-            ViewBag.Menu = _context.Menus.OrderByDescending(x => x.Id).ToList();
+            ViewBag.Menu = _context.Menus.OrderByDescending(x => x.Id).Include(x => x.Admin).ToList();
         }
         else
         {
             // int Userid = HttpContext.Session.GetInt32("id").Value;
             int Userid = Convert.ToInt32(User.Identity.GetId());
-            var UserAdmin = _context.Admins.Find(Userid);
+            var AdminMenus = _context.Admins.Include(x => x.AdminMenus).FirstOrDefault(x => x.Id == Userid).AdminMenus;
 
-            ViewBag.Menu = _context.Menus.Include(x => x.City).Where(x => x.City.Any(c => c.CityId == UserAdmin.CityId)).OrderByDescending(x => x.Id).ToList();
+            ViewBag.Menu = AdminMenus;
         }
         return View();
     }
@@ -514,7 +532,8 @@ public class HomeController : Controller
                 CityId = c.Id,
                 CityName = c.CityName,
                 IsSelected = menu.City != null ? menu.City.Any(mc => mc.CityId == c.Id) : false
-            }).ToList()
+            }).ToList(),
+            Code = menu.Code
         };
 
         return View(viewModel);
@@ -523,12 +542,19 @@ public class HomeController : Controller
     public IActionResult editMenu(MenuCityViewModel model)
     {
         Menu menu;
+        Random random = new Random();
         if (model.MenuId == 0)
         {
+            string code;
+            do
+            {
+                code = random.Next(100000, 999999).ToString();
+            } while (_context.Menus.Any(x => x.Code == code));
             menu = new Menu
             {
                 Name = model.MenuName,
-                City = new List<CityMenu>()
+                City = new List<CityMenu>(),
+                Code = code
             };
             _context.Menus.Add(menu);
         }
@@ -729,8 +755,8 @@ public class HomeController : Controller
             _context.SaveChanges();
         }
         ViewBag.Parent = Parent;
-        ViewBag.Services = _context.Services.Where(x => x.Parentid == 0 && x.MenuId == Parent.MenuId && (x.CatId == id || x.CatId ==null)).ToList();
-        ViewBag.Id= id;
+        ViewBag.Services = _context.Services.Where(x => x.Parentid == 0 && x.MenuId == Parent.MenuId && (x.CatId == id || x.CatId == null)).ToList();
+        ViewBag.Id = id;
 
         return View();
     }
@@ -830,9 +856,10 @@ public class HomeController : Controller
         var q = _context.Requests.AsEnumerable();
         if (User.FindFirst("Role").Value != "admin")
         {
-            var id = Convert.ToInt32(User.Identity.GetId());
-            var admin = _context.Admins.Include(x => x.City).ThenInclude(x => x.Menu).FirstOrDefault(x => x.Id == id);
-            q = q.Where(x => admin.City.Menu.Any(m => m.MenuId == x.MenuId));
+            int adminID = Convert.ToInt32(User.Identity.GetId());
+            // Admin admin = _context.Admins.Include(x => x.City).ThenInclude(x => x.Menu).FirstOrDefault(x => x.Id == adminID);
+            List<int> adminMenus = _context.Admins.Include(x => x.AdminMenus).FirstOrDefault(x => x.Id == adminID).AdminMenus.Select(x => x.Id).ToList();
+            q = q.Where(x => adminMenus.Contains(x.MenuId)).ToList();
         }
 
         var requests = q.OrderByDescending(x => x.Id).ToList();
