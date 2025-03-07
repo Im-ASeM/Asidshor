@@ -12,4 +12,5 @@ public class Admin
     public int? CityId { get; set; }
     public City City { get; set; }
     public List<Menu> AdminMenus { get; set; }
+    public string InviteCode { get; set; }
 }

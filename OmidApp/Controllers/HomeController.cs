@@ -302,25 +302,45 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult AddMenu(string Code)
     {
-        Menu menu = db.Menus.FirstOrDefault(x => x.Code == Code.Trim());
-        if (menu == null)
+        if (String.IsNullOrEmpty(Code))
+        {
+            TempData["msg"] = "کد معرف صحیح نمیباشد .";
+            return RedirectToAction("Inviter");
+        }
+        
+        List<Menu> menus = db.Menus.Where(x => x.Code == Code.Trim()).ToList();
+        if (menus == null)
         {
             TempData["msg"] = "کد معرف صحیح نمیباشد .";
             return RedirectToAction("Inviter");
         }
         var id = Convert.ToInt32(User.Identity!.GetId());
+        var client = db.Users.Include(x => x.UserMenus).FirstOrDefault(x => x.Id == id);
 
-        if (db.UserMenus.Any(x => x.UserId == id && x.MenuId == menu.Id))
+        // if (db.UserMenus.Any(x => x.UserId == id && x.MenuId == menu.Id))
+        // {
+        //     TempData["msg"] = "کد استفاده شده است .";
+        //     return RedirectToAction("Inviter");
+        // }
+
+        // db.UserMenus.Add(new UserMenu()
+        // {
+        //     MenuId = menu.Id,
+        //     UserId = id
+        // });
+
+        foreach (Menu menu in menus)
         {
-            TempData["msg"] = "کد استفاده شده است .";
-            return RedirectToAction("Inviter");
+            if (!client.UserMenus.Any(x => x.UserId == id && x.MenuId == menu.Id))
+            {
+                db.UserMenus.Add(new UserMenu()
+                {
+                    MenuId = menu.Id,
+                    UserId = id
+                });
+            }
         }
 
-        db.UserMenus.Add(new UserMenu()
-        {
-            MenuId = menu.Id,
-            UserId = id
-        });
         db.SaveChanges();
         return RedirectToAction("Inviter");
     }

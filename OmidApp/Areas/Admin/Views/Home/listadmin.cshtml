@@ -60,6 +60,7 @@
 
 
                                 <td scope="col">رمز عبور</td>
+                                <td scope="col">کد دعوت</td>
                                 <td scope="col">وضعیت</td>
                                 <td scope="col">اختصاص شهر و منطقه</td>
                                 <td scope="col">ویرایش</td>
@@ -74,7 +75,7 @@
                             @if (ViewBag.User != null)
                             {
                                 int i = 1;
-                                @foreach (var item in ViewBag.User)
+                                @foreach (Admin item in ViewBag.User)
                                 {
                                     <tr>
                                         <td>@i</td>
@@ -83,6 +84,16 @@
                                         <td class="digits"> @item.PhoneNumber</td>
                                         <td class="font-danger">@item.UserName </td>
                                         <td class="digits"> @item.Password</td>
+                                        <td class="digits"> 
+                                            @if(item.InviteCode != null)
+                                            {
+                                                <span>@item.InviteCode</span>
+                                            }
+                                            else
+                                            {
+                                                <span>- - - -</span>
+                                            }
+                                        </td>
 
 
                                         <td class="font-danger">

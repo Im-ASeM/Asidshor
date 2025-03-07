@@ -105,7 +105,7 @@
                             </div>
                             <ul class="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
                                 <li><a href="/admin/home/profile"><i data-feather="user"></i>ویرایش رمز عبور</a></li>
-                                
+
                                 <li><a href="/admin/home/exit"><i data-feather="log-out"></i>خروج</a></li>
                             </ul>
                         </li>
@@ -129,8 +129,13 @@
                         <div><img class="img-60 rounded-circle lazyloaded blur-up" src="/img/core-img/logo-small.png"
                                 alt="#">
                         </div>
-                        <h6 class="mt-3 f-14">نام ادمین</h6>
-                        <p> سمت</p>
+                        @{
+                            // دریافت اطلاعاتم از کوکی 
+                            var inviteCode = Context.Request.Cookies["InviteCode"];
+                            var nameFamily = Context.Request.Cookies["NameFamily"];
+                        }
+                        <h6 class="mt-3 f-14">@nameFamily</h6>
+                        <p> کد دعوت : @inviteCode</p>
                     </div>
                     <ul class="sidebar-menu">
 
@@ -161,19 +166,19 @@
 
                             </li>
                         } *@
-                        
-                            <li>
-                                <a class="sidebar-header" href="/admin/home/request"><i data-feather="user-plus"></i><span>
-                                        درخواست ها
-                                        @if (num != 0)
-                                        {
-                                            <span class="badge badge-pill badge-primary pull-right notification-badge">
-                                                @num
-                                            </span>
-                                        }
-                                </a>
-                            </li>
-                        
+
+                        <li>
+                            <a class="sidebar-header" href="/admin/home/request"><i data-feather="user-plus"></i><span>
+                                    درخواست ها
+                                    @if (num != 0)
+                                    {
+                                        <span class="badge badge-pill badge-primary pull-right notification-badge">
+                                            @num
+                                        </span>
+                                    }
+                            </a>
+                        </li>
+
                         @if (User.FindFirst("Role").Value == "admin")
                         {
                             <li><a class="sidebar-header" href="/admin/home/listadmin"><i data-feather="chrome"></i><span>

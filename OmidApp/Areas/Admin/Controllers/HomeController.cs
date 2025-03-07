@@ -248,9 +248,23 @@ public class HomeController : Controller
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     //add new claim for add value quser.cart if null set 0
-                    new Claim("Role", user.Role),
+                    new Claim("Role", user.Role)
 
                 }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            HttpContext.Response.Cookies.Append("InviteCode", user.InviteCode == null ? "- - -" : user.InviteCode, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+
+            HttpContext.Response.Cookies.Append("NameFamily", user.NameFamily, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
 
             var principal = new ClaimsPrincipal(identity);
             var properties = new AuthenticationProperties
@@ -421,6 +435,7 @@ public class HomeController : Controller
     {
         Menu menu = _context.Menus.Find(MenuId)!;
         menu.AdminId = adminID;
+        menu.Code = _context.Admins.Find(adminID)!.InviteCode;
         _context.Menus.Update(menu);
         _context.SaveChanges();
         return RedirectToAction("addMenu");
@@ -545,16 +560,10 @@ public class HomeController : Controller
         Random random = new Random();
         if (model.MenuId == 0)
         {
-            string code;
-            do
-            {
-                code = random.Next(100000, 999999).ToString();
-            } while (_context.Menus.Any(x => x.Code == code));
             menu = new Menu
             {
                 Name = model.MenuName,
-                City = new List<CityMenu>(),
-                Code = code
+                City = new List<CityMenu>()
             };
             _context.Menus.Add(menu);
         }
@@ -1137,15 +1146,20 @@ public class HomeController : Controller
     //delete admin
     public IActionResult Deleteadmin(int Id)
     {
-        var user = _context.Admins.Find(Id);
+        var user = _context.Admins.Include(x => x.AdminMenus).ThenInclude(x => x.UserMenus).Include(x => x.City).FirstOrDefault(x => x.Id == Id);
         //if name sdmin not delet
-        if (user.UserName == "admin")
+        if (user!.UserName == "admin")
         {
 
             return RedirectToAction("Listadmin");
         }
         //get user by id context
-
+        foreach (Menu item in user.AdminMenus)
+        {
+            item.Code = "";
+            item.UserMenus.Clear();
+            _context.Menus.Update(item);
+        }
         _context.Admins.Remove(user);
         _context.SaveChanges();
 
@@ -1165,6 +1179,12 @@ public class HomeController : Controller
         var q = _context.Admins.Where(x => x.UserName == admin.UserName).FirstOrDefault();
         if (q == null)
         {
+            Random random = new Random();
+            do
+            {
+                admin.InviteCode = random.Next(100000, 999999).ToString();
+            } while (_context.Admins.Any(x => x.InviteCode == admin.InviteCode));
+
             //status
             admin.Status = "فعال";
             //role

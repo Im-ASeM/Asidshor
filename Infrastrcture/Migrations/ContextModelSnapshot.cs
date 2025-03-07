@@ -32,6 +32,9 @@ namespace Infrastrcture.Migrations
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
 
+                    b.Property<string>("InviteCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NameFamily")
                         .HasColumnType("nvarchar(max)");
 

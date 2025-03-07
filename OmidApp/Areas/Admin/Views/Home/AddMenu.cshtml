@@ -58,7 +58,6 @@
                                 <td scope="col">ردیف</td>
                                 <td scope="col">نام منو</td>
                                 <td scope="col">افزودن و ویرایش</td>
-                                <td scope="col">کدمعرفی</td>
                                 @if (User.FindFirst("Role").Value == "admin")
                                 {
                                     <td scope="col">مدیریت</td>
@@ -84,8 +83,6 @@
                                                 بندی ها
                                             </a>
                                         </td>
-
-                                        <td class="">@item.Code </td>
 
                                         @if (User.FindFirst("Role").Value == "admin")
                                         {
