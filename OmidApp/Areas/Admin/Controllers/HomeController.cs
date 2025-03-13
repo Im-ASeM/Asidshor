@@ -200,10 +200,7 @@ public class HomeController : Controller
     }
     public IActionResult login(bool faild = false)
     {
-        if (faild == true)
-        {
-            ViewBag.Error = "کلمه عبور یا نام کاربری اشتباه است";
-        }
+        ViewBag.Error = faild ? "کلمه عبور یا نام کاربری اشتباه است" : null;
         return View();
     }
     public async Task<IActionResult> logAsync(string Password, string email)
@@ -794,17 +791,19 @@ public class HomeController : Controller
         ViewBag.id = serviceparentid;
 
         var services = _context.Services.Where(x => x.Parentid == serviceparentid).ToList();
-        var prices = _context.Prices.Where(p => p.carId == id.Value).ToDictionary(p => p.IdService, p => p.PriceValue);
+        var prices = _context.Prices.Where(p => p.carId == id.Value).ToDictionary(p => p.IdService, p => new { p.PriceValue, p.Quantity });
 
         foreach (var service in services)
         {
-            if (prices.TryGetValue(service.Id, out int price))
+            if (prices.TryGetValue(service.Id, out var priceInfo))
             {
-                service.Price = price;
+                service.Price = priceInfo.PriceValue;
+                service.Quantity = priceInfo.Quantity;
             }
             else
             {
                 service.Price = 0;
+                service.Quantity = 0;
             }
         }
 
@@ -824,7 +823,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult SavePrices(List<int> ServiceIds, List<int> Prices)
+    public IActionResult SavePrices(List<int> ServiceIds, List<int> Prices, List<int> Quantities)
     {
         int carId = HttpContext.Session.GetInt32("idcar").Value;
 
@@ -834,7 +833,8 @@ public class HomeController : Controller
             {
                 carId = carId,
                 IdService = ServiceIds[i],
-                PriceValue = Prices[i]
+                PriceValue = Prices[i],
+                Quantity = Quantities != null && Quantities.Count > i ? Quantities[i] : 0
             };
 
             // Check if a price already exists for this car and service
@@ -842,6 +842,7 @@ public class HomeController : Controller
             if (existingPrice != null)
             {
                 existingPrice.PriceValue = Prices[i];
+                existingPrice.Quantity = Quantities != null && Quantities.Count > i ? Quantities[i] : existingPrice.Quantity;
             }
             else
             {
@@ -853,7 +854,6 @@ public class HomeController : Controller
 
         //get service parent id
         int serviceparentid = _context.Services.Find(ServiceIds[0]).Parentid;
-
 
         return RedirectToAction("Price", new { serviceparentid = serviceparentid });
     }
@@ -926,7 +926,7 @@ public class HomeController : Controller
             Request = request,
             User = user,
             Orders = orders,
-            TotalPrice = orders.Sum(o => o.Price)
+            TotalPrice = orders.Sum(o => o.Price * o.Quantity)
         };
         ViewBag.Latitude = user.Latitude;
         ViewBag.Longitude = user.Longitude;

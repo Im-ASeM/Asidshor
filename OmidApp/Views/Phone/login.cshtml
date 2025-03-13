@@ -63,7 +63,7 @@
             </div>
 
             <div class=" mt-1" id="register" style="display: none;">
-              <form action="/phone/check" method="post" id="Myform">
+              <form id="Myform" onsubmit="return submitForm(event)">
                 <p id="msg" class="alert alert-danger d-none"> لطفا شماره تلفن و تیک قوانین را بزنید</p>
 
                 <div class="form-group text-start mb-4">
@@ -77,8 +77,13 @@
                 </div>
 
                 <div class="form-group text-start mb-4">
+                  <input style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
+                    type="text" placeholder="نام تعمیرگاه خود را وارد کنید (اختیاری)" name="Url">
+                </div>
+
+                <div class="form-group text-start mb-4">
                   <input required style="margin-top:20px ;" autocomplete="off" class="form-control text-black"
-                    type="text" placeholder="نام تعمیرگاه خود را وارد کنید" name="Url">
+                    type="text" placeholder="کد معرف را وارد کنید" name="InviteCode">
                 </div>
 
                 <div class="form-group text-start mb-4">
@@ -193,23 +198,32 @@
       var map, marker;
 
       function initMap() {
-        map = L.map('map').setView([30.2839, 57.0834], 13); // نمای پیش‌فرض بر روی تهران
+        // Set initial view to center of Iran
+        map = L.map('map').setView([32.4279, 53.6880], 6);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        marker = L.marker([35.6892, 51.3890], { draggable: true }).addTo(map);
+        // Add marker with draggable option
+        marker = L.marker([32.4279, 53.6880], { draggable: true }).addTo(map);
 
+        // Update coordinates when marker is dragged
         marker.on('dragend', function (event) {
           var position = marker.getLatLng();
           updateLocationInputs(position.lat, position.lng);
         });
 
+        // Update marker position when map is clicked
         map.on('click', function (e) {
           marker.setLatLng(e.latlng);
           updateLocationInputs(e.latlng.lat, e.latlng.lng);
         });
+
+        // Force a map resize after a short delay to ensure proper rendering
+        setTimeout(function() {
+          map.invalidateSize();
+        }, 100);
       }
 
       function updateLocationInputs(lat, lng) {
@@ -233,10 +247,13 @@
         }
       }
 
-
       document.getElementById('showLocation').addEventListener('click', showCurrentLocation);
 
-      window.onload = initMap;
+      // Initialize map when the page loads
+      window.onload = function() {
+        initMap();
+        setIframeHeight();
+      };
     </script>
 
   </div>
@@ -281,6 +298,59 @@
     function showPRole() {
       document.getElementById("PMain").style.display = "none";
       document.getElementById("PRole").style.display = "block";
+    }
+  </script>
+
+  <script>
+    function submitForm(event) {
+      event.preventDefault();
+      
+      var formData = new FormData(document.getElementById('Myform'));
+      
+      $.ajax({
+        url: '/phone/check',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+          if (response.success) {
+            // Show success message
+            var successDiv = document.createElement('div');
+            successDiv.className = 'alert alert-success';
+            successDiv.textContent = response.message;
+            document.getElementById('Myform').insertBefore(successDiv, document.getElementById('Myform').firstChild);
+            
+            // Redirect after a short delay
+            setTimeout(function() {
+              window.location.reload();
+            }, 1500);
+          } else {
+            // Show error message without hiding the form
+            var errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger text-dark';
+            errorDiv.textContent = response.error;
+            document.getElementById('Myform').insertBefore(errorDiv, document.getElementById('Myform').firstChild);
+            
+            // Remove the error message after 3 seconds
+            setTimeout(function() {
+              errorDiv.remove();
+            }, 3000);
+          }
+        },
+        error: function() {
+          var errorDiv = document.createElement('div');
+          errorDiv.className = 'alert alert-danger text-dark';
+          errorDiv.textContent = 'خطا در ارتباط با سرور';
+          document.getElementById('Myform').insertBefore(errorDiv, document.getElementById('Myform').firstChild);
+          
+          setTimeout(function() {
+            errorDiv.remove();
+          }, 3000);
+        }
+      });
+      
+      return false;
     }
   </script>
 </body>

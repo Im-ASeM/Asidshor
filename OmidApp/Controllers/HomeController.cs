@@ -360,123 +360,141 @@ public class HomeController : Controller
 
     public IActionResult price(int serviceparentid)
     {
-        // TODO: Your code here
-        int? id = HttpContext.Session.GetInt32("idcar");
-        System.Console.WriteLine("idcar:" + id);
-
-        if (id == null)
+        try
         {
-            // Handle the case where the session variable is not set
-            return RedirectToAction("Index", "Home"); // or wherever you want to redirect
-        }
-
-        var category = db.Categories.Find(id.Value);
-        if (category == null)
-        {
-            // Handle show error
-            //log error
-            System.Console.WriteLine(id.Value);
-            System.Console.WriteLine("Category not found");
-            return NotFound();
-
-
-        }
-
-        ViewBag.carname = category.CatName;
-
-        var services = db.Services.Where(x => x.Parentid == serviceparentid).ToList();
-        var prices = db.Prices.Where(p => p.carId == id.Value).ToDictionary(p => p.IdService, p => p.PriceValue);
-        List<Service> result = new List<Service>();
-        foreach (var service in services)
-        {
-            if (prices.TryGetValue(service.Id, out int price))
+            int? id = HttpContext.Session.GetInt32("idcar");
+            if (id == null)
             {
-                service.Price = price;
-                if (price != 0) result.Add(service);
+                return RedirectToAction("Index", "Home");
             }
+
+            var category = db.Categories.Find(id.Value);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.carname = category.CatName;
+
+            var services = db.Services.Where(x => x.Parentid == serviceparentid).ToList();
+            if (services == null || !services.Any())
+            {
+                ViewBag.Services = new List<Service>();
+                return View();
+            }
+
+            var prices = db.Prices.Where(p => p.carId == id.Value)
+                                .ToDictionary(p => p.IdService, p => new { Price = p.PriceValue, Quantity = p.Quantity });
+
+            var result = new List<Service>();
+            foreach (var service in services)
+            {
+                if (prices.TryGetValue(service.Id, out var priceInfo))
+                {
+                    service.Price = priceInfo.Price;
+                    service.Quantity = priceInfo.Quantity;
+                    if (priceInfo.Price != 0) result.Add(service);
+                }
+            }
+
+            ViewBag.Services = result;
+
+            var parentService = db.Services.Find(serviceparentid);
+            if (parentService == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Srvicename = parentService.Srvicename;
+            return View();
         }
-
-        ViewBag.Services = result;
-
-        var parentService = db.Services.Find(serviceparentid);
-        if (parentService == null)
+        catch (Exception ex)
         {
-            // Handle the case where the parent service is not found
-            System.Console.WriteLine("Parent service not found");
-            return NotFound();
+            // Log the exception
+            System.Console.WriteLine($"Error in price action: {ex.Message}");
+            return View("Error");
         }
-
-        ViewBag.Srvicename = parentService.Srvicename;
-
-        return View();
     }
 
 
     [HttpPost]
     public IActionResult ProcessSelectedServices([FromBody] SelectedServicesModel model)
     {
-
-
         //use Transaction
         var Request = new Request();
         using (var transaction = db.Database.BeginTransaction())
         {
-
-
-
-            var idcar = HttpContext.Session.GetInt32("idcar");
-            if (model == null || model.SelectedServices == null || model.SelectedServices.Count == 0)
+            try
             {
-                return BadRequest("No services selected.");
-            }
-            else
-            {
+                var idcar = HttpContext.Session.GetInt32("idcar");
+                if (model == null || model.SelectedServices == null || model.SelectedServices.Count == 0)
+                {
+                    return BadRequest("No services selected.");
+                }
 
                 Request.CreateDate = DateTime.Now;
                 Request.Status = "پیش فاکتور";
-                //get id  NameIdentifier, quser.Id.ToString()),
                 var id = User.Identity.GetId();
                 Request.UserId = Convert.ToInt32(id);
 
-                //car name get seeionidcar quesry
                 var category = db.Categories.Find(idcar.Value);
                 Request.CarName = category.CatName;
                 Request.MenuId = category.MenuId.Value;
 
-                //find parendname one model data
                 var parentService = db.Services.Find(model.SelectedServices[0]).Parentid;
                 Request.ParentServiceName = db.Services.Find(parentService).Srvicename;
                 Request.Description = "";
                 db.Requests.Add(Request);
                 db.SaveChanges();
-            }
 
-            // Here you can process the selected service IDs
-            foreach (var serviceId in model.SelectedServices)
-            {
-                // Example: Retrieve service details from the database
-                var service = db.Services.Find(serviceId);
-                if (service != null)
+                foreach (var serviceId in model.SelectedServices)
                 {
-                    var order = new Orders();
-                    order.ChildServiceName = service.Srvicename;
-                    //price query table price
-                    var price = db.Prices.FirstOrDefault(p => p.IdService == service.Id && p.carId == idcar.Value);
-                    order.Price = price.PriceValue;
-                    order.IdRequest = Request.Id;
-                    db.Orders.Add(order);
-                    db.SaveChanges();
+                    var service = db.Services.Find(serviceId);
+                    if (service != null)
+                    {
+                        var price = db.Prices.FirstOrDefault(p => p.IdService == service.Id && p.carId == idcar.Value);
+                        if (price == null)
+                        {
+                            throw new Exception($"Price not found for service {service.Srvicename}");
+                        }
 
+                        // Validate quantity
+                        if (model.Quantities.TryGetValue(serviceId, out int requestedQuantity))
+                        {
+                            if (requestedQuantity > price.Quantity)
+                            {
+                                return BadRequest(new { 
+                                    success = false, 
+                                    message = $"تعداد درخواستی برای سرویس {service.Srvicename} بیشتر از موجودی است. موجودی: {price.Quantity}" 
+                                });
+                            }
+
+                            var order = new Orders
+                            {
+                                ChildServiceName = service.Srvicename,
+                                Price = price.PriceValue,
+                                Quantity = requestedQuantity,
+                                IdRequest = Request.Id
+                            };
+                            db.Orders.Add(order);
+
+                            // Update available quantity
+                            price.Quantity -= requestedQuantity;
+                            db.Prices.Update(price);
+                        }
+                    }
                 }
+
+                db.SaveChanges();
+                transaction.Commit();
+                return Ok(new { success = true, message = "Request created successfully", requestId = Request.Id });
             }
-
-            transaction.Commit();
-
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                return BadRequest(new { success = false, message = ex.Message });
+            }
         }
-
-        // Areturn redirect to action and send request id
-        return Ok(new { message = "Request created successfully", requestId = Request.Id });
-
     }
     public IActionResult RequestDetail(int id)
     {
@@ -494,7 +512,7 @@ public class HomeController : Controller
             Request = request,
             User = user,
             Orders = orders,
-            TotalPrice = orders.Sum(o => o.Price)
+            TotalPrice = orders.Sum(o => o.Price * o.Quantity)
         };
 
         return View(viewModel);
@@ -562,6 +580,7 @@ public class HomeController : Controller
 public class SelectedServicesModel
 {
     public List<int> SelectedServices { get; set; }
+    public Dictionary<int, int> Quantities { get; set; }
 }
 
 

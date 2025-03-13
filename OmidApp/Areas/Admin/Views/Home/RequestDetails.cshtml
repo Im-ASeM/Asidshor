@@ -29,7 +29,9 @@
                         <tr>
                             <th>ردیف</th>
                             <th>نام سرویس</th>
-                            <th>قیمت (ریال)</th>
+                            <th>تعداد</th>
+                            <th>قیمت واحد (ریال)</th>
+                            <th>قیمت کل (ریال)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,13 +40,15 @@
                             <tr>
                                 <td>@index</td>
                                 <td>@order.ChildServiceName</td>
+                                <td>@order.Quantity</td>
                                 <td>@order.Price.ToString("N0")</td>
+                                <td>@((order.Price * order.Quantity).ToString("N0"))</td>
                             </tr>
                         }
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2" class="text-right"><strong>مجموع کل:</strong></td>
+                            <td colspan="4" class="text-right"><strong>مجموع کل:</strong></td>
                             <td><strong>@Model.TotalPrice.ToString("N0")</strong></td>
                         </tr>
                     </tfoot>
@@ -97,23 +101,25 @@
   var map, marker;
 
   function initMap() {
-  
-   // map = L.map('map').setView([35.6892, 51.3890], 13); // Default view on Tehran
-    //map get from user location  ViewBag.Latitude = user.Latitude ; ViewBag.Longitude = user.Longitude; seriliye json add
-    var latitude = @(ViewBag.Latitude != null ? ViewBag.Latitude.ToString() : "null") || 35.6892;
-    var longitude = @(ViewBag.Longitude != null ? ViewBag.Longitude.ToString() : "null") || 51.3890;
-    map = L.map('map').setView([latitude, longitude], 13);
-    //console.log(@ViewBag.Latitude);
-    //console.log(@ViewBag.Longitude);
-
-       
+    // Default coordinates (Tehran)
+    var defaultLat = 35.6892;
+    var defaultLng = 51.3890;
     
+    // Get coordinates from ViewBag, use defaults if null
+    var latitude = @(ViewBag.Latitude != null ? ViewBag.Latitude : "null");
+    var longitude = @(ViewBag.Longitude != null ? ViewBag.Longitude : "null");
+    
+    // Use provided coordinates or defaults
+    var finalLat = latitude || defaultLat;
+    var finalLng = longitude || defaultLng;
+    
+    map = L.map('map').setView([finalLat, finalLng], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    marker = L.marker([latitude,longitude], {draggable: true}).addTo(map);
+    marker = L.marker([finalLat, finalLng], {draggable: true}).addTo(map);
 
     marker.on('dragend', function(event) {
       var position = marker.getLatLng();
@@ -128,8 +134,8 @@
     // Try to get user's current location
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function(position) {
-        var lat = position.coords.Latitude;
-        var lng = position.coords.Longitude;
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
         map.setView([lat, lng], 15);
         marker.setLatLng([lat, lng]);
         updateLocationInputs(lat, lng);
@@ -140,13 +146,9 @@
   function updateLocationInputs(lat, lng) {
     document.getElementById('Latitude').value = lat;
     document.getElementById('Longitude').value = lng;
-    // You can also update the address input using reverse geocoding here if needed
   }
 
   // Initialize map when the page loads
   window.onload = initMap;
-
-  // Add event listener to the address input for geocoding
-  
 </script>
 

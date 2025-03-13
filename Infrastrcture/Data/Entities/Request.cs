@@ -13,6 +13,7 @@ public class Request
     public string Description { get; set; }
     public int MenuId { get; set; }
     public bool Mony { get; set; }
+    public int Quantity { get; set; }
 
 
 

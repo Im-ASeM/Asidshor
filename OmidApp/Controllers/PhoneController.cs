@@ -38,22 +38,30 @@ public class PhoneController : Controller
 
     }
 
-    public IActionResult Check(string phone, string name, string password,string dev,string url,string Adress,string latitude,string longitude,int CityId)
+    public IActionResult Check(string phone, string name, string password,string dev,string url,string Adress,string latitude,string longitude,int CityId, string InviteCode)
 {
     //check if user exist into _context
     var user = _context.Users.FirstOrDefault(u => u.Phone == phone);
     if (phone.Length != 11)
     {
-        TempData["error"] = "شماره تلفن وارد شده نادرست است";
-        return RedirectToAction("Login");
+        return Json(new { success = false, error = "شماره تلفن وارد شده نادرست است" });
     }
     else if(CityId == 0)
     {
-        TempData["error"] = "لطفا شهر یا منطقه خود را انتخاب کنید";
-        return RedirectToAction("Login");
+        return Json(new { success = false, error = "لطفا شهر یا منطقه خود را انتخاب کنید" });
     }
     else if (user == null)
     {
+        // Check if invite code exists and is valid
+        if (!string.IsNullOrEmpty(InviteCode))
+        {
+            var menus = _context.Menus.Where(x => x.Code == InviteCode.Trim()).ToList();
+            if (menus.Count == 0)
+            {
+                return Json(new { success = false, error = "کد معرف وارد شده معتبر نمی باشد" });
+            }
+        }
+
         using (var transaction = _context.Database.BeginTransaction())
         {
             try
@@ -85,31 +93,39 @@ public class PhoneController : Controller
                     DeviceId = dev,
                     UserId = quser.Id,
                     state = true,
-                    
                 };
                 _context.Devices.Add(device);
                 _context.SaveChanges();
 
+                // Add invite code to UserMenus
+                if (!string.IsNullOrEmpty(InviteCode))
+                {
+                    var menus = _context.Menus.Where(x => x.Code == InviteCode.Trim()).ToList();
+                    foreach (var menu in menus)
+                    {
+                        _context.UserMenus.Add(new UserMenu
+                        {
+                            MenuId = menu.Id,
+                            UserId = quser.Id
+                        });
+                    }
+                    _context.SaveChanges();
+                }
+
                 transaction.Commit();
-                TempData["success"] = "ثبت نام با موفقیت انجام شد";
-                return RedirectToAction("login", "phone");
+                return Json(new { success = true, message = "ثبت نام با موفقیت انجام شد" });
             }
             catch (Exception)
             {
                 transaction.Rollback();
-                TempData["error"] = "ثبت نام با خطا مواجه شد";
-                return RedirectToAction("Login");
+                return Json(new { success = false, error = "ثبت نام با خطا مواجه شد" });
             }
         }
     }
     else
     {
-        TempData["error"] = "شماره تلفن وارد شده قبلا ثبت شده است";
-        return RedirectToAction("Login");
+        return Json(new { success = false, error = "شماره تلفن وارد شده قبلا ثبت شده است" });
     }
-
-    
-
 }
 
 

@@ -6,7 +6,7 @@ public class Price
     public int Id { get; set; }
     public int carId { get; set; }
     public int IdService { get; set; }
-
+  public int Quantity { get; set; }
     public int PriceValue { get; set; }
     
 

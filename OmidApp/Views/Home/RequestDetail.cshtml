@@ -34,7 +34,9 @@
                         <tr>
                             <th class="">ردیف</th>
                             <th class="">نام سرویس</th>
-                            <th class="">قیمت (ریال)</th>
+                            <th class="">تعداد</th>
+                            <th class="">قیمت واحد (ریال)</th>
+                            <th class="">قیمت کل (ریال)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,13 +45,15 @@
                             <tr>
                                 <td class="">@index</td>
                                 <td class="">@order.ChildServiceName</td>
+                                <td class="">@order.Quantity</td>
                                 <td class="">@order.Price.ToString("N0")</td>
+                                <td class="">@((order.Price * order.Quantity).ToString("N0"))</td>
                             </tr>
                         }
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2" class="text-right "><strong>مجموع کل:</strong></td>
+                            <td colspan="4" class="text-right "><strong>مجموع کل:</strong></td>
                             <td class=""><strong>@Model.TotalPrice.ToString("N0")</strong></td>
                         </tr>
                     </tfoot>

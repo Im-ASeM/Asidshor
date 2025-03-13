@@ -14,16 +14,17 @@
                         <th class="">انتخاب</th>
                         <th class="">نام سرویس</th>
                         <th class="">قیمت (ریال)</th>
+                        <th class="">موجودی</th>
+                        <th class="">تعداد سفارش</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in ViewBag.Services)
                     {
-                        
                         <tr>
                             <td class="">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="SelectedServices" value="@item.Id" id="service-@item.Id">
+                                    <input class="form-check-input service-checkbox" type="checkbox" name="SelectedServices" value="@item.Id" id="service-@item.Id">
                                 </div>
                             </td>
                             <td class="">
@@ -32,6 +33,15 @@
                                 </label>
                             </td>
                             <td class="">@item.Price.ToString("N0")</td>
+                            <td class="">@item.Quantity</td>
+                            <td class="">
+                                <input type="number" class="form-control quantity-input" 
+                                       min="1" max="@item.Quantity" 
+                                       data-service-id="@item.Id"
+                                       data-max-quantity="@item.Quantity"
+                                       style="width: 100px;"
+                                       disabled>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -44,33 +54,82 @@
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.service-checkbox');
+    const quantityInputs = document.querySelectorAll('.quantity-input');
+
+    // Enable/disable quantity input based on checkbox
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const serviceId = this.value;
+            const quantityInput = document.querySelector(`.quantity-input[data-service-id="${serviceId}"]`);
+            quantityInput.disabled = !this.checked;
+            if (!this.checked) {
+                quantityInput.value = '';
+            } else {
+                // Set default value to 1 when enabled
+                quantityInput.value = '1';
+            }
+        });
+    });
+
+    // Validate quantity input
+    quantityInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const maxQuantity = parseInt(this.dataset.maxQuantity);
+            let value = parseInt(this.value) || 0;
+            
+            if (value < 1) {
+                this.value = 1;
+                value = 1;
+            }
+            
+            if (value > maxQuantity) {
+                this.value = maxQuantity;
+                value = maxQuantity;
+            }
+        });
+    });
+});
+
 document.getElementById('serviceForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    var selectedServices = Array.from(document.querySelectorAll('input[name="SelectedServices"]:checked'))
-                                .map(cb => cb.value);
+    var selectedServices = [];
+    var selectedQuantities = {};
+    
+    document.querySelectorAll('.service-checkbox:checked').forEach(checkbox => {
+        const serviceId = parseInt(checkbox.value);
+        const quantityInput = document.querySelector(`.quantity-input[data-service-id="${serviceId}"]`);
+        selectedServices.push(serviceId);
+        selectedQuantities[serviceId] = parseInt(quantityInput.value) || 1;
+    });
     
     if (selectedServices.length === 0) {
         alert('لطفا حداقل یک سرویس را انتخاب کنید.');
         return;
     }
 
-    // You can either submit the form normally or use AJAX to send the data
-    // For AJAX:
     fetch(this.action, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ selectedServices: selectedServices })
+        body: JSON.stringify({ 
+            selectedServices: selectedServices,
+            quantities: selectedQuantities
+        })
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Success:', data);
-        window.location.href = `/home/RequestDetail/${data.requestId}`;
+        if (data.success) {
+            window.location.href = `/home/RequestDetail/${data.requestId}`;
+        } else {
+            alert(data.message || 'خطا در ثبت سفارش. لطفا دوباره تلاش کنید.');
+        }
     })
     .catch((error) => {
         console.error('Error:', error);
-        // Handle error (e.g., show an error message)
+        alert('خطا در ثبت سفارش. لطفا دوباره تلاش کنید.');
     });
 });
 </script>

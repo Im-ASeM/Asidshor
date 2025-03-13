@@ -8,8 +8,11 @@ public class Service
     public string Srvicename { get; set; }
     public int Parentid { get; set; }
     public string Status { get; set; }
+  
     [NotMapped]
     public int Price { get; set; }
+    [NotMapped]
+    public int Quantity { get; set; }
     public int? MenuId { get; set; }
     public Menu Menu { get; set; }
     public int? CatId { get; set; }
