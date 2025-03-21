@@ -104,17 +104,20 @@
 
               <div class=" row">
 
-                <div class="container mt-3 " OnClick="redirect(1)">
-                  <div class="cta-text p-2 p-lg-4"
-                    style="background: linear-gradient(to left,#393E46, #64317e) !important;">
-                    <div class="row p-lg-2">
-                      <div class="col-12">
-                        <h6 class="text-white m-3  text-center"> درخواست شستشوی فوری </h6>
-                      </div>
+                @if (ViewBag.ShowWashingMenu)
+                {
+                  <div class="container mt-3 " OnClick="redirect(1)">
+                    <div class="cta-text p-2 p-lg-4"
+                      style="background: linear-gradient(to left,#393E46, #64317e) !important;">
+                      <div class="row p-lg-2">
+                        <div class="col-12">
+                          <h6 class="text-white m-3  text-center"> درخواست شستشوی فوری </h6>
+                        </div>
 
+                      </div>
                     </div>
                   </div>
-                </div>
+                }
                 <div class="container mt-3 " OnClick="redirectToMenus()">
                   <div class="cta-text p-2 p-lg-4"
                     style="background: linear-gradient(to left,#393E46, #64317e) !important;">

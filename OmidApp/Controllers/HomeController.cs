@@ -51,6 +51,24 @@ public class HomeController : Controller
 
 
         var user = dbuser.ShowUser(Convert.ToInt32(id));
+        
+        // بررسی کد معرف کاربر
+        // اگر کاربر از کد معرف ادمین استفاده کرده باشد، منوی شستشوی فوری نمایش داده می‌شود
+        bool showWashingMenu = false;
+        if (user.Menus != null && user.Menus.Any())
+        {
+            // بررسی می‌کنیم آیا این کاربر منوی مربوط به مدیر ادمین را دارد یا نه
+            var adminId = 1; // فرض کردیم که ID مدیر ادمین اصلی 1 است
+            var adminMenus = db.Menus.Where(m => m.AdminId == adminId).Select(m => m.Id).ToList();
+            
+            // اگر کاربر حداقل یکی از منوهای مدیر ادمین را داشته باشد
+            if (user.Menus.Any(m => adminMenus.Contains(m)))
+            {
+                showWashingMenu = true;
+            }
+        }
+        
+        ViewBag.ShowWashingMenu = showWashingMenu;
 
 
         int result = user.use % user.free;
