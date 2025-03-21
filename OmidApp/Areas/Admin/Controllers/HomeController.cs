@@ -1328,21 +1328,24 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult editadmin(Admin admin)
     {
+        //check if username already exists for another admin
+        if (_context.Admins.Any(x => x.UserName == admin.UserName && x.Id != admin.Id))
+        {
+            TempData["msg"] = "نام کاربری قبلا توسط مدیر دیگری استفاده شده است";
+            return View(admin);
+        }
+
         //update user just change iteams
         var user = _context.Admins.Find(admin.Id);
 
         user.NameFamily = admin.NameFamily;
         user.PhoneNumber = admin.PhoneNumber;
         user.Password = admin.Password;
+        user.UserName = admin.UserName;
 
         //update
         _context.Admins.Update(user);
         _context.SaveChanges();
-
-
-
-
-
 
         return RedirectToAction("Listadmin");
     }
@@ -1495,8 +1498,7 @@ public class HomeController : Controller
                     Cart = user.Cart,
                     Adress = user.Adress,
                     CityName = user.City?.CityName,
-                    free = user.free,
-                    Password = user.Cart
+                    
                 });
             }
         }
