@@ -5,137 +5,272 @@
         padding: 5px;
         text-align: center !important;
     }
+    .manager-section {
+        margin-bottom: 2rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+    }
+    .manager-header {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .manager-code {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    .hidden-managers {
+        display: none;
+    }
+    .show-managers-btn {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
 </style>
-        <div class="page-body">
 
-            <!-- Container-fluid starts-->
-            <div class="container-fluid">
-                <div class="page-header">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="page-header-left">
-                                <h3>داشبورد
-                                    <small>پنل مدیریت چندکاره</small>
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <ol class="breadcrumb pull-right">
-                                <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
-                                <li class="breadcrumb-item active">داشبورد</li>
-                            </ol>
-                        </div>
+<div class="page-body">
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-left">
+                        <h3>داشبورد
+                            <small>پنل مدیریت چندکاره</small>
+                        </h3>
                     </div>
                 </div>
-            </div>
-
-
-             @if (TempData["msg"] != null)
-             {
-                <p class="alert alert-danger p-3 form-control">@TempData["msg"]</p>
-             }
-
-
-
-
-
-                 
-                    <div class="col-xl-12 xl-100">
-                        
-                        <div class="card">
-                            <div class="card-header">
-
-                              <form action="/admin/home/index" method="post">
-                                   <div class="row justify-content-center  p-3" >
-
-                                            <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
-                                                <input name="txt" class="form-control" type="text" placeholder="جستجوی شماره تلفن یا نام">
-                                            
-
-                                            </div>
-
-                                            <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1 ">
-                                                <button type="submit" class="btn btn-primary form-control">جستجو</button>
-
-                                            </div>
-
-                                    </div>
-                               </form>
-
-<div class="table-responsive">
-    <table class="table table-striped" style="white-space: nowrap;">
-        <thead>
-            <tr>
-                <th>ردیف</th>
-                <th>نام</th>
-                <th>نام تعمیرگاه</th>
-                <th>آدرس</th>
-                <th>شماره تلفن</th>
-                <th>تاریخ ثبت</th>
-                <th>وضعیت</th>
-                <th>نوع پرداختی</th>
-                <th>عملیات</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                int index = 1 + ((int)ViewData["CurrentPage"] - 1) * 10;}
-            
-            @foreach (var item in Model)
-            {
-                
-                <tr>
-                    <td>@index</td>
-                    <td>@item.UserName</td>
-                    <td>@item.tamirgah</td>
-                    <td>@item.Adress</td>
-                    <td>@item.UserPhone</td>
-                    <td>@item.Date</td>
-                    <td>@item.Status</td>
-                    <td>
-                    @if(item.Status == "پیش فاکتور" || item.Status == "در انتظار تایید")
-                    {
-                        <a class="btn btn-warning">نامشخص  </a>
-                        }else if(item.Mony == false)
-                        {
-                           <a class="btn btn-primary">غیر رایگان</a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-success">رایگان</a>
-                        }
-                    
-                    </td>
-                    <td>
-                        <a href="/admin/home/RequestDetails?id=@item.Id" class="btn btn-primary">مشاهده</a>
-                        <a href="/admin/home/DeleteRequest?id=@item.Id" class="btn btn-danger" onclick="return confirm('ایا از حذف مطمئن هستید')">حذف</a>
-                    </td>
-                </tr>
-
-                index++;
-            }
-        </tbody>
-    </table>
-</div>
-
-<!-- Pagination -->
-<nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-        @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
-        {
-            <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
-                <a class="page-link" href="/admin/home/Request?page=@i">@i</a>
-            </li>
-        }
-    </ul>
-</nav>
-
-
-                    </div>
-
+                <div class="col-lg-6">
+                    <ol class="breadcrumb pull-right">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item active">داشبورد</li>
+                    </ol>
                 </div>
             </div>
-            <!-- Container-fluid Ends-->
-
         </div>
+    </div>
+
+    @if (TempData["msg"] != null)
+    {
+        <p class="alert alert-danger p-3 form-control">@TempData["msg"]</p>
+    }
+
+    <div class="col-xl-12 xl-100">
+        <div class="card">
+            <div class="card-header">
+                @if (User.FindFirst("Role").Value == "admin")
+                {
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h4>فیلتر بر اساس مدیر</h4>
+                            <form method="get" action="/admin/home/request">
+                                <div class="input-group">
+                                    <select name="managerId" class="form-control">
+                                        <option value="">همه مدیران</option>
+                                        @foreach (var manager in ViewBag.Managers)
+                                        {
+                                            var isSelected = ViewBag.SelectedManagerId == manager.Id;
+                                            <option value="@manager.Id" selected="@isSelected">
+                                                @manager.NameFamily (@manager.InviteCode)
+                                            </option>
+                                        }
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">فیلتر</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                }
+
+                <form action="/admin/home/index" method="post">
+                    <div class="row justify-content-center p-3">
+                        <div class="col-xxl-6 col-lg-6 col-xl-6 col-md-6 col-12">
+                            <input name="txt" class="form-control" type="text" placeholder="جستجوی شماره تلفن یا نام">
+                        </div>
+                        <div class="col-xxl-2 col-lg-2 col-xl-2 col-md-2 col-12 mt-1">
+                            <button type="submit" class="btn btn-primary form-control">جستجو</button>
+                        </div>
+                    </div>
+                </form>
+
+                @{
+                    Admin systemAdmin = null;
+                    
+                    // First, find the system admin
+                    foreach (var managerGroup in ViewBag.ManagerRequests)
+                    {
+                        if (managerGroup.Key.InviteCode == "SYSTEM")
+                        {
+                            systemAdmin = managerGroup.Key;
+                            break;
+                        }
+                    }
+                }
+
+                @if (systemAdmin != null)
+                {
+                    <div class="manager-section">
+                        <div class="manager-header">
+                            <h5>
+                                @systemAdmin.NameFamily
+                                <span class="manager-code">(@systemAdmin.InviteCode)</span>
+                            </h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped" style="white-space: nowrap;">
+                                <thead>
+                                    <tr>
+                                        <th>ردیف</th>
+                                        <th>نام</th>
+                                        <th>نام تعمیرگاه</th>
+                                        <th>آدرس</th>
+                                        <th>شماره تلفن</th>
+                                        <th>تاریخ ثبت</th>
+                                        <th>وضعیت</th>
+                                        <th>نوع پرداختی</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int sysIndex = 1;
+                                    }
+                                    @foreach (var item in ViewBag.ManagerRequests[systemAdmin])
+                                    {
+                                        <tr>
+                                            <td>@sysIndex</td>
+                                            <td>@item.UserName</td>
+                                            <td>@item.tamirgah</td>
+                                            <td>@item.Adress</td>
+                                            <td>@item.UserPhone</td>
+                                            <td>@item.Date</td>
+                                            <td>@item.Status</td>
+                                            <td>
+                                                @if(item.Status == "پیش فاکتور" || item.Status == "در انتظار تایید")
+                                                {
+                                                    <a class="btn btn-warning">نامشخص</a>
+                                                }
+                                                else if(item.Mony == false)
+                                                {
+                                                    <a class="btn btn-primary">غیر رایگان</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="btn btn-success">رایگان</a>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="/admin/home/RequestDetails?id=@item.Id" class="btn btn-primary">مشاهده</a>
+                                                <a href="/admin/home/DeleteRequest?id=@item.Id" class="btn btn-danger" onclick="return confirm('ایا از حذف مطمئن هستید')">حذف</a>
+                                            </td>
+                                        </tr>
+                                        sysIndex++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+
+                @foreach (var managerGroup in ViewBag.ManagerRequests)
+                {
+                    // Skip the system admin as we've already displayed it
+                    if (managerGroup.Key.InviteCode == "SYSTEM")
+                    {
+                        continue;
+                    }
+                    
+                    // If a specific manager is selected, don't hide their section
+                    string displayClass = ViewBag.SelectedManagerId != null ? "" : "hidden-managers";
+                    
+                    <div class="manager-section @displayClass">
+                        <div class="manager-header">
+                            <h5>
+                                @managerGroup.Key.NameFamily
+                                <span class="manager-code">(@managerGroup.Key.InviteCode)</span>
+                            </h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped" style="white-space: nowrap;">
+                                <thead>
+                                    <tr>
+                                        <th>ردیف</th>
+                                        <th>نام</th>
+                                        <th>نام تعمیرگاه</th>
+                                        <th>آدرس</th>
+                                        <th>شماره تلفن</th>
+                                        <th>تاریخ ثبت</th>
+                                        <th>وضعیت</th>
+                                        <th>نوع پرداختی</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int index = 1;
+                                    }
+                                    @foreach (var item in managerGroup.Value)
+                                    {
+                                        <tr>
+                                            <td>@index</td>
+                                            <td>@item.UserName</td>
+                                            <td>@item.tamirgah</td>
+                                            <td>@item.Adress</td>
+                                            <td>@item.UserPhone</td>
+                                            <td>@item.Date</td>
+                                            <td>@item.Status</td>
+                                            <td>
+                                                @if(item.Status == "پیش فاکتور" || item.Status == "در انتظار تایید")
+                                                {
+                                                    <a class="btn btn-warning">نامشخص</a>
+                                                }
+                                                else if(item.Mony == false)
+                                                {
+                                                    <a class="btn btn-primary">غیر رایگان</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="btn btn-success">رایگان</a>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="/admin/home/RequestDetails?id=@item.Id" class="btn btn-primary">مشاهده</a>
+                                                <a href="/admin/home/DeleteRequest?id=@item.Id" class="btn btn-danger" onclick="return confirm('ایا از حذف مطمئن هستید')">حذف</a>
+                                            </td>
+                                        </tr>
+                                        index++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                
+                @if (ViewBag.SelectedManagerId == null)
+                {
+                    <div class="show-managers-btn">
+                        <button id="toggleManagers" class="btn btn-info">مشاهده سایر مدیران</button>
+                    </div>
+                    
+                    <script>
+                        document.getElementById('toggleManagers').addEventListener('click', function() {
+                            var hiddenElements = document.querySelectorAll('.hidden-managers');
+                            hiddenElements.forEach(function(element) {
+                                if (element.style.display === 'block') {
+                                    element.style.display = 'none';
+                                    document.getElementById('toggleManagers').textContent = 'مشاهده سایر مدیران';
+                                } else {
+                                    element.style.display = 'block';
+                                    document.getElementById('toggleManagers').textContent = 'پنهان کردن سایر مدیران';
+                                }
+                            });
+                        });
+                    </script>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 

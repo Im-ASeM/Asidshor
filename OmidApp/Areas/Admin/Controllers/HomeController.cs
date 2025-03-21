@@ -860,50 +860,102 @@ public class HomeController : Controller
 
     // get all request and sent with user detalis to front by model
 
-    public IActionResult Request(int page = 1, int pageSize = 10)
+    public IActionResult Request(int page = 1, int pageSize = 10, int? managerId = null)
     {
-        var q = _context.Requests.AsEnumerable();
-        if (User.FindFirst("Role").Value != "admin")
-        {
-            int adminID = Convert.ToInt32(User.Identity.GetId());
-            // Admin admin = _context.Admins.Include(x => x.City).ThenInclude(x => x.Menu).FirstOrDefault(x => x.Id == adminID);
-            List<int> adminMenus = _context.Admins.Include(x => x.AdminMenus).FirstOrDefault(x => x.Id == adminID).AdminMenus.Select(x => x.Id).ToList();
-            q = q.Where(x => adminMenus.Contains(x.MenuId)).ToList();
-        }
+        var currentUserId = Convert.ToInt32(User.Identity.GetId());
+        var currentUserRole = User.FindFirst("Role").Value;
+        var isAdmin = currentUserRole == "admin";
 
-        var requests = q.OrderByDescending(x => x.Id).ToList();
+        // Create a dictionary to store manager's requests
+        var managerRequests = new Dictionary<Admin, List<RequestModel>>();
 
-        var requestModels = new List<RequestModel>();
-
-        foreach (var request in requests)
-        {
-            var user = _context.Users.Find(request.UserId);
-            var requestModel = new RequestModel
+        // Get requests without manager code (system admin's requests) FIRST
+        var unassignedRequests = _context.Requests
+            .Where(x => !_context.Menus.Any(m => m.Id == x.MenuId && m.AdminId != null))
+            .OrderByDescending(x => x.Id)
+            .ToList()
+            .Select(request =>
             {
-                Id = request.Id,
-                UserId = request.UserId,
-                UserName = user.FirstAndLastName,
-                Adress = user.Adress,
-                UserPhone = user.Phone,
-                tamirgah = user.Url,
-                Date = request.CreateDate.ToPersianDateString(),
-                Status = request.Status,
-                Mony = request.Mony
+                var user = _context.Users.Find(request.UserId);
+                return new RequestModel
+                {
+                    Id = request.Id,
+                    UserId = request.UserId,
+                    UserName = user.FirstAndLastName,
+                    Adress = user.Adress,
+                    UserPhone = user.Phone,
+                    tamirgah = user.Url,
+                    Date = request.CreateDate.ToPersianDateString(),
+                    Status = request.Status,
+                    Mony = request.Mony,
+                    ManagerName = "مدیر سیستم",
+                    ManagerCode = "SYSTEM"
+                };
+            }).ToList();
 
-            };
-            requestModels.Add(requestModel);
+        if (unassignedRequests.Any())
+        {
+            managerRequests.Add(new Admin { NameFamily = "مدیر سیستم", InviteCode = "SYSTEM" }, unassignedRequests);
         }
 
-        // Pagination logic
-        var paginatedRequests = requestModels.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        // Get all managers
+        var managers = _context.Admins
+            .Where(x => x.Role == "agent" && x.Status == "فعال")
+            .Include(x => x.AdminMenus)
+            .ToList();
 
-        // Calculate total pages
-        var totalPages = (int)Math.Ceiling(requestModels.Count / (double)pageSize);
+        foreach (var manager in managers)
+        {
+            var managerMenuIds = manager.AdminMenus.Select(m => m.Id).ToList();
+            var requests = _context.Requests
+                .Where(x => managerMenuIds.Contains(x.MenuId))
+                .OrderByDescending(x => x.Id)
+                .ToList();
 
-        ViewData["TotalPages"] = totalPages;
-        ViewData["CurrentPage"] = page;
+            var requestModels = requests.Select(request =>
+            {
+                var user = _context.Users.Find(request.UserId);
+                return new RequestModel
+                {
+                    Id = request.Id,
+                    UserId = request.UserId,
+                    UserName = user.FirstAndLastName,
+                    Adress = user.Adress,
+                    UserPhone = user.Phone,
+                    tamirgah = user.Url,
+                    Date = request.CreateDate.ToPersianDateString(),
+                    Status = request.Status,
+                    Mony = request.Mony,
+                    ManagerName = manager.NameFamily,
+                    ManagerCode = manager.InviteCode
+                };
+            }).ToList();
 
-        return View(paginatedRequests);
+            if (requestModels.Any())
+            {
+                managerRequests.Add(manager, requestModels);
+            }
+        }
+
+        // Filter by manager if specified
+        if (managerId.HasValue)
+        {
+            managerRequests = managerRequests.Where(x => x.Key.Id == managerId)
+                .ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        // For non-admin users, only show their own requests
+        if (!isAdmin)
+        {
+            managerRequests = managerRequests.Where(x => x.Key.Id == currentUserId)
+                .ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        ViewBag.Managers = managers;
+        ViewBag.SelectedManagerId = managerId;
+        ViewBag.ManagerRequests = managerRequests;
+
+        return View();
     }
 
 
@@ -1060,6 +1112,9 @@ public class HomeController : Controller
 
         //Mony
         public bool Mony { get; set; }
+
+        public string ManagerName { get; set; }
+        public string ManagerCode { get; set; }
     }
 
     public class RequestListViewModel
