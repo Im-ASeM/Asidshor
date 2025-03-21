@@ -140,16 +140,36 @@ public class HomeController : Controller
     public IActionResult Index(string txt)
     {
         var users = dbUser.ShowAllUser(txt);
-        //search
+        
+        // فقط کاربران مربوط به مدیر وارد شده را نمایش می‌دهیم
         if (User.FindFirst("Role").Value != "admin")
         {
             int adminID = Convert.ToInt32(User.Identity.GetId());
             Admin admin = _context.Admins.Include(x => x.AdminMenus).FirstOrDefault(x => x.Id == adminID)!;
 
+            // لیست شناسه‌های منوهای مدیر را دریافت می‌کنیم
             List<int> adminMenus = admin.AdminMenus.Count != 0 ? admin.AdminMenus.Select(x => x.Id).ToList() : new List<int>();
 
-            users = users.Where(x => x.Menus.Any(m => adminMenus.Contains(m))).ToList();
+            // کاربرانی که با این منوها ارتباط دارند را فیلتر می‌کنیم
+            if (adminMenus.Any())
+            {
+                // دریافت شناسه‌های کاربران منحصربفرد
+                var userIds = _context.UserMenus
+                    .Where(um => adminMenus.Contains(um.MenuId))
+                    .Select(um => um.UserId)
+                    .Distinct()
+                    .ToList();
+                
+                // فیلتر کردن لیست کاربران
+                users = users.Where(x => userIds.Contains(x.Id)).ToList();
+            }
+            else
+            {
+                // اگر مدیر هیچ منویی ندارد، لیست کاربران را خالی می‌کنیم
+                users = new List<VmUser>();
+            }
         }
+        
         ViewBag.User = users;
         return View();
     }
@@ -1174,7 +1194,47 @@ public class HomeController : Controller
 
     public IActionResult Listadmin()
     {
-        ViewBag.User = _context.Admins.OrderByDescending(x => x.Id).Include(x => x.City).ToList();
+        var admins = _context.Admins
+            .OrderByDescending(x => x.Id)
+            .Include(x => x.City)
+            .Include(x => x.AdminMenus)
+            .ToList();
+        
+        // Create a dictionary to store admin and their user counts
+        var adminUserCounts = new Dictionary<int, int>();
+        
+        foreach (var admin in admins)
+        {
+            // Count users for system admin (ID 1) differently - include all users
+            if (admin.Id == 1 && admin.Role == "admin")
+            {
+                adminUserCounts.Add(admin.Id, _context.Users.Count());
+                continue;
+            }
+            
+            // Get the menu IDs associated with this admin
+            var adminMenuIds = admin.AdminMenus?.Select(m => m.Id).ToList() ?? new List<int>();
+            
+            // Count users who have any of these menus
+            int userCount = 0;
+            if (adminMenuIds.Any())
+            {
+                // Use the same logic as in AdminUsers method
+                var userIds = _context.UserMenus
+                    .Where(um => adminMenuIds.Contains(um.MenuId))
+                    .Select(um => um.UserId)
+                    .Distinct()
+                    .ToList();
+                
+                userCount = userIds.Count;
+            }
+            
+            adminUserCounts.Add(admin.Id, userCount);
+        }
+        
+        ViewBag.User = admins;
+        ViewBag.AdminUserCounts = adminUserCounts;
+        
         return View();
     }
 
@@ -1387,6 +1447,64 @@ public class HomeController : Controller
         _context.SaveChanges();
 
         return RedirectToAction("Listadmin");
+    }
+
+    public IActionResult AdminUsers(int id)
+    {
+        var admin = _context.Admins
+            .Include(x => x.AdminMenus)
+            .FirstOrDefault(x => x.Id == id);
+            
+        if (admin == null)
+        {
+            return NotFound();
+        }
+        
+        // Get the menu IDs associated with this admin
+        var adminMenuIds = admin.AdminMenus?.Select(m => m.Id).ToList() ?? new List<int>();
+        
+        // Get users who have any of these menus
+        var users = new List<VmUser>();
+        if (adminMenuIds.Any())
+        {
+            // Get distinct user IDs first
+            var userIds = _context.UserMenus
+                .Where(um => adminMenuIds.Contains(um.MenuId))
+                .Select(um => um.UserId)
+                .Distinct()
+                .ToList();
+                
+            // Then get the full user details
+            var userEntities = _context.Users
+                .Include(u => u.UserMenus)
+                .Include(u => u.City)
+                .Include(u => u.walets)
+                .Where(u => userIds.Contains(u.Id))
+                .ToList();
+                
+            foreach (var user in userEntities)
+            {
+                users.Add(new VmUser
+                {
+                    Id = user.Id,
+                    FirstAndLastName = user.FirstAndLastName,
+                    Phone = user.Phone,
+                    Email = user.Email,
+                    Url = user.Url,
+                    Code = user.Code,
+                    Cart = user.Cart,
+                    Adress = user.Adress,
+                    CityName = user.City?.CityName,
+                    free = user.free,
+                    Password = user.Cart
+                });
+            }
+        }
+        
+        ViewBag.Admin = admin;
+        ViewBag.Users = users;
+        
+        return View();
     }
 }
 

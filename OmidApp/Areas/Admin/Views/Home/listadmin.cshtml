@@ -57,16 +57,13 @@
                                 <td scope="col">نام و نام خانوادگی</td>
                                 <td scope="col">شماره تماس</td>
                                 <td scope="col">نام کاربری </td>
-
-
                                 <td scope="col">رمز عبور</td>
                                 <td scope="col">کد دعوت</td>
                                 <td scope="col">وضعیت</td>
+                                <td scope="col">تعداد کاربران</td>
                                 <td scope="col">اختصاص شهر و منطقه</td>
                                 <td scope="col">ویرایش</td>
                                 <td scope="col">حذف</td>
-
-
                             </tr>
 
 
@@ -112,6 +109,11 @@
 
                                             }
 
+                                        </td>
+                                        <td class="font-danger">
+                                            <a href="/admin/home/AdminUsers/@item.Id" class="btn btn-info">
+                                                @ViewBag.AdminUserCounts[item.Id] کاربر
+                                            </a>
                                         </td>
                                         <td class="font-danger">
                                             <a href="/admin/home/AssignCityRegion/@item.Id"

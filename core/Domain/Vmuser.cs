@@ -16,6 +16,7 @@ public class VmUser
     public int free { get; set; }
     public int use { get; set; }
     public string description { get; set; }
+    public string Password { get; set; }
     public ICollection<Vm_WaletNew> walets { get; set; }
     public string CityName { get; set; }
     public List<int> Menus { get; set; }
